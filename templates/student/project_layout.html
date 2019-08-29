@@ -1,0 +1,72 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    
+<div class="content-section">    
+        <h1 > Project: {{fields.topic}} </h1>   
+        <br>
+        <h3> Team: {{fields.teamNames}} </h3>    
+</div>
+
+
+             
+<div class="content-section"> 
+
+    <form method="POST" action="" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}              
+                  
+    <fieldset class="form-group"> 
+
+        {% if fields.Complete == None %}
+            {% for i in [0,3,6,9,12,15] %} 
+                <div class="form-group"> 
+                    {{ formList[i].label (class="form-control-label")}}
+                        {% if formList[i].errors %}
+                        {{ formList[i] (class="form-control form-control-lg is-invalid")}}  <!-- is invalid is the class-->
+                        <div class="invalid-feedback">
+                            {% for error in formList[i].errors %}
+                                <span>Error Occurred</span>
+                            {% endfor %}
+                        </div>                          
+                        {% else %}
+                            {{ formList[i](class="form-control form-control-lg")}}
+                        {% endif %}                                           
+                </div>
+        {% endfor %} 
+
+        {% else %}   
+        {% for i in range(18) %} 
+            <div class="form-group"> 
+                    {{ formList[i].label (class="form-control-label")}}
+                        {% if formList[i].errors %}
+                        {{ formList[i] (class="form-control form-control-lg is-invalid")}}  <!-- is invalid is the class-->
+                        <div class="invalid-feedback">
+                            {% for error in formList[i].errors %}
+                                <span>Error Occurred</span>
+                            {% endfor %}
+                        </div>                          
+                        {% else %}
+                            {{ formList[i](class="form-control form-control-lg")}}
+                        {% endif %}                                           
+            </div>
+        {% endfor %} 
+        {% endif %} 
+
+          
+                <div class="form-group">
+                    {{ form.Submit(class="btn btn-info")}}
+                </div>
+                          
+                  </fieldset>  
+              </form>
+          
+          </div>   
+             
+    {% endblock  %}
+
+     
+ 
+      
+    
+  
+ 

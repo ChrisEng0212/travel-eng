@@ -1,0 +1,88 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    
+<div class="content-section">    
+        <h1 > Mid-Term Prep</h1>   
+            
+</div>
+
+             
+<div class="content-section"> 
+
+<legend class="border-bottom mb-4">Set Up</legend>
+
+    <form method="POST" action="" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}              
+                  
+    <fieldset class="form-group"> 
+
+            <div class="form-group"> 
+                    {{ form.MT01.label (class="form-control-label")}}</br>
+                        
+                            {% for subfield in form.MT01 %}
+                            <tr>
+                                <td>{{ subfield }}</td>
+                                <td>{{ subfield.label }}</td>
+                            </tr></br>
+                            {% endfor %}
+                            {% if form.MT01.errors %}
+                            <p class="help has-background-warning" style="color:red">
+                                PLEASE SELECT
+                            </p>
+                            {% endif %}
+                        
+            </div>
+
+            <div class="form-group"> 
+                    {{ form.MT02.label (class="form-control-label")}}</br>
+                        
+                            {% for subfield in form.MT02 %}
+                            <tr>
+                                <td>{{ subfield }}</td>
+                                <td>{{ subfield.label }}</td>
+                            </tr></br>
+                            {% endfor %}
+                        {% if form.MT01.errors %}
+                            <p class="help has-background-warning" style="color:red">
+                                PLEASE SELECT
+                            </p>
+                        {% endif %}
+                        
+            </div>
+
+
+
+        {% for i in range(2,5) %} 
+                <div class="form-group"> 
+                    {{ formList[i].label (class="form-control-label")}}
+                        {% if formList[i].errors %}
+                        {{ formList[i] (class="form-control form-control-lg is-invalid")}} 
+                        <div class="invalid-feedback">
+                            {% for error in formList[i].errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>                          
+                        {% else %}
+                            {{ formList[i](class="form-control form-control-lg")}}
+                        {% endif %}                                           
+                </div>
+        {% endfor %} 
+          
+                <div class="form-group">
+                    {{ form.Submit(class="btn btn-info")}}
+                </div>
+                          
+                  </fieldset>  
+              </form>
+          
+          </div>   
+             
+    {% endblock  %}
+
+     
+ 
+      
+    
+  
+ 

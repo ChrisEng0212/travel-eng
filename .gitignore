@@ -1,0 +1,11 @@
+.DS_Store
+static/.DS_Store
+
+travel-eng.txt
+setup.txt
+config.py
+
+.env
+venv
+
+__pycache__

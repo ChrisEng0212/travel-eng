@@ -1,0 +1,63 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div class="content-section">
+    <h1> Homepage </h1>
+</div>
+
+{% if current_user.is_authenticated %} 
+
+{% if attendOpen == 1 %}      
+<div class="content-section">
+<legend class="border-bottom mb-4">Roll Call</legend>
+<div>
+<button  class="btn btn-info-light btn-lg"><a href= "{{ url_for ('att_team') }}">Attendance Open</a></button>
+</div>
+    <br>
+</div>
+{% endif %}
+
+
+<div class="content-section">
+    <legend class="border-bottom mb-4">Attendance History</legend>    
+    <table class="table table-sm">
+        <thead>
+            <tr>
+              <th scope="col" style="width: 3px;">Date</th>
+              <th scope="col" style="width: 3px;">Time</th>           
+              <th scope="col" style="width: 3px;">Att</th>
+              <th scope="col" style="width: 20px;"></th>
+            </tr>
+        </thead>
+        {% for log in attLog %}
+        <tbody>
+            <tr>
+              <td> {{log.date_posted.strftime('%B %d')}}</td>   
+              <td> {{log.date_posted.strftime('%H %M')}}</td>            
+              <td> {{log.attend}}</td>
+              <td> {{log.comments}}</td>
+            </tr>       
+        </tbody>
+        {% endfor %}
+      </table>     
+</div>
+
+{% else %}
+<div class="content-section">
+<legend class="border-bottom mb-4">Welcome</legend>
+    <h1> Please <a href= "{{ url_for ('login') }}">'Login' </a> or 'Join' the course </h1>
+</div>
+{% endif %}
+
+
+{% endblock content %}
+
+{% block script %}
+
+
+
+{% endblock %}  
+
+    
+

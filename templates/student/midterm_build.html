@@ -1,0 +1,118 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    
+{% if fields.checkQue > 0 %}
+<div class="content-section"> 
+<button class="btn btn-lg btn-success"><a style="color:white" href="{{ url_for ('MTexample', idMarker=fields.id)}}", target="_blank">Test Your Project</a></button>   
+</div>       
+{% endif %}
+
+
+<div class="content-section">    
+        <h1 > Mid-Term Prep</h1>   
+<br>
+
+<legend class="border-bottom mb-4">Details</legend>
+
+<h5>Team Members:</h5>
+<ul class="list-group list-group-flush">
+    {% for i in range(names|length) %}
+   <li class="list-group-item"><img class="rounded-circle chat-img" src="{{images[i]}}"> {{names[i]}}</li>
+    {% endfor %}
+</ul>
+
+<br>
+<h3 style="display: inline-block">Topic: {{fields.vidOption}}</h3>
+{% if fields.checkQue == 0 %}
+<button class="btn btn-sm btn-danger"  style="float:right"><a href="{{ url_for ('MTedit')}}" style="color:white">Edit Project SetUp</a></button>          
+{% endif %}
+</div>
+
+
+
+<div class="content-section"> 
+
+    <form method="POST" action="" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}              
+                  
+    <fieldset class="form-group"> 
+
+<legend class="border-bottom mb-4">Role Play Links </legend>
+        {% if fields != None %} 
+        {% for i in range(2) %} 
+                <div class="form-group"> 
+                    {{ formList[i].label (class="form-control-label")}}
+                        {% if formList[i].errors %}
+                        {{ formList[i] (class="form-control form-control-lg is-invalid")}} 
+                        <div class="invalid-feedback">
+                            {% for error in formList[i].errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>                          
+                        {% else %}
+                            {{ formList[i](class="form-control form-control-lg")}}
+                        {% endif %}                                           
+                </div>
+        {% endfor %} 
+        {% endif %} 
+
+</div>
+
+
+ 
+<div class="content-section"> 
+
+<legend class="border-bottom mb-4">Q and A </legend>
+
+        {% for i in [2,4,6,8] %} 
+                <div class="form-group"> 
+                    {{ formList[i].label (class="form-control-label", style="color:purple")}}
+                        {% if formList[i].errors %}
+                        {{ formList[i] (class="form-control form-control-lg is-invalid")}} 
+                        <div class="invalid-feedback">
+                            {% for error in formList[i].errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>                          
+                        {% else %}
+                            {{ formList[i](class="form-control form-control-lg")}}
+                        {% endif %}                                           
+                </div>
+                <div class="form-group"> 
+                    {{ formList[i+1].label (class="form-control-label", style="color:orange")}}
+                        {% if formList[i+1].errors %}
+                        {{ formList[i+1] (class="form-control form-control-lg is-invalid")}} 
+                        <div class="invalid-feedback">
+                            {% for error in formList[i+1].errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>                          
+                        {% else %}
+                            {{ formList[i+1](class="form-control form-control-lg")}}
+                        {% endif %}                                           
+                </div>
+                <br>
+                <br>
+        {% endfor %} 
+
+
+
+          
+                <div class="form-group">
+                    {{ form.Submit(class="btn btn-info")}}
+                </div>
+                          
+                  </fieldset>  
+              </form>
+          
+          </div>   
+             
+    {% endblock  %}
+
+     
+ 
+      
+    
+  
+ 

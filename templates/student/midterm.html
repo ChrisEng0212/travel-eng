@@ -1,0 +1,115 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    
+<div class="content-section">    
+        <h1 > Mid-Term Dashboard</h1>   
+<br>
+
+<legend class="border-bottom bg-legend mb-4 ">Notes</legend>
+
+      
+        <div class="embed-responsive embed-responsive-4by3">
+            <iframe src="https://docs.google.com/presentation/d/e/2PACX-1vQ-2CMmLXdnZorz8kAsX0LMmSHqwbSp46SbkIauzGeetUI7rR7NWzTMT3p3_YwV--N-Fn978OmBLmwq/embed?start=false&loop=false&delayms=3000"></iframe>
+        </div> 
+     
+
+{% if control == None %}
+{% else %}
+
+<br>
+        <legend class="border-bottom mb-4">Your Project</legend>
+
+        <div>
+                {% if user.midterm == None %}
+                        <button class="btn btn-lg btn-danger"><a href="{{ url_for ('MTbuild')}}" style="color:white">Start Project</a></button>          
+                {% elif user.midterm == 1 %}
+                        <button class="btn btn-lg btn-info"><a href="{{ url_for ('MTbuild')}}" style="color:white">Finish Project</a></button> 
+                {% else %}
+                        <button class="btn btn-lg btn-primary"><a href="{{ url_for ('MTbuild')}}" style="color:white">Check Project</a></button> 
+                {% endif %}
+        </div>
+<br>
+
+{% endif %}
+
+
+<legend class="border-bottom mb-4">Midterm Score</legend>
+
+<h3 > {{user.exam}} points</h3> 
+<br>
+
+</div>
+
+<div class="content-section"> 
+        <h3 > Testing:</h3>
+        <br>
+
+{% if control == None %}
+{% else %}
+         
+        <legend class="border-bottom mb-4">Your Project:</legend>               
+               
+        {% if user.midterm == 2 %}                
+                <button class="btn btn-lg btn-success" style="display: inline-block"><a href="{{ url_for ('MTexample', idMarker=userID)}}" style="color:white">Test Project</a></button> 
+        {% else %}                
+                <button class="btn btn-lg btn-danger"><a href="" style="color:white">Project Incomplete (0pts)</a></button> 
+        {% endif %}
+        <text style="font-size:15pt">{% if testProj > 0 %} - Done (1pt) {% endif %} </text> 
+        <br>
+        <br>
+
+{% endif %}
+
+        <legend class="border-bottom mb-4">Examples:</legend>   
+        <div>
+                <button class="btn btn-lg btn-secondary" style="display: inline-block"><a href="{{ url_for ('MTexample', idMarker=exOneID)}}" style="color:white">Example One</a></button> 
+                <text style="font-size:15pt"> {% if exTestOne == 0 %} - Not Complete (0pt) {% else %} - Done (1pt) {% endif %} </text>
+        </div>         
+                
+        <br>
+        <div>
+                <button class="btn btn-lg btn-secondary" style="display: inline-block"><a href="{{ url_for ('MTexample', idMarker=exTwoID)}}" style="color:white">Example Two</a></button> 
+                <text style="font-size:15pt"> {% if exTestTwo == 0 %} - Not Complete (0pt){% else %}  - Done (1pt) {% endif %} </text> 
+        </div> 
+        <br>      
+                
+                
+        
+</div>
+
+
+{% if control == None %}
+{% else %}
+
+        <div class="content-section"> 
+                <h3 > Exam:</h3>
+                <br> 
+                <legend class="border-bottom mb-4">Exam Selector</legend>
+                <div>
+                        <button class="btn btn btn-info"><a href="{{ url_for ('MTexample', idMarker=randID)}}" style="color:white">GO TO RANDOM VIDEO</a></button> 
+                </div>
+                <br>
+
+                <legend class="border-bottom mb-4">Completed</legend>
+
+                {% if idList|length == 0 %}
+                {% else %}
+                        {% for i in idList %} 
+                                
+                                <button class="btn btn-sm btn-danger" style="display: inline-block"><a href="{{ url_for ('MTexample', idMarker=i)}}" style="color:white">Video</a></button> 
+                                 
+                        {% endfor %} 
+                {% endif %}      
+        </div>   
+
+{% endif %}
+             
+{% endblock  %}
+
+     
+ 
+      
+    
+  
+ 

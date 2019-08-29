@@ -1,0 +1,109 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div class="content-section"> 
+    <legend class="border-bottom mb-4">{{ legend }}</legend>    
+    <div > 
+        <h3>Notice: {{notice}}</h3>    
+    </div>
+</div>
+
+
+{% if teamcount == 0 %}
+
+<div class="content-section"> 
+    <h4>Please wait a moment</h4>
+    
+</div>
+{% else %}
+
+
+{% if count == 0 %} 
+<div class="content-section">
+    <form method="POST" action=""> 
+            {{ form.hidden_tag () }}        
+        <fieldset class="form-group">
+        
+        {% if current_user.id == 1 %}
+        <div style="display:visible">
+        {% else %}
+        <div style="display:none"> 
+        {% endif %}
+
+            <div class="form-group"> 
+                {{ form.name.label (class="form-control-label")}}</br>                    
+                {{ form.name(class="form-control form-control-lg", id="name")}}
+                 
+            </div>
+            <div class="form-group"> 
+                {{ form.studentID.label (class="form-control-label")}}</br>
+                {{ form.studentID(class="form-control form-control-lg")}}
+                     
+            </div>
+            <div class="form-group"> 
+                {{ form.teamnumber.label (class="form-control-label")}}</br>                  
+                {{ form.teamnumber(class="form-control form-control-lg")}}
+                   
+            </div>
+            <div class="form-group"> 
+                {{ form.teamcount.label (class="form-control-label")}}</br>
+                {{ form.teamcount(class="form-control form-control-lg")}}
+                     
+            </div>
+        </div>
+        
+      
+            <div class="form-group"> 
+                <legend class="border-bottom mb-4">Join the class</legend>    
+                            {% if form.attend.errors %}
+                                {{ form.attend (class="form-control form-control-lg is-invalid")}}  <!-- is invalid is the class-->
+                                <div class="invalid-feedback">
+                                    {% for error in form.attend.errors %}
+                                        <span>{{ error }}</span>
+                                    {% endfor %}
+                                </div>                          
+                            {% else %}
+                                {% for subfield in form.attend %}
+                                <tr >
+                                    <td>{{ subfield }}</td>
+                                    <td><strong style="font-size: 20px;">{{ subfield.label }}</strong></td>
+                                </tr></br>
+                                {% endfor %}
+                            {% endif %} 
+                    </div>
+        </fieldset> 
+        <div class="form-group">
+                {{ form.submit(class="btn btn-outline-info")}}
+        </div>
+    </form>
+</div>
+{% else %}
+
+<div class="content-section">
+{% if fields.teamnumber == 100 %}
+
+<h3> Please wait, your instructor will assign you a team </h3>
+
+{% else %}
+<legend class="border-bottom mb-4" style="display: inline-block">Today we have {{teamcount}} teams</legend>  
+<button type="button" class="btn btn-info btn-lg" disabled >Team: {{fields.teamnumber}}</button>	
+</br>
+</br>
+<h5>Your Team Members:</h5>
+<ul class="list-group list-group-flush">
+    {% for user in users %}
+   <li class="list-group-item"><img class="rounded-circle chat-img" src="{{users[user][1]}}"> {{users[user][0]}}</li>
+    {% endfor %}
+</ul>
+
+
+</div>
+
+{% endif %}
+{% endif %}
+{% endif %}
+
+
+
+{% endblock content %}

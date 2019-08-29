@@ -1,0 +1,106 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    
+<div class="content-section">    
+        <h1 > Mid-Term Project Test</h1>   
+<br>
+
+<legend class="border-bottom mb-4">Project Team</legend>
+
+<ul class="list-group list-group-flush">
+    {% for i in range(names|length) %}
+   <li class="list-group-item"><img class="rounded-circle chat-img" src="{{images[i]}}"> {{names[i]}}</li>
+    {% endfor %}
+</ul>
+
+<br>
+
+</div>
+
+             
+<div class="content-section"> 
+
+    <form method="POST" action="" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}              
+                  
+    <fieldset class="form-group"> 
+
+<legend class="border-bottom mb-4"> Video: {{fields.vidOption}} </legend>
+    
+    <div>
+    <button class="btn btn-large btn-info"><a style="color:white" href="{{fields.vidLink}}", target="_blank">If video does not appear below use this link</a></button>
+    </div>
+
+    <p></p>
+    <div class="content-section">
+        <div class="embed-responsive embed-responsive-4by3">
+        <iframe allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true" src="{{embedSource}}"></iframe>
+        </div>   
+    </div>  
+      
+
+</div>
+
+
+<div class="content-section"> 
+
+<legend class="border-bottom mb-4">Q and A </legend>
+
+        {% for i in range(4) %} 
+
+        <h5>Q{{i + 1}}: {{ansFields[i]}}</h5>
+
+            {% if ansFields|length == 4 %} 
+                <div class="form-group"> 
+                    
+                        {% if formList[i].errors %}
+                        {{ formList[i] (class="form-control form-control-lg is-invalid")}} 
+                        <div class="invalid-feedback">
+                            {% for error in formList[i].errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>                          
+                        {% else %}
+                            {{ formList[i](class="form-control form-control-lg")}}
+                        {% endif %}                                           
+                </div>
+            {% else %} 
+            <br>
+            <h5 style="color:purple">Your Answer: {{ansFields[i+4]}}</h5>            
+            <h6 style="color:green">Suggested Answer: {{ansFields[i+8]}}</h6>
+            <br>
+            {% endif %}
+
+        {% endfor %} 
+
+
+        {% if ansFields|length == 4 %}   
+                <div class="form-group">
+                    {{ form.Submit(class="btn btn-info")}}
+                </div>
+                          
+                  </fieldset>  
+              </form>
+            </div> 
+        {% else %} 
+        </div>
+        <div class="content-section"> 
+        <button class="btn btn-lg btn-success"><a style="color:white" href="{{ url_for ('mid_term')}}">Back to Midterm</a></button>  
+        <br>
+        <br>
+        
+
+        </div> 
+        {% endif %}  
+        
+         
+
+{% endblock  %}
+
+     
+ 
+      
+    
+  
+ 

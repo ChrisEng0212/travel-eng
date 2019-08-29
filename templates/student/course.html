@@ -1,0 +1,61 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div class="content-section">
+    <h1> Course Schedule</h1>
+</div>
+
+<div class="content-section">
+
+
+{% for source in sources %}    
+<div style="overflow-x:auto;">
+
+
+    <table class="table table-sm">
+      <thead>
+          <tr>
+            <th scope="col" style="width:">Week {{source.week}} - {{source.date.strftime('%B %d')}}</th>
+          </tr>
+      </thead>
+      <thead>
+          <tr>
+            <th scope="col" style="width:">Unit {{source.unit}}: {{source.topic}} </th>
+          </tr>
+      </thead>
+            
+      <tbody>
+        <tr>
+            <td> <font color="purple">Goals:</font> </td>      
+        </tr>
+        <tr>
+            <td> {{source.goalOne}} </td>      
+        </tr>
+        <tr>
+            <td> {{source.goalTwo}} </td>      
+        </tr>
+        <tr>
+            <td> <font color="purple">Activity:</font> {{source.activity}} </td>  
+        </tr>
+        <tr>
+            <td> <font color="purple">Resources:</font> {{source.linkOne}} </td>  
+        </tr>
+
+      </tbody>
+    </table> 
+
+<br>
+
+
+{% endfor %}
+      
+</div>      
+
+
+{% endblock %}
+
+
+{% block script %}   
+  
+{% endblock %} 
