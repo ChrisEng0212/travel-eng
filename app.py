@@ -18,8 +18,7 @@ login_manager.login_view = 'login' # if user isn't logged in it will redirect to
 login_manager.login_message_category = 'info'
 mail = Mail(app)
 
-S3_LOCATION = ColorScheme.query.first().Extra1
-print('S3_LOCATION: ', S3_LOCATION)
+
 
 
 
