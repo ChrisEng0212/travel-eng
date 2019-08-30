@@ -5,7 +5,7 @@ from app import app, db, bcrypt, mail
 from flask_login import login_user, current_user, logout_user, login_required
 from forms import * 
 from models import *
-from config import S3_BUCKET_NAME, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, S3_LOCATION
+from aws import S3_BUCKET_NAME, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, S3_LOCATION
 
 
 @app.route ("/", methods = ['GET', 'POST'])

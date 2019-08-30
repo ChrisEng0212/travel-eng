@@ -3,7 +3,7 @@ static/.DS_Store
 
 travel-eng.txt
 setup.txt
-config.py
+aws.py 
 
 .env
 venv
