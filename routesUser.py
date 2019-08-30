@@ -562,11 +562,14 @@ def mid_term():
         controls = MidTerm.query.filter_by(teamMemOne='100000000').all()   
         ##SET CONTROL  ##
         ## If control = None  ==> don't show extra features ##
-        control = controls[0].extraInt            
+        control = controls[0].extraInt 
+        print('control', control)           
         #ENTER ID of EXAMPLES     
         exOneID=controls[0].id
+        print('exONE', exOneID)   
         exTwoID=controls[1].id
-        print(exOneID, 'and', exTwoID)
+        print('exTWO', exTwoID)   
+        
     except: 
         control = None
         exOneID=0
