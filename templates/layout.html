@@ -9,18 +9,18 @@
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
     
     {% if title %}
-        <title> Travel English - {{ title }} </title>
+        <title> {{headTitle}} - {{ title }} </title>
     {% else %}
-        <title> Travel English </title>
+        <title> {{headTitle}} </title>
     {% endif %}
 
 </head >
 
     <header class="site-header" >
       <div>
-        <nav class="navbar navbar-dark fixed-top " style="background:{{color1}}"> <!---navbar-expand-md -->
+        <nav class="navbar navbar-dark fixed-top " style="background:{{titleColor}}"> <!---navbar-expand-md -->
                     <div class="container">
-                      <a class="navbar-brand ml-8" href="/">Travel English Course</a>
+                      <a class="navbar-brand ml-8" href="/">{{headTitle}}</a>
                       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" 
                       aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span> <!--makes nav icon appear-->
@@ -41,7 +41,7 @@
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                               Instructor
                             </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdownIns">
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownIns" style="background:pink">
                               <a class="dropdown-item" href="{{ url_for ('admin') }}", target="_blank">Admin</a>                      
                               <div class="dropdown-divider"></div>
                               <a class="dropdown-item" href="#">Something else here</a>
@@ -64,7 +64,7 @@
       </div>
     </header>
     
-    <body>
+    <body style="background:{{bodyColor}}">
 
     
     <main role="main" class="container">

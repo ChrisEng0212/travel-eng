@@ -7,10 +7,12 @@ from flask_mail import Mail
 from config import Config
 
 
+
  
 
 app = Flask(__name__)
 app.config.from_object(Config)
+
 db = SQLAlchemy(app)
 bcrypt = Bcrypt()
 login_manager = LoginManager(app)

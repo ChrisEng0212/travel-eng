@@ -17,11 +17,14 @@ except:
 
 ColorScheme = ColorScheme.query.first()
 S3_LOCATION = ColorScheme.Extra1
-color1 = ColorScheme.color1
+titleColor = ColorScheme.color1
+bodyColor = ColorScheme.color2
+headTitle = ColorScheme.Title1
+
 
 @app.context_processor
 def inject_user():
-    return dict(color1=color1)
+    return dict(titleColor=titleColor, bodyColor=bodyColor, headTitle=headTitle)
 
 @app.route("/admin", methods = ['GET', 'POST'])
 @login_required
