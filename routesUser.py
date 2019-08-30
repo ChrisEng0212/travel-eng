@@ -7,6 +7,7 @@ from forms import *
 from models import *
 #from aws import S3_BUCKET_NAME, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, S3_LOCATION
 
+S3_LOCATION = ColorScheme.query.first().Extra1
 
 @app.route ("/", methods = ['GET', 'POST'])
 @app.route ("/home", methods = ['GET', 'POST'])
@@ -562,18 +563,14 @@ def mid_term():
         controls = MidTerm.query.filter_by(teamMemOne='100000000').all()   
         ##SET CONTROL  ##
         ## If control = None  ==> don't show extra features ##
-        control = controls[0].extraInt 
-        print('control', control)           
-        #ENTER ID of EXAMPLES     
-        exOneID=controls[0].id
-        print('exONE', exOneID)   
-        exTwoID=controls[1].id
-        print('exTWO', exTwoID)   
-        
+        control = controls[0].extraInt   
+        exOneID=controls[0].id         
+        exTwoID=controls[1].id     
     except: 
         control = None
         exOneID=0
         exTwoID=0
+        print('Controls Unsuccessful')
     
     exTestOne=0
     exTestTwo=0
@@ -614,10 +611,7 @@ def mid_term():
     except:
         randID = 0
     
-    #### SET CONTROL  #####
-    ## If control = None  ==> don't show extra features ##
-    control = MidTerm.query.filter_by(teamMemOne='100000000').first().extraInt
-
+    
     context = {
         'user' : user, 
         'userID': userID,
