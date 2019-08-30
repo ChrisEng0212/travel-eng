@@ -564,8 +564,9 @@ def mid_term():
         ## If control = None  ==> don't show extra features ##
         control = controls[0].extraInt            
         #ENTER ID of EXAMPLES     
-        exOneID=controls[0].extraInt
-        exTwoID=controls[1].extraInt
+        exOneID=controls[0].id
+        exTwoID=controls[1].id
+        print(exOneID, 'and', exTwoID)
     except: 
         control = None
         exOneID=0
