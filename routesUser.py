@@ -5,14 +5,19 @@ from app import app, db, bcrypt, mail
 from flask_login import login_user, current_user, logout_user, login_required
 from forms import * 
 from models import *
-#from aws import S3_BUCKET_NAME, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, S3_LOCATION
+try:
+    from aws import S3_BUCKET_NAME, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY
+except:
+    pass
 
-S3_LOCATION = ColorScheme.query.first().Extra1
+ColorScheme = ColorScheme.query.first()
+S3_LOCATION = ColorScheme.Extra1
+
 
 @app.route ("/", methods = ['GET', 'POST'])
 @app.route ("/home", methods = ['GET', 'POST'])
-def home():     
-    return render_template('instructor/home.html' )
+def home():         
+    return render_template('instructor/home.html', title='home')
     
 ######## Attendance //////////////////////////////////////////////
 @app.route("/attend_solo", methods = ['GET', 'POST'])
@@ -200,7 +205,21 @@ def course():
 
 
 #####  midterm FUNCTIONS ////////////////////////
+def controls():   
+    try:
+        controls = MidTerm.query.filter_by(teamMemOne='100000000').order_by(asc(MidTerm.id)).all()   
+        ##SET CONTROL  ##
+        ## If control = None  ==> don't show extra features ##
+        control = controls[0].extraInt   
+        exOneID=controls[0].id         
+        exTwoID=controls[1].id     
+    except: 
+        control = None
+        exOneID=0
+        exTwoID=0
+        print('Controls Unsuccessful')
 
+    return [control, exOneID, exTwoID]
 
 def mtDictMaker(id):    
     model = MidTerm    
@@ -305,8 +324,10 @@ def MTexample(idMarker):
     else:
         Uid = None
 
-    # only allow user and examples to be accessed         
-    allowedID = [7, 6, Uid]
+    # only allow user and examples to be accessed  
+    ex1 = controls()[1]
+    ex2 = controls()[2]
+    allowedID = [ex1, ex2, Uid]
 
     # open the exam 
     #allowed = MidTerm.query.all()
@@ -559,19 +580,9 @@ def mid_term():
     midExams = MidTerm.query.all()
     modAnswers = MidAnswers.query.filter_by(username=current_user.username).all()
 
-    try:
-        controls = MidTerm.query.filter_by(teamMemOne='100000000').all()   
-        ##SET CONTROL  ##
-        ## If control = None  ==> don't show extra features ##
-        control = controls[0].extraInt   
-        exOneID=controls[0].id         
-        exTwoID=controls[1].id     
-    except: 
-        control = None
-        exOneID=0
-        exTwoID=0
-        print('Controls Unsuccessful')
-    
+    control = controls()[0]
+    exOneID = controls()[1]
+    exTwoID = controls()[2]  
     exTestOne=0
     exTestTwo=0
     testProj=0
@@ -584,7 +595,7 @@ def mid_term():
         userID = fieldsChecker().id
     #is id in the MidAnswers = projTest completed 
 
-    #make list of completed exam
+    #make list of completed exams
     idList = []   
     for mod in modAnswers:  
         ansID = mod.examID

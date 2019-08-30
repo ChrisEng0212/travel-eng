@@ -7,7 +7,7 @@ from flask_mail import Mail
 from config import Config
 
 
-#value = User.query.filter_by(username).first()   
+ 
 
 app = Flask(__name__)
 app.config.from_object(Config)

@@ -10,9 +10,18 @@ from flask_login import login_user, current_user, logout_user, login_required
 from forms import *   
 from models import *
 from flask_mail import Message
-#from aws import S3_BUCKET_NAME, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, S3_LOCATION
+try:
+    from aws import S3_BUCKET_NAME, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY
+except:
+    pass
 
-S3_LOCATION = ColorScheme.query.first().Extra1
+ColorScheme = ColorScheme.query.first()
+S3_LOCATION = ColorScheme.Extra1
+color1 = ColorScheme.color1
+
+@app.context_processor
+def inject_user():
+    return dict(color1=color1)
 
 @app.route("/admin", methods = ['GET', 'POST'])
 @login_required
@@ -143,7 +152,7 @@ def upload_picture(form_picture):
     #random_hex = secrets.token_hex(8)
     #rand = str(random.randint(1000,10000)) --- need to allow model to have more than 20 characters
     _ , f_ext = os.path.splitext(form_picture.filename) # _  replaces f_name which we don't need #f_ext  file extension 
-    s3_folder = '/profiles/'
+    s3_folder = 'profiles/'
     picture_filename =  current_user.username + f_ext 
     s3_filename =  s3_folder + current_user.username + f_ext 
     temp_path = os.path.join(app.root_path, 'static/profile_pics', picture_filename)

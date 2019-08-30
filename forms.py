@@ -3,10 +3,8 @@ from flask_wtf.file import FileField, FileAllowed, FileRequired # what kind of f
 from flask_login import current_user # now we can use this for the account update
 from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField, SelectField, HiddenField, validators, IntegerField, RadioField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError, InputRequired
-from models import *  #you forgot this and it took forever to notice the mistake!!!
+from models import *  
 
-#python classes will be forms
-#then converted into forms in our html
 
 class Attend(FlaskForm):
     attend = RadioField('Attendance', choices = [('On time', 'On time'), ('Late', 'Late')])
