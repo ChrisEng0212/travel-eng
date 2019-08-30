@@ -9,7 +9,7 @@ from flask_mail import Mail
 #value = User.query.filter_by(username).first()   
 
 app = Flask(__name__)
-app.config.from_object(Config)
+#app.config.from_object(Config)
 db = SQLAlchemy(app)
 bcrypt = Bcrypt()
 login_manager = LoginManager(app)
