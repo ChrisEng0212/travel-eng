@@ -557,10 +557,20 @@ def mid_term():
 
     midExams = MidTerm.query.all()
     modAnswers = MidAnswers.query.filter_by(username=current_user.username).all()
-            
-    #ENTER ID of EXAMPLES     
-    exOneID=6
-    exTwoID=7
+
+    try:
+        controls = MidTerm.query.filter_by(teamMemOne='100000000').all()   
+        ##SET CONTROL  ##
+        ## If control = None  ==> don't show extra features ##
+        control = controls[0].extraInt            
+        #ENTER ID of EXAMPLES     
+        exOneID=controls[0].extraInt
+        exTwoID=controls[1].extraInt
+    except: 
+        control = None
+        exOneID=0
+        exTwoID=0
+    
     exTestOne=0
     exTestTwo=0
     testProj=0
@@ -601,6 +611,7 @@ def mid_term():
         randID = 0
     
     #### SET CONTROL  #####
+    ## If control = None  ==> don't show extra features ##
     control = MidTerm.query.filter_by(teamMemOne='100000000').first().extraInt
 
     context = {
