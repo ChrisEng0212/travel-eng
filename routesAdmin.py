@@ -143,7 +143,7 @@ def upload_picture(form_picture):
     #random_hex = secrets.token_hex(8)
     #rand = str(random.randint(1000,10000)) --- need to allow model to have more than 20 characters
     _ , f_ext = os.path.splitext(form_picture.filename) # _  replaces f_name which we don't need #f_ext  file extension 
-    s3_folder = 'profiles/'
+    s3_folder = '/profiles/'
     picture_filename =  current_user.username + f_ext 
     s3_filename =  s3_folder + current_user.username + f_ext 
     temp_path = os.path.join(app.root_path, 'static/profile_pics', picture_filename)

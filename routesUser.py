@@ -681,7 +681,7 @@ def create_folder(unit, teamnumber, nameRange):
 
 def unit_audio(audio, unit, team, rec):    
     _ , f_ext = os.path.splitext(audio.filename) # _  replaces f_name which we don't need #f_ext  file extension 
-    s3_folder = 'unit_audio/'
+    s3_folder = '/unit_audio/'
     audio_filename =  s3_folder + unit + 'Team' + team + '_' + rec + f_ext 
     s3_filename =  S3_LOCATION + audio_filename 
     s3_resource = boto3.resource('s3',
