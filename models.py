@@ -218,6 +218,7 @@ admin.add_view(MyModelView(AttendLog, db.session))
 admin.add_view(MyModelView(Sources, db.session))
 admin.add_view(MyModelView(MidTerm, db.session))
 admin.add_view(MyModelView(MidAnswers, db.session))
+admin.add_view(MyModelView(ColorScheme, db.session))
 
 for unit in modListUnits:
     if unit is None:
