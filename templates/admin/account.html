@@ -20,7 +20,7 @@
             <legend class="border-bottom mb-4">Update Account</legend>
             <!-- username div taken out-->
 
-            <div class="form-group", onchange="submit()">
+            <div class="form-group", id="fileUpload", onchange="submit()">
                 {{ form.picture.label (class="btn btn-outline-success btn-sm")}}                
                 {{ form.picture(class="form-control-file") }}                
                 {% if form.picture.errors %}
@@ -63,6 +63,7 @@
 {% block script %}
 
 <script>
+   
 
 function submit(){
     alert('File Uploaded')

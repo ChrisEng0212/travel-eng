@@ -152,28 +152,24 @@ def teams():
    
 
 
-def upload_picture(form_picture):
-    #random_hex = secrets.token_hex(8)
-    #rand = str(random.randint(1000,10000)) --- need to allow model to have more than 20 characters
-    _ , f_ext = os.path.splitext(form_picture.filename) # _  replaces f_name which we don't need #f_ext  file extension 
+def upload_picture(form_picture):    
+    _ , f_ext = os.path.splitext(form_picture.filename) 
     s3_folder = 'profiles/'
     picture_filename =  current_user.username + f_ext 
-    s3_filename =  s3_folder + current_user.username + f_ext 
-    temp_path = os.path.join(app.root_path, 'static/profile_pics', picture_filename)
-    output_size = (125, 125)
-    i = Image.open (form_picture)    
-    i.thumbnail(output_size)   
-    i.save(temp_path)
-    data = open(temp_path, 'rb')        
+    s3_filename =  s3_folder + current_user.username + f_ext     
+    i1 = Image.open (form_picture) 
+    i2 = i1.resize((100, 125), Image.NEAREST)
+    i2.save (picture_filename)  
+    i3 = Image.open (picture_filename) 
+    with open(picture_filename, "rb") as image:
+        f = image.read()
+        b = bytearray(f)      
+         
     s3_resource = boto3.resource('s3',
          aws_access_key_id=AWS_ACCESS_KEY_ID,
          aws_secret_access_key= AWS_SECRET_ACCESS_KEY)
-    s3_resource.Bucket(S3_BUCKET_NAME).put_object(Key=s3_filename, Body=data)     
+    s3_resource.Bucket(S3_BUCKET_NAME).put_object(Key=s3_filename, Body=b)     
     return s3_filename    
-
-    #s3_resource = boto3.resource('s3')
-    #my_bucket = s3_resource.Bucket(S3_BUCKET)
-    #my_bucket.Object(file_name).put(Body=file)
 
 
 @app.route("/account", methods=['GET','POST'])
