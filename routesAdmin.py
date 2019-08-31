@@ -21,6 +21,7 @@ except:
 
 ColorScheme = ColorScheme.query.first()
 S3_LOCATION = ColorScheme.Extra1
+S3_BUCKET_NAME = ColorScheme.Extra2
 
 bodyColor = ColorScheme.color2
 headTitle = ColorScheme.Title1
@@ -168,7 +169,7 @@ def upload_picture(form_picture):
     with open(picture_filename, "rb") as image:
         f = image.read()
         b = bytearray(f)  
-        
+
     s3_resource.Bucket(S3_BUCKET_NAME).put_object(Key=s3_filename, Body=b)     
     return s3_filename    
 

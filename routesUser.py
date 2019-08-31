@@ -6,7 +6,7 @@ from flask_login import login_user, current_user, logout_user, login_required
 from forms import * 
 from models import *
 try:
-    from aws import S3_BUCKET_NAME, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY
+    from aws import AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY
     s3_resource = boto3.resource('s3',
          aws_access_key_id=AWS_ACCESS_KEY_ID,
          aws_secret_access_key= AWS_SECRET_ACCESS_KEY)
@@ -15,6 +15,7 @@ except:
 
 ColorScheme = ColorScheme.query.first()
 S3_LOCATION = ColorScheme.Extra1
+S3_BUCKET_NAME = ColorScheme.Extra2
 
 
 @app.route ("/", methods = ['GET', 'POST'])
