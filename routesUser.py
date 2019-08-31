@@ -5,6 +5,7 @@ from app import app, db, bcrypt, mail
 from flask_login import login_user, current_user, logout_user, login_required
 from forms import * 
 from models import *
+from config import configDict
 try:
     from aws import AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY
     s3_resource = boto3.resource('s3',
@@ -13,9 +14,9 @@ try:
 except:
     s3_resource = boto3.resource('s3')
 
-ColorScheme = ColorScheme.query.first()
-S3_LOCATION = ColorScheme.Extra1
-S3_BUCKET_NAME = ColorScheme.Extra2
+
+S3_LOCATION = configDict['S3_LOCATION']
+S3_BUCKET_NAME = configDict['S3_BUCKET_NAME']
 
 
 @app.route ("/", methods = ['GET', 'POST'])

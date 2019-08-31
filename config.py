@@ -4,6 +4,14 @@ import os
 ### Note: need to store credential as environment variable later!!!!
 ### http://zabana.me/notes/upload-files-amazon-s3-flask.html
 
+configDict = {
+    'titleColor':'#db0b77',
+    'bodyColor':'#fff0fa', 
+    'headTitle':'Travel English Course', 
+    'S3_LOCATION':'https://travel-eng.s3.ap-northeast-1.amazonaws.com/',
+    'S3_BUCKET_NAME':'travel-eng'    
+    }    
+
 
 
 class Config: 
