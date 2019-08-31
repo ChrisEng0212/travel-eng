@@ -7,8 +7,11 @@ from forms import *
 from models import *
 try:
     from aws import S3_BUCKET_NAME, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY
+    s3_resource = boto3.resource('s3',
+         aws_access_key_id=AWS_ACCESS_KEY_ID,
+         aws_secret_access_key= AWS_SECRET_ACCESS_KEY)
 except:
-    pass
+    s3_resource = boto3.resource('s3')
 
 ColorScheme = ColorScheme.query.first()
 S3_LOCATION = ColorScheme.Extra1
@@ -668,9 +671,9 @@ def team_details ():
     return [teamnumber, nameRange]
 
 def create_folder(unit, teamnumber, nameRange):
-    s3_resource = boto3.resource('s3',
-         aws_access_key_id=AWS_ACCESS_KEY_ID,
-         aws_secret_access_key= AWS_SECRET_ACCESS_KEY)
+    #s3_resource = boto3.resource('s3',
+    #     aws_access_key_id=AWS_ACCESS_KEY_ID,
+    #     aws_secret_access_key= AWS_SECRET_ACCESS_KEY)
     s3_client = boto3.client('s3',
          aws_access_key_id=AWS_ACCESS_KEY_ID,
          aws_secret_access_key= AWS_SECRET_ACCESS_KEY)
@@ -695,9 +698,9 @@ def unit_audio(audio, unit, team, rec):
     s3_folder = '/unit_audio/'
     audio_filename =  s3_folder + unit + 'Team' + team + '_' + rec + f_ext 
     s3_filename =  S3_LOCATION + audio_filename 
-    s3_resource = boto3.resource('s3',
-         aws_access_key_id=AWS_ACCESS_KEY_ID,
-         aws_secret_access_key= AWS_SECRET_ACCESS_KEY)  
+    #s3_resource = boto3.resource('s3',
+    #     aws_access_key_id=AWS_ACCESS_KEY_ID,
+    #     aws_secret_access_key= AWS_SECRET_ACCESS_KEY)  
     #s3_resource = boto3.resource('s3')
     s3_resource.Bucket(S3_BUCKET_NAME).put_object(Key=audio_filename, Body=audio) 
       

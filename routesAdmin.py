@@ -12,8 +12,12 @@ from models import *
 from flask_mail import Message
 try:
     from aws import S3_BUCKET_NAME, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY
+    s3_resource = boto3.resource('s3',
+         aws_access_key_id=AWS_ACCESS_KEY_ID,
+         aws_secret_access_key= AWS_SECRET_ACCESS_KEY)
 except:
-    pass
+    s3_resource = boto3.resource('s3')
+    
 
 ColorScheme = ColorScheme.query.first()
 S3_LOCATION = ColorScheme.Extra1
@@ -163,11 +167,8 @@ def upload_picture(form_picture):
     i3 = Image.open (picture_filename) 
     with open(picture_filename, "rb") as image:
         f = image.read()
-        b = bytearray(f)      
-         
-    s3_resource = boto3.resource('s3',
-         aws_access_key_id=AWS_ACCESS_KEY_ID,
-         aws_secret_access_key= AWS_SECRET_ACCESS_KEY)
+        b = bytearray(f)  
+        
     s3_resource.Bucket(S3_BUCKET_NAME).put_object(Key=s3_filename, Body=b)     
     return s3_filename    
 
