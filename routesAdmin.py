@@ -17,10 +17,11 @@ except:
 
 ColorScheme = ColorScheme.query.first()
 S3_LOCATION = ColorScheme.Extra1
-titleColor = ColorScheme.color1
+
 bodyColor = ColorScheme.color2
 headTitle = ColorScheme.Title1
 
+titleColor = ColorScheme.color1
 
 @app.context_processor
 def inject_user():
