@@ -1,6 +1,7 @@
 .DS_Store
 static/.DS_Store
 
+
 travel-eng.txt
 setup.txt
 aws.py 
