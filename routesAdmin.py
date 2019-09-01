@@ -11,38 +11,35 @@ from forms import *
 from models import *
 from flask_mail import Message
 try:
-    from aws import Settings
+    from aws import Settings    
     s3_resource = Settings.s3_resource  
     S3_LOCATION = Settings.S3_LOCATION
     S3_BUCKET_NAME = Settings.S3_BUCKET_NAME
-    COLOR_SCHEMA = Settings.COLOR_SCHEMA
+    COLOR_SCHEMA = Settings.COLOR_SCHEMA    
 except:
     s3_resource = boto3.resource('s3')
     S3_LOCATION = os.environ['S3_LOCATION'] 
     S3_BUCKET_NAME = os.environ['S3_BUCKET_NAME'] 
     COLOR_SCHEMA = os.environ['COLOR_SCHEMA'] 
+    print('SUCCESS',s3_resource, S3_LOCATION, S3_BUCKET_NAME, COLOR_SCHEMA)
 
 
+
+# set the color schema 
 configDictList = [
-        {
-        'titleColor':'#db0b77',
-        'bodyColor':'#fff0fa', 
-        'headTitle':'Travel English Course', 
-        'S3_LOCATION':'https://travel-eng.s3.ap-northeast-1.amazonaws.com/',
-        'S3_BUCKET_NAME':'travel-eng'    
-    }
-]  
+        {'titleColor':'#db0b77', 'bodyColor':'#fff0fa', 'headTitle':'Travel English Course'},
+        {'titleColor':'green', 'bodyColor':'grey', 'headTitle':'Freshman Reading'},
+        {'titleColor':'orange', 'bodyColor':'blue', 'headTitle':'Workplace English'},
+        {'titleColor':'blue', 'bodyColor':'yellow', 'headTitle':'Inter-Cultural Communication'}
+]
+
 configDict = configDictList[int(COLOR_SCHEMA)]
-
-
-bodyColor = configDict['bodyColor']
-headTitle = configDict['headTitle']
-titleColor = configDict['titleColor']  
-
-
 @app.context_processor
 def inject_user():     
-    return dict(titleColor=titleColor, bodyColor=bodyColor, headTitle=headTitle)
+    return dict(titleColor=configDict['titleColor']  , bodyColor=configDict['bodyColor'], headTitle=configDict['headTitle'])
+
+
+
 
 @app.route("/admin", methods = ['GET', 'POST'])
 @login_required

@@ -15,6 +15,17 @@ bcrypt = Bcrypt()
 login_manager = LoginManager(app)
 login_manager.login_view = 'login' # if user isn't logged in it will redirect to login page
 login_manager.login_message_category = 'info'
+
+app.config.update(dict(
+    DEBUG = True,
+    MAIL_SERVER = 'smtp.gmail.com',
+    MAIL_PORT = 587,
+    MAIL_USE_TLS = True,
+    MAIL_USE_SSL = False,
+    MAIL_USERNAME = 'chrisflask0212@gmail.com',
+    MAIL_PASSWORD = 'flask0212',
+))
+
 mail = Mail(app)
 
 
