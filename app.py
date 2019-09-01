@@ -4,15 +4,13 @@ from flask_sqlalchemy import SQLAlchemy  #needed for app initialization (see bel
 from flask_bcrypt import Bcrypt  #needed for password storage
 from flask_login import LoginManager, current_user #needed for login
 from flask_mail import Mail
-from config import Config
+import os
 
 
 
- 
 
 app = Flask(__name__)
-app.config.from_object(Config)
-
+app.config.from_object('config.BaseConfig')
 db = SQLAlchemy(app)
 bcrypt = Bcrypt()
 login_manager = LoginManager(app)
@@ -30,6 +28,7 @@ from routesAdmin import *
 
 
 if __name__ == '__main__': 
-    app.run(debug=True)
+    app.run()
+    #(debug=True)
     
     
