@@ -5,6 +5,12 @@ from flask_bcrypt import Bcrypt  #needed for password storage
 from flask_login import LoginManager, current_user #needed for login
 from flask_mail import Mail
 import os
+try: 
+    from aws import Settings
+    PASSWORD = Settings.MAIL_PASSWORD
+except:
+    PASSWORD = os.environ['MAIL_PASSWORD']
+
 
 
 
@@ -22,7 +28,7 @@ app.config.update(dict(
     MAIL_USE_TLS = True,
     MAIL_USE_SSL = False,
     MAIL_USERNAME = 'chrisflask0212',
-    MAIL_PASSWORD = 'flask0212',    
+    MAIL_PASSWORD = PASSWORD,    
     MAIL_SUPPRESS_SEND = False,
     MAIL_DEBUG = True,
     TESTING = False
