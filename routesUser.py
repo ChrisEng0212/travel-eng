@@ -1,4 +1,4 @@
-import sys, boto3, random, base64, os, time, datetime
+import sys, boto3, random, os, time, datetime
 from sqlalchemy import asc, desc 
 from flask import render_template, url_for, flash, redirect, request, abort, jsonify  
 from app import app, db, bcrypt, mail
