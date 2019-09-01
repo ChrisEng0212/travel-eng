@@ -7,20 +7,13 @@ from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 
 modListUnits = [None]
 
+
+
 #login manager 
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
 
-
-class ColorScheme(db.Model):
-    id = db.Column(db.Integer, primary_key=True)   
-    color1 = db.Column(db.String)
-    color2 = db.Column(db.String)
-    Title1 = db.Column(db.String)
-    Title2 = db.Column(db.String)
-    Extra1 = db.Column(db.String)
-    Extra2 = db.Column(db.String)
 
 class Attendance(db.Model):
     id = db.Column(db.Integer, primary_key=True)     
@@ -56,6 +49,7 @@ class User(db.Model, UserMixin): #import the model
     projects = db.Column(db.Integer)
     midterm = db.Column(db.Integer)
     exam = db.Column(db.Integer)
+    course = db.Column (db.String)
 
     def get_reset_token(self, expires_sec=1800):
         expires_sec = 1800        
@@ -74,6 +68,8 @@ class User(db.Model, UserMixin): #import the model
 
     def __repr__(self):  # double underscore method or dunder method, marks the data, this is how it is printed
         return f"User('{self.username}', '{self.email}', '{self.image_file}')"
+
+
 
 class Sources(db.Model):
     id = db.Column(db.Integer, primary_key=True)  
@@ -218,7 +214,7 @@ admin.add_view(MyModelView(AttendLog, db.session))
 admin.add_view(MyModelView(Sources, db.session))
 admin.add_view(MyModelView(MidTerm, db.session))
 admin.add_view(MyModelView(MidAnswers, db.session))
-admin.add_view(MyModelView(ColorScheme, db.session))
+
 
 for unit in modListUnits:
     if unit is None:

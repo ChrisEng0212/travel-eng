@@ -8,7 +8,6 @@ import os
 
 
 
-
 app = Flask(__name__)
 app.config.from_object('config.BaseConfig')
 db = SQLAlchemy(app)
@@ -17,10 +16,6 @@ login_manager = LoginManager(app)
 login_manager.login_view = 'login' # if user isn't logged in it will redirect to login page
 login_manager.login_message_category = 'info'
 mail = Mail(app)
-
-
-
-
 
 
 from routesUser import *

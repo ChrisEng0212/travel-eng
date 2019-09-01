@@ -9,28 +9,39 @@ from app import app, db, bcrypt, mail
 from flask_login import login_user, current_user, logout_user, login_required
 from forms import *   
 from models import *
-from config import configDict
 from flask_mail import Message
 try:
-    from aws import S3_BUCKET_NAME, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY
-    s3_resource = boto3.resource('s3',
-         aws_access_key_id=AWS_ACCESS_KEY_ID,
-         aws_secret_access_key= AWS_SECRET_ACCESS_KEY)
+    from aws import Settings
+    s3_resource = Settings.s3_resource  
+    S3_LOCATION = Settings.S3_LOCATION
+    S3_BUCKET_NAME = Settings.S3_BUCKET_NAME
+    COLOR_SCHEMA = Settings.COLOR_SCHEMA
 except:
     s3_resource = boto3.resource('s3')
-    
+    S3_LOCATION = os.environ['S3_LOCATION'] 
+    S3_BUCKET_NAME = os.environ['S3_BUCKET_NAME'] 
+    COLOR_SCHEMA = os.environ['COLOR_SCHEMA'] 
 
 
-S3_LOCATION = configDict['S3_LOCATION']
-S3_BUCKET_NAME = configDict['S3_BUCKET_NAME']
+configDictList = [
+        {
+        'titleColor':'#db0b77',
+        'bodyColor':'#fff0fa', 
+        'headTitle':'Travel English Course', 
+        'S3_LOCATION':'https://travel-eng.s3.ap-northeast-1.amazonaws.com/',
+        'S3_BUCKET_NAME':'travel-eng'    
+    }
+]  
+configDict = configDictList[int(COLOR_SCHEMA)]
+
+
 bodyColor = configDict['bodyColor']
 headTitle = configDict['headTitle']
 titleColor = configDict['titleColor']  
 
 
 @app.context_processor
-def inject_user():
-     
+def inject_user():     
     return dict(titleColor=titleColor, bodyColor=bodyColor, headTitle=headTitle)
 
 @app.route("/admin", methods = ['GET', 'POST'])
