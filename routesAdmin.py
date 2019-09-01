@@ -25,14 +25,14 @@ except:
 
 
 
-# set the color schema 
+# set the color schema ## https://htmlcolorcodes.com/color-names/
 configDictList = [
-        {'titleColor':'#db0b77', 'bodyColor':'#fff0fa', 'headTitle':'Travel English Course'},
-        {'titleColor':'green', 'bodyColor':'grey', 'headTitle':'Freshman Reading'},
-        {'titleColor':'orange', 'bodyColor':'blue', 'headTitle':'Workplace English'},
-        {'titleColor':'blue', 'bodyColor':'yellow', 'headTitle':'Inter-Cultural Communication'},
-        {'titleColor':'black', 'bodyColor':'grey', 'headTitle':'LMS TEST'}
-]
+        {'titleColor':'#db0b77', 'bodyColor':'SEASHELL', 'headTitle':'Travel English Course'},
+        {'titleColor':'MEDIUMSEAGREEN', 'bodyColor':'MINTCREAM', 'headTitle':'Freshman Reading'},
+        {'titleColor':'CORAL', 'bodyColor':'FLORALWHITE', 'headTitle':'Workplace English'},
+        {'titleColor':'DARKTURQUOISE', 'bodyColor':'AZURE', 'headTitle':'ICC Course'},
+        {'titleColor':'DARKSLATEGRAY', 'bodyColor':'WHITESMOKE', 'headTitle':'LMS TEST'}
+    ]
 
 configDict = configDictList[int(COLOR_SCHEMA)]
 @app.context_processor

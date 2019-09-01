@@ -43,6 +43,6 @@ from routesAdmin import *
 
 if __name__ == '__main__': 
     app.run()
-    #(debug=True)
+    
     
     
