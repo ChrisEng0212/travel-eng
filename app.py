@@ -16,13 +16,16 @@ login_manager = LoginManager(app)
 login_manager.login_view = 'login' # if user isn't logged in it will redirect to login page
 login_manager.login_message_category = 'info'
 
-app.config.update(dict(    
-    MAIL_SERVER = 'smtp.googlemail.com',
+app.config.update(dict(
+    MAIL_SERVER = 'smtp.gmail.com',
     MAIL_PORT = 587,
-    MAIL_USE_TLS = 1,
+    MAIL_USE_TLS = True,
     MAIL_USE_SSL = False,
     MAIL_USERNAME = 'chrisflask0212',
-    MAIL_PASSWORD = 'flask0212',
+    MAIL_PASSWORD = 'flask0212',    
+    MAIL_SUPPRESS_SEND = False,
+    MAIL_DEBUG = True,
+    TESTING = False
 ))
 
 mail = Mail(app)
