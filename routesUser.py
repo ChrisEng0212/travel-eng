@@ -10,13 +10,11 @@ try:
     from aws import Settings    
     s3_resource = Settings.s3_resource  
     S3_LOCATION = Settings.S3_LOCATION
-    S3_BUCKET_NAME = Settings.S3_BUCKET_NAME
-    COLOR_SCHEMA = Settings.COLOR_SCHEMA 
+    S3_BUCKET_NAME = Settings.S3_BUCKET_NAME   
 except:
     s3_resource = boto3.resource('s3')
     S3_LOCATION = os.environ['S3_LOCATION'] 
-    S3_BUCKET_NAME = os.environ['S3_BUCKET_NAME'] 
-    COLOR_SCHEMA = os.environ['COLOR_SCHEMA'] 
+    S3_BUCKET_NAME = os.environ['S3_BUCKET_NAME']    
 
 
 @app.route ("/", methods = ['GET', 'POST'])

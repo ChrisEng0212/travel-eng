@@ -22,7 +22,7 @@ app.config.update(dict(
     MAIL_PORT = 587,
     MAIL_USE_TLS = True,
     MAIL_USE_SSL = False,
-    MAIL_USERNAME = 'chrisflask0212@gmail.com',
+    MAIL_USERNAME = 'chrisflask0212',
     MAIL_PASSWORD = 'flask0212',
 ))
 
