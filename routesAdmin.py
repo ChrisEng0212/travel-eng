@@ -153,7 +153,7 @@ def logout():
 @app.route ("/teams")
 def teams():  
     if current_user.id != 1:
-        return redirect(url_for('home')) 
+        return abort(403)
 
     try:
         teamcount = Attendance.query.filter_by(username='Chris').first().teamcount
