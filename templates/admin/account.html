@@ -7,6 +7,7 @@
         <!-- defined in models.py and imports to routes.py-->
         <div class="media-body">
             <h2 class="account-heading">{{ current_user.username }}</h2>
+            <h3>{{ current_user.studentID }}</h3>
             <p class="text-secondary">{{ current_user.email }}</p>
         </div>
     </div>
@@ -21,7 +22,7 @@
             <!-- username div taken out-->
 
             <div class="form-group", id="fileUpload", onchange="submit()">
-                {{ form.picture.label (class="btn btn-outline-success btn-sm")}}                
+                {{ form.picture.label (class="btn btn-outline-secondary btn-sm")}}                
                 {{ form.picture(class="form-control-file") }}                
                 {% if form.picture.errors %}
                     {% for error in form.picture.errors %}

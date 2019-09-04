@@ -39,7 +39,17 @@ configDict = configDictList[int(COLOR_SCHEMA)]
 def inject_user():     
     return dict(titleColor=configDict['titleColor']  , bodyColor=configDict['bodyColor'], headTitle=configDict['headTitle'])
 
+@app.errorhandler(404)
+def error_404(error):
+    return render_template('/instructor/errors.html', error = 404 )
 
+@app.errorhandler(403)
+def error_403(error):
+    return render_template('/instructor/errors.html', error = 403 )
+
+@app.errorhandler(500)
+def error_500(error):
+    return render_template('/instructor/errors.html', error = 500 )
 
 
 @app.route("/admin", methods = ['GET', 'POST'])
