@@ -44,14 +44,16 @@
             
         </form>    
     </div>
-    <div class='content-section'>           
+    <div class='content-section'>  
+        <div>               
         <button class="btn btn-outline-info"><a href="{{ url_for ('register') }}">New Student</a></button> 
-        
-        <p></p>
-
+        </div>  
+        <br>
+        <div>
         <button class="btn btn-outline-danger"><a href="{{ url_for ('reset_request') }}">Forgot Password</a></button> 
-        <br> 
-        <text>If this link doesn't work please email <a>cjx02121981@gmail.com</a> with your name and student ID</text>        
+        </div>        
+        
+        <p><small>If 'Forgot Password' link doesn't work please email <a href='mailto:cjx02121981@gmail.com'>cjx02121981@gmail.com</a> with your NAME and STUDENT ID</small></p>
     </div>
 
 {% endblock content %}
