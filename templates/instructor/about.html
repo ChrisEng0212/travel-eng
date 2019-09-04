@@ -1,0 +1,64 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div class="content-section">
+<legend class="border-bottom mb-4">Microphone Test</legend>
+    <h4> Allow your browser to use the microphone so you can easily do assignments.</h4>
+    <br>
+    <p> If the browser doesn't allow microphone please ask your instructor for help</p>
+    </div>
+
+<div class="content-section">
+<legend class="border-bottom mb-4">About this Website</legend>
+    <h4> This website is a specially designed LMS (Learner Management System)</h4>
+    <br>
+    <h5> Features include:</h5>
+    <ul>
+    <li>Weekly Team Maker</li>
+    <li>Online Notes</li>    
+    <li>Participation Activities</li>
+    <li>Speaking/Writing Assignments</li>
+    <li>Attendance and Grade Recording</li>   
+    </ul> 
+  
+  <small> * The system is still under developement and will be improved over time. Any suggestions about features or problems are very welcome. Thank you :)</small>
+  </div>
+
+
+
+
+<div class="content-section">
+<legend class="border-bottom mb-4">About this Course</legend>
+    <h5> This course will focus on two areas:</h5>   
+    <ul>
+    <li>English for Traveling</li>
+    <li>Tourism in Taiwan</li>
+    </ul>   
+
+    <div class="embed-responsive embed-responsive-4by3">
+            <iframe src="https://docs.google.com/presentation/d/e/2PACX-1vQYtXgIBzy4qj6Tay_CCGbEj5_goeFDyuml1V6f7z_ppz4sRHh4HHvWqTFph49VI3j1bSDS_zqoHyVl/embed?start=false&loop=false&delayms=3000"></iframe>
+        </div> 
+        <br> 
+    
+  </div>
+
+
+{% endblock content %}
+
+{% block script %}
+<script>
+
+navigator.mediaDevices.getUserMedia({ audio: true })
+      .then(function(stream) {
+        console.log('You let me use your mic!')
+        alert('Great, your microphone works with this device/browser')
+      })
+      .catch(function(err) {
+        console.log('No mic for you!')
+        alert('Sorry, there may be a problem using your microphone with this device/browser')
+	  });
+
+</script>
+
+{% endblock %}

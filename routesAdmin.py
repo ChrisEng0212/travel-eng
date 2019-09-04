@@ -51,7 +51,10 @@ def error_403(error):
 def error_500(error):
     return render_template('/instructor/errors.html', error = 500 )
 
-
+@app.route ("/about")
+def about():    
+    return render_template('instructor/about.html')
+    
 @app.route("/admin", methods = ['GET', 'POST'])
 @login_required
 def admin():       
