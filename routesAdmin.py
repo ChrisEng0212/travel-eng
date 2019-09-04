@@ -140,7 +140,7 @@ def login():
             flash (f'Login Successful. Welcome back {current_user.username}.', 'success') 
             return redirect (next_page) if next_page else redirect (url_for('home')) # in python this is called a ternary conditional "redirect to next page if it exists"
         else: 
-            flash (f'Login Unsuccessful. Please check {form.studentID.data} and {form.password.data}.', 'danger')          
+            flash (f'Login Unsuccessful. Please check {form.studentID.data} and your password.', 'danger')          
     return render_template('admin/login.html', title='Login', form=form)
 
 
