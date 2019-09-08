@@ -61,6 +61,41 @@ def about():
 def admin():       
     return render_template('admin/admin.html')
 
+@app.route ("/students")
+@login_required 
+def students():
+    if current_user.id != 1:
+        return abort(403)  
+    
+    students = User.query.order_by(asc(User.studentID)).all()
+    
+
+    attDict = {   }
+
+    for student in students: 
+        attendance = Attendance.query.filter_by(studentID=student.studentID).first()
+        if attendance:
+            attDict[student.studentID] = attendance.attend 
+        else: 
+            attDict[student.studentID] = 'True'
+    
+              
+    print (attDict)
+
+    formFill = []
+    for key in attDict:
+        
+        text1 = "document.getElementById('" 
+        text2 = "').checked=" 
+        text3 =  ";"
+        formFill.append(text1 + key + text2 + attDict[key] + text3)
+
+    print (formFill)
+
+
+    
+    return render_template('instructor/students.html', students=students, LOCATION=S3_LOCATION, 
+    attDict=attDict, formFill=formFill)  
 
 
 def send_reset_email(user):
@@ -103,6 +138,7 @@ def reset_token(token):
         flash('Your password has been updated, please login', 'success') 
         return redirect (url_for('login'))
     return render_template('admin/reset_token.html', title='Reset Password', form=form) 
+
 
 
 @app.route("/register", methods=['GET','POST']) #and now the form accepts the submit POST

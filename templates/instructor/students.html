@@ -13,13 +13,11 @@
         <tr>
           <th scope="col">Profile</th>
           <th scope="col">Student Name</th>
-          <th scope="col">ID</th>            
-          <th scope="col">Email</th>
-          <th scope="col">Device</th>
+          <th scope="col">ID</th> 
           <th scope="col">Att</th>
-          <th scope="col">Unt</th>
-          <th scope="col">Ass</th>
-          <th scope="col">Last Chat</th>
+          <th scope="col">Email</th>
+          <th scope="col">Device</th>          
+          <th scope="col">AttTotal</th>          
         </tr>
       </thead>
 
@@ -27,59 +25,34 @@
       {% for student in students %}  
           <tr>              
           <td><img class="rounded-circle chat-img" src="{{LOCATION}}{{student.image_file}}"></td>
-          <td><a href="/inchat/{{student.username}}"> {{student.username}}</a> </td>
-          <td>{{student.studentID}}</td>            
+          <td>{{student.username}} </td>
+          <td>{{student.studentID}}</td>  
+          <td>{{attDict[student.studentID]}}</td>          
           <td><a href="{{student.email}}">Email</a></td>
           <td>{{student.device}}</td>
-          {% for i in range (1,4) %}
-          <td><button id="color{{i}}{{student.id}}"  class="btn btn-dark"  disabled value="{{lastChats[student.username][i]}}"></button></td> 
-           {% endfor %}
-          <td>{{lastChats[student.username][0]}}</td>
+          <td>AttendanceTotal</td>
           </tr>   
       {% endfor %}
       </tbody>
-  </div>      
+    </table>
+</div> 
+
+<div class="content-section">
+    <legend class="border-bottom mb-4">FormFill</legend>
+    
+        
+      <tbody>
+      {% for form in formFill %}  
+          <tr>              
+          {{ form }}
+          </tr>   
+      {% endfor %}
+      </tbody>
+</div>           
         
 
-    
+  
 
 
 {% endblock content %}
 
-{% block script %}
-
-<script> 
-
-var colorID = 0
-
-for (i = 1; i < 400; i++) {
-
-try {
-
-let button = document.getElementById('color'+i)
-
-let color = button.value
-
-if (color < .4) {
-  button.style.background='#E74C3C'; 
-} else if (color < .6 ) {
-  button.style.background='#E59866'; 
-} else if (color < .8 ) {
-  button.style.background='#BB8FCE'; 
-} else if (color < 1) {
-  button.style.background='#17A589'; 
-} else {
-  button.style.background='#229954'; 
-}
-
-} //end catch
-catch(err) {}
-}//end for 
-
-
-
-
-       
-</script>
-
-{% endblock %}  
