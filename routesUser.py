@@ -53,7 +53,6 @@ def att_team():
         flash('Attendance is not open yet, please try later', 'danger')
         return redirect(url_for('home')) 
 
-
     # set teamnumber to be zero by default (or not Zeor in the case of solo classes)
     if teamsize == 0:
         teamNumSet = current_user.id + 100
@@ -97,9 +96,9 @@ def att_team():
             form.teamnumber.data = teamNumSet  
     
     #after attendance is complete teamnumber 0 is reassigned to a team  
-    elif fields.teamnumber == 0:  
-
-        teamDict = {}  # { 1 : 1,  2 : 1  ,  3 :  0 }
+    elif fields.teamnumber == 0: 
+        # { 1 : 1,  2 : 1  ,  3 :  0 }
+        teamDict = {}  
         for i in range (1,teamcount+1):
             count = Attendance.query.filter_by(teamnumber=i).count()
             if count: 
@@ -111,30 +110,24 @@ def att_team():
         # all teams are full so make a new team
         if teamDict[teamcount] == teamsize:
             countField = Attendance.query.filter_by(username='Chris').first()
-            countField.teamcount = teamcount +1
-            db.session.commit()
-            flash('Your attendance has been recorded', 'info')
+            countField.teamcount = teamcount +1            
+            db.session.commit() 
             return redirect(url_for('att_team'))
-
         # all teams have the same number of students so start from beginning
-        if teamDict[1] == teamDict[teamcount]:
+        elif teamDict[1] == teamDict[teamcount]:
             fields.teamnumber = 1
             db.session.commit()
             flash('Your attendance has been recorded', 'info')
             return redirect(url_for('att_team'))
-
-        for key in teamDict:
-            if teamDict[key] > teamDict[key+1]:
-                fields.teamnumber = key+1
-                db.session.commit()
-                flash('Your attendance has been recorded', 'info')
-                return redirect(url_for('att_team'))  
-            else: 
-                pass
-
-
-
-    
+        else:
+            for key in teamDict:
+                if teamDict[key] > teamDict[key+1]:
+                    fields.teamnumber = key+1
+                    db.session.commit()
+                    flash('Your attendance has been recorded', 'info')
+                    return redirect(url_for('att_team'))                 
+                else: 
+                    pass
     
     return render_template('student/attTeam.html', legend=legend, count=count, fields=fields, 
     teamcount=teamcount, form=form, notice=notice, users=users) 
