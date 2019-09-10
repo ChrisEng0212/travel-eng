@@ -19,8 +19,11 @@ except:
 
 @app.route ("/", methods = ['GET', 'POST'])
 @app.route ("/home", methods = ['GET', 'POST'])
-def home():         
-    return render_template('instructor/home.html', title='home')
+def home(): 
+    attLog = AttendLog.query.filter_by(username=current_user.username).all()
+    print (current_user.username)
+
+    return render_template('instructor/home.html', title='home', attLog=attLog)
 
 
     
