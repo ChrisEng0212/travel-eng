@@ -73,23 +73,32 @@ def students():
     attDict = {   }
 
     for student in students: 
+        
         attendance = Attendance.query.filter_by(studentID=student.studentID).first()
-        if attendance:
-            attDict[student.studentID] = attendance.attend 
-        else: 
-            attDict[student.studentID] = 'True'
+        if attendance == None:
+            attDict[student.studentID] = ['true', 'true', 'Absent']
+        elif attendance.attend == 'Late':
+            attDict[student.studentID] = ['true', 'false', 'Late']
+        elif attendance.attend == 'On time':         
+            attDict[student.studentID] = ['false', 'false', 'On time']
+        else:
+            attDict[student.studentID] = ['false', 'false', 'On time']
     
               
     print (attDict)
 
     formFill = []
     for key in attDict:
-        
-        text1 = "document.getElementById('" 
-        text2 = "').checked=" 
+        text1 = "document.getElementById('DDList" 
+        text2a = "_6_1').checked="
+        text2b = "_7_1').checked="
         text3 =  ";"
-        formFill.append(text1 + key + text2 + attDict[key] + text3)
-
+        textTrue = 'true'
+        if attDict[key][0] == 'true':  
+            formFill.append(text1 + key + text2a + textTrue + text3)
+        if attDict[key][1] == 'true':
+            formFill.append(text1 + key + text2b + textTrue + text3)
+        
     print (formFill)
 
 
