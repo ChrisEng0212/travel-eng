@@ -27,7 +27,8 @@
               <th scope="col" style="width: 3px;">Date</th>
               <th scope="col" style="width: 3px;">Time</th>           
               <th scope="col" style="width: 3px;">Att</th>
-              <th scope="col" style="width: 20px;"></th>
+              <th scope="col" style="width: 3px;">Score</th>              
+              <th scope="col" style="width: 20px;">Comments</th>
             </tr>
         </thead>
         {% for log in attLog %}
@@ -36,7 +37,8 @@
               <td> {{log.date_posted.strftime('%B %d')}}</td>   
               <td> {{log.date_posted.strftime('%H %M')}}</td>            
               <td> {{log.attend}}</td>
-              <td> {{log.comments}}</td>
+              <td> {{log.attScore}}/3</td>
+              <td> {{log.extraStr}}</td>
             </tr>       
         </tbody>
         {% endfor %}

@@ -27,7 +27,7 @@
           <td><img class="rounded-circle chat-img" src="{{LOCATION}}{{student.image_file}}"></td>
           <td>{{student.username}} </td>
           <td>{{student.studentID}}</td>  
-          <td>{{attDict[student.studentID][2]}}</td>          
+          <td><a href="../admin/attendance/edit/?id={{attDict[student.studentID][4]}}", target="_blank">{{attDict[student.studentID][2]}}</a> <a href="../admin/attendlog/edit/?id={{attDict[student.studentID][3]}}", target="_blank">___</a></td>          
           <td><a href="{{student.email}}">Email</a></td>
           <td>{{student.device}}</td>
           <td>AttendanceTotal</td>

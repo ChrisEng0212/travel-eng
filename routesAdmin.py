@@ -70,16 +70,20 @@ def students():
     students = User.query.order_by(asc(User.studentID)).all()
     
     attDict = {}
-    for student in students:         
+    for student in students:        
+
         attendance = Attendance.query.filter_by(studentID=student.studentID).first()
+                                
         if attendance == None:
-            attDict[student.studentID] = ['true', 'true', 'Absent']
+            attDict[student.studentID] = ['true', 'true', 'Absent', 0, 0]
         elif attendance.attend == 'Late':
-            attDict[student.studentID] = ['true', 'false', 'Late']
+            attDict[student.studentID] = ['true', 'false', 'Late', attendance.unit, attendance.id]
+        elif attendance.attend == '2nd Class':
+            attDict[student.studentID] = ['true', 'false', '2nd Class', attendance.unit, attendance.id]
         elif attendance.attend == 'On time':         
-            attDict[student.studentID] = ['false', 'false', 'On time']
+            attDict[student.studentID] = ['false', 'false', 'On time', attendance.unit, attendance.id]        
         else:
-            attDict[student.studentID] = ['false', 'false', 'On time']
+            attDict[student.studentID] = ['false', 'false', 'On time', 0, attendance.id]
     
     formFill = []
     for key in attDict:

@@ -33,10 +33,13 @@ def home():
 @app.route("/attend_team", methods = ['GET', 'POST'])
 @login_required
 def att_team():
+
+    legend = 'Attendance: ' + time.strftime('%A %B, %d %Y %H:%M')
+
     # check if attendance is open 
     openData = Attendance.query.filter_by(username='Chris').first()
     openCheck = openData.teamnumber
-    if openCheck == 0:  # open in normal state
+    if openCheck == 98:  # open in normal state
         form = Attend()  
     elif openCheck == 99:  # switch to late form
         form = AttendLate() 
@@ -49,24 +52,16 @@ def att_team():
         flash('Attendance is not open yet, please try later', 'danger')
         return redirect(url_for('home'))  
     
-      
-    #instructor teamnumber will not be updated from zero    
-    if current_user.id == 1:
-        return render_template('student/attTeam.html', legend=legend, count=None, fields=None, 
-    teamcount=None, form=form, users=None, notice=None)     
-    
     # set up page data 
     teamcount = openData.teamcount
     teamsize = openData.teamsize  
-    notice = openData.attend 
-    legend = 'Attendance: ' + time.strftime('%A %B, %d %Y %H:%M')
+    notice = openData.attend     
 
     # set up student data   
     count = Attendance.query.filter_by(username=current_user.username).count()
-    fields = Attendance.query.filter_by(username=current_user.username).first() 
+    fields = Attendance.query.filter_by(username=current_user.username).first()     
     
-    
-    # set teamnumber to be zero by default (or not Zeor in the case of solo classes)
+    # set teamnumber to be zero by default (or not Zero in the case of solo classes)
     if teamsize == 0:
         teamNumSet = current_user.id + 100
     else:
@@ -84,11 +79,13 @@ def att_team():
 
     # prepare initial form
     if count == 0:               
-        if form.validate_on_submit():
+        if form.validate_on_submit():            
+            # check last id for AttendLog 
+            lastID = AttendLog.query.order_by(desc(AttendLog.id)).first().id   
             # team maker
             attendance = Attendance(username = form.name.data, 
             attend=form.attend.data, teamnumber=form.teamnumber.data, 
-            teamcount=form.teamcount.data, studentID=form.studentID.data)      
+            teamcount=form.teamcount.data, studentID=form.studentID.data, unit=lastID+1)      
             db.session.add(attendance)
             # long term log 
             if form.attend.data == 'On time':
@@ -128,7 +125,7 @@ def att_team():
             countField.teamcount = teamcount +1            
             db.session.commit() 
             return redirect(url_for('att_team'))
-        # all teams have the same number of students so start from beginning
+        # all teams have the same number (first and last) of students so start from beginning
         elif teamDict[1] == teamDict[teamcount]:
             fields.teamnumber = 1
             db.session.commit()
@@ -136,6 +133,7 @@ def att_team():
             return redirect(url_for('att_team'))
         else:
             for key in teamDict:
+                # search each group until one needs to be filled
                 if teamDict[key] > teamDict[key+1]:
                     fields.teamnumber = key+1
                     db.session.commit()
