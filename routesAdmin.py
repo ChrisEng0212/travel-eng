@@ -69,11 +69,8 @@ def students():
     
     students = User.query.order_by(asc(User.studentID)).all()
     
-
-    attDict = {   }
-
-    for student in students: 
-        
+    attDict = {}
+    for student in students:         
         attendance = Attendance.query.filter_by(studentID=student.studentID).first()
         if attendance == None:
             attDict[student.studentID] = ['true', 'true', 'Absent']
@@ -84,9 +81,6 @@ def students():
         else:
             attDict[student.studentID] = ['false', 'false', 'On time']
     
-              
-    print (attDict)
-
     formFill = []
     for key in attDict:
         text1 = "document.getElementById('DDList" 
@@ -99,10 +93,6 @@ def students():
         if attDict[key][1] == 'true':
             formFill.append(text1 + key + text2b + textTrue + text3)
         
-    print (formFill)
-
-
-    
     return render_template('instructor/students.html', students=students, LOCATION=S3_LOCATION, 
     attDict=attDict, formFill=formFill)  
 

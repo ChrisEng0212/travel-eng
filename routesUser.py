@@ -20,54 +20,59 @@ except:
 @app.route ("/", methods = ['GET', 'POST'])
 @app.route ("/home", methods = ['GET', 'POST'])
 def home(): 
-    attLog = AttendLog.query.filter_by(username=current_user.username).all()
-    print (current_user.username)
+    if current_user.is_authenticated:
+        attLog = AttendLog.query.filter_by(username=current_user.username).all()
+    else:
+        attLog = None
+    
 
     return render_template('instructor/home.html', title='home', attLog=attLog)
 
 
-    
 ######## Attendance //////////////////////////////////////////////
 @app.route("/attend_team", methods = ['GET', 'POST'])
 @login_required
 def att_team():
-    form = Attend()    
-    #instructor teamnumber will not be updated from zero    
-    if current_user.id == 1:
-        return render_template('student/attTeam.html', legend=legend, count=count, fields=fields, 
-    teamcount=teamcount, form=form, users=users, notice=notice) 
-
-
-    # check if teamcount has been set
-    if Attendance.query.filter_by(username='Chris').first():
-        pass
-    else:
-        flash('Attendance is not open yet, please try later', 'danger')
-        return redirect(url_for('home'))  
-    
-    teamcount = Attendance.query.filter_by(username='Chris').first().teamcount
-    teamsize = Attendance.query.filter_by(username='Chris').first().teamsize  
-
-
-    # set teamcount to 100 to clear the table
-    if teamcount == 100:        
+    # check if attendance is open 
+    openData = Attendance.query.filter_by(username='Chris').first()
+    openCheck = openData.teamnumber
+    if openCheck == 0:  # open in normal state
+        form = Attend()  
+    elif openCheck == 99:  # switch to late form
+        form = AttendLate() 
+    elif openCheck == 100:   # delete all rows
         db.session.query(Attendance).delete()
         db.session.commit()
         flash('Attendance is not open yet, please try later', 'danger')
         return redirect(url_for('home')) 
+    else: # openData has return None
+        flash('Attendance is not open yet, please try later', 'danger')
+        return redirect(url_for('home'))  
+    
+      
+    #instructor teamnumber will not be updated from zero    
+    if current_user.id == 1:
+        return render_template('student/attTeam.html', legend=legend, count=None, fields=None, 
+    teamcount=None, form=form, users=None, notice=None)     
+    
+    # set up page data 
+    teamcount = openData.teamcount
+    teamsize = openData.teamsize  
+    notice = openData.attend 
+    legend = 'Attendance: ' + time.strftime('%A %B, %d %Y %H:%M')
 
+    # set up student data   
+    count = Attendance.query.filter_by(username=current_user.username).count()
+    fields = Attendance.query.filter_by(username=current_user.username).first() 
+    
+    
     # set teamnumber to be zero by default (or not Zeor in the case of solo classes)
     if teamsize == 0:
         teamNumSet = current_user.id + 100
     else:
         teamNumSet = 0 
 
-    # set up page data    
-    notice = Attendance.query.filter_by(username='Chris').first().attend    
-    count = Attendance.query.filter_by(username=current_user.username).count()
-    fields = Attendance.query.filter_by(username=current_user.username).first() 
-    legend = 'Attendance: ' + time.strftime('%A %B, %d %Y %H:%M')
-
+    # set up team info 
     users = {}
     if count == 1: 
         teammates = Attendance.query.filter_by(teamnumber=fields.teamnumber).all()        
@@ -77,6 +82,7 @@ def att_team():
     else:        
         users = None     
 
+    # prepare initial form
     if count == 0:               
         if form.validate_on_submit():
             # team maker
@@ -84,10 +90,16 @@ def att_team():
             attend=form.attend.data, teamnumber=form.teamnumber.data, 
             teamcount=form.teamcount.data, studentID=form.studentID.data)      
             db.session.add(attendance)
-            # long term log            
+            # long term log 
+            if form.attend.data == 'On time':
+                attScore = 3
+            elif form.attend.data == 'Late': 
+                attScore = 2
+            else:
+                attScore = 1          
             attendLog = AttendLog(username = form.name.data, 
             attend=form.attend.data,teamnumber=form.teamnumber.data, 
-            studentID=form.studentID.data, attScore=3)
+            studentID=form.studentID.data, attScore=attScore)
             db.session.add(attendLog)
             # commit both
             db.session.commit()
@@ -133,8 +145,7 @@ def att_team():
                     pass
     
     return render_template('student/attTeam.html', legend=legend, count=count, fields=fields, 
-    teamcount=teamcount, form=form, notice=notice, users=users) 
- 
+    teamcount=teamcount, form=form, notice=notice, users=users)  
 
 
 @app.route("/course", methods = ['GET', 'POST'])

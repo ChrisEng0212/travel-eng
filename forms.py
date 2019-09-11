@@ -14,6 +14,13 @@ class Attend(FlaskForm):
     teamcount = IntegerField ('Team Count')                                                  
     submit = SubmitField('Join')
 
+class AttendLate(FlaskForm):
+    attend = RadioField('Attendance', choices = [('Late', 'Late'), ('2nd Class', '2nd Class')])
+    name =  StringField ('Name in English', validators=[DataRequired(), Length(min=2, max=20)])
+    studentID = StringField ('Student ID (9 numbers)', validators=[DataRequired(), Length(9)])                  
+    teamnumber = IntegerField ('Team Number')
+    teamcount = IntegerField ('Team Count')                                                  
+    submit = SubmitField('Join')
 
 class RegistrationForm(FlaskForm):
 
