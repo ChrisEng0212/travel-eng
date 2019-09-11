@@ -38,20 +38,24 @@ def att_team():
 
     # check if attendance is open 
     openData = Attendance.query.filter_by(username='Chris').first()
-    openCheck = openData.teamnumber
-    if openCheck == 98:  # open in normal state
-        form = Attend()  
-    elif openCheck == 99:  # switch to late form
-        form = AttendLate() 
-    elif openCheck == 100:   # delete all rows
-        db.session.query(Attendance).delete()
-        db.session.commit()
-        flash('Attendance is not open yet, please try later', 'danger')
-        return redirect(url_for('home')) 
-    else: # openData has return None
+    if openData:
+        openCheck = openData.teamnumber
+        if openCheck == 98:  # open in normal state
+            form = Attend()  
+        elif openCheck == 99:  # switch to late form
+            form = AttendLate() 
+        elif openCheck == 100:   # delete all rows
+            db.session.query(Attendance).delete()
+            db.session.commit()
+            flash('Attendance is not open yet, please try later', 'danger')
+            return redirect(url_for('home')) 
+        else: # openData has return None
+            flash('Attendance is not open yet, please try later', 'danger')
+            return redirect(url_for('home'))  
+    else:
         flash('Attendance is not open yet, please try later', 'danger')
         return redirect(url_for('home'))  
-    
+
     # set up page data 
     teamcount = openData.teamcount
     teamsize = openData.teamsize  
