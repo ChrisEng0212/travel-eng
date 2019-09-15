@@ -29,7 +29,7 @@ class RegistrationForm(FlaskForm):
     studentID = StringField ('Student ID (9 numbers)', 
                                 validators=[DataRequired(), Length(9)])
     email = StringField('Email', 
-                                validators=[DataRequired(), Email()] )  
+                                validators=[DataRequired(), Email()])  
     device = RadioField('Main Device', 
                                 choices = [('Apple', 'Apple iphone'), ('Android', 'Android Phone'), ('Win', 'Windows Phone')])                                
     password = PasswordField('Password', 
@@ -49,9 +49,14 @@ class RegistrationForm(FlaskForm):
             raise ValidationError('That email has an account already, did you forget your password?') 
 
     def validate_studentID(self, studentID):  
+        try:
+            int(studentID.data)
+        except:
+            raise ValidationError('9 numbers; no S')
         user = User.query.filter_by(studentID=studentID.data).first()  
         if user:           
-            raise ValidationError('That student ID already has an account, did you forget your password?')  
+            raise ValidationError('That student ID already has an account, did you forget your password?')
+        
 
 class LoginForm(FlaskForm):
     studentID = StringField ('Student ID', validators=[DataRequired(), Length(9)])     
