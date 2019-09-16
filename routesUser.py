@@ -19,6 +19,7 @@ except:
 
 @app.route ("/", methods = ['GET', 'POST'])
 @app.route ("/home", methods = ['GET', 'POST'])
+@login_required
 def home(): 
     if current_user.is_authenticated:
         attLog = AttendLog.query.filter_by(username=current_user.username).all()
@@ -27,6 +28,99 @@ def home():
     
 
     return render_template('instructor/home.html', title='home', attLog=attLog)
+
+
+@app.route ("/packing", methods = ['GET', 'POST'])
+@login_required
+def packing(): 
+    
+    noListOne = ['A: No, I need a new passport because....', 
+            'B: No, I need to prepare the money, I will ....', 
+            'C: No, actually I should book some tickets soon because....' 
+    ]
+
+    yesListOne = ['A: Yes, my passport is ready', 
+            'B: Yes, I already prepared my money', 
+            'C: Yes, I booked the tickets last _______' 
+    ]
+    
+    noOne = random.choice(noListOne)      
+    yesOne = []
+    for item in yesListOne:
+        if yesListOne.index(item) == noListOne.index(noOne):
+            pass
+        else:
+            yesOne.append(item)
+
+    #/////////////////////////
+
+    noListTwo = ['A: No, I haven\'t got a powerbank because....', 
+            'B: No, I won\'t bring a camera, I will ....', 
+            'C: No, I need to get some earphones because....', 
+            'D: No, I don\'t use an e-reader because....', 
+            'E: No, I don\'t use a speaker, I can just....'
+    ]
+
+    yesListTwo = ['A: Yes, I need a powerbank for my ______', 
+            'B: Yes, I need a camera to ______', 
+            'C: Yes, I use earphones when I ________', 
+            'D: Yes, my e-reader is good for ________', 
+            'E: Yes, a speaker is useful when I _______'
+    ]
+    
+    noTwo = random.choice(noListTwo)       
+    yesTwo = []
+    for item in yesListTwo:
+        if yesListTwo.index(item) == noListTwo.index(noTwo):
+            pass
+        else:
+            yesTwo.append(item)
+    
+    #/////////////////////////
+    
+    noListThr = ['A: No, I should get a swimsuit because....', 
+            'B: No, I should get some walking shoes because ....', 
+            'C: No, I need to get some new sunglasses so ....', 
+            'D: No, a neck pillow is a good idea so ....', 
+            'E: No, I might get a money belt because ....', 
+            'F: No, I need a new hat because ....', 
+            'G: No, bug spray will help if ....', 
+            'F: No, I might need a jacket if ....', 
+            'H: No, I should get a new daypack because ....'
+
+    ]
+
+    yesListThr = ['A: Yes, my swimsuit is _____', 
+            'B: Yes, my shoes are ______', 
+            'C: Yes, my sunglasses are _______', 
+            'D: Yes, my neckpillow is ________', 
+            'E: Yes, I have a ________ money belt', 
+            'F: Yes, I have a ________ travel hat', 
+            'G: Yes, I have some ________ bug spray', 
+            'F: Yes, I have a ________ travel jacket', 
+            'H: Yes, my daypack is _________'
+    ]
+    
+    noThr = random.choice(noListThr)   
+    
+    yesThr = []
+    for item in yesListThr:
+        if yesListThr.index(item) == noListThr.index(noThr):
+            pass
+        else:
+            yesThr.append(item)
+  
+    context = {
+        'noOne' : noOne, 
+        'yesOne' : yesOne, 
+        'noTwo' : noTwo, 
+        'yesTwo' : yesTwo, 
+        'noThr' : noThr, 
+        'yesThr' : yesThr, 
+    }
+
+
+    return render_template('instructor/packing.html', title='Packing', **context)
 
 
 ######## Attendance //////////////////////////////////////////////

@@ -1,0 +1,110 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div class="content-section">
+<h3> Talk about Packing </h3>
+
+<br>
+
+<h5> Play the game to ask/answer questions about packing </h5>
+<br>
+
+<h6> 1: Start with Part 1. Ask someone a question. If the answer is <text style="color:green">Yes</text>, then ask another until the answer is <text style="color:red">No</text> </h6>
+<br>
+
+<h6> 2: When the answer is <text style="color:red">No</text>, move on to the next part</h6>
+<br>
+
+<h6> 3: Count the number of questions people have to ask you. <text style="color:deeppink">The student with the highest number of questions is THE WINNER=Bonus Points</text></h6>
+<br>
+
+<h6> 4: If your teammates can see your answers they will know what question to ask: Hide your answers!</h6>
+<br>
+
+</div> 
+
+<div class="content-section">
+<legend class="border-bottom mb-4">Question counter </legend>
+
+<button class="btn btn-success btn-lg" type="button" onClick="up()"> Count Up </button>
+<button class="btn btn-secondary btn-sm" type="button" onClick="down()"> Count Down </button>
+<p></p>
+<h2>Questions <a id="counter">0</a></h2>
+
+
+
+
+</div> 
+
+<!-- //////////////////////// -->
+
+
+<div class="content-section"> 
+<legend class="border-bottom mb-4">Part 1: tickets / money /  passport </legend>
+<h5> Your answers: </h5> 
+<br> 
+
+{% for item in yesOne %}
+<h6 style="color:green"> {{item}} </h6>
+<br>
+{% endfor %}
+
+<h6 style="color:red"> {{ noOne }} </h6>
+<input type="text">
+
+</div>
+
+<!-- ///////////////////////////////////////////-->
+
+<div class="content-section"> 
+<legend class="border-bottom mb-4">Part 2: Electronics </legend>
+<h5> Your answers: </h5> 
+<br> 
+
+{% for item in yesTwo %}
+<h6 style="color:green"> {{item}} </h6>
+<br>
+{% endfor %}
+
+<h6 style="color:red"> {{ noTwo }} </h6>
+<input type="text">
+
+</div>
+
+<!-- ///////////////////////////////////////////-->
+
+<div class="content-section"> 
+<legend class="border-bottom mb-4"> Part 3: Clothing and Accesories </legend>
+<h5> Your answers: </h5> 
+<br> 
+
+{% for item in yesThr %}
+<h6 style="color:green"> {{item}} </h6>
+<br>
+{% endfor %}
+
+<h6 style="color:red"> {{ noThr }} </h6>
+<input type="text">
+
+</div>
+
+
+{% endblock %}
+
+{% block script %}
+
+<script type="text/javascript">
+    var counter = 0;
+    function up() {
+        counter += 1;
+        document.getElementById("counter").innerHTML = counter;
+    };
+
+    function down() {
+        counter -= 1;
+        document.getElementById("counter").innerHTML = counter;
+    };
+</script>
+
+{% endblock %}
