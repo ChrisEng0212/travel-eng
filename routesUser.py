@@ -365,7 +365,7 @@ def embedMaker(link):
 @app.route("/MTexample/<int:idMarker>", methods = ['GET', 'POST']) 
 @login_required
 def MTexample(idMarker): 
-    
+        
     if fieldsChecker():
         Uid = fieldsChecker().id
     else:
@@ -374,7 +374,7 @@ def MTexample(idMarker):
     # only allow user and examples to be accessed  
     ex1 = controls()[1]
     ex2 = controls()[2]
-    allowedID = [ex1, ex2, Uid]
+    allowedID = [ex1, Uid]  #allowedID = [ex1, ex2, Uid]
 
     # open the exam 
     #allowed = MidTerm.query.all()
