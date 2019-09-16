@@ -84,7 +84,7 @@ def packing():
             'D: No, a neck pillow is a good idea so ....', 
             'E: No, I might get a money belt because ....', 
             'F: No, I need a new hat because ....', 
-            'G: No, bug spray will help if ....', 
+            'G: No, but bug spray might help if ....', 
             'H: No, I might need a jacket if ....', 
             'I: No, I should get a new daypack because ....'
 
