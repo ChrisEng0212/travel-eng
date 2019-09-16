@@ -85,8 +85,8 @@ def packing():
             'E: No, I might get a money belt because ....', 
             'F: No, I need a new hat because ....', 
             'G: No, bug spray will help if ....', 
-            'F: No, I might need a jacket if ....', 
-            'H: No, I should get a new daypack because ....'
+            'H: No, I might need a jacket if ....', 
+            'I: No, I should get a new daypack because ....'
 
     ]
 
@@ -97,8 +97,8 @@ def packing():
             'E: Yes, I have a ________ money belt', 
             'F: Yes, I have a ________ travel hat', 
             'G: Yes, I have some ________ bug spray', 
-            'F: Yes, I have a ________ travel jacket', 
-            'H: Yes, my daypack is _________'
+            'H: Yes, I have a ________ travel jacket', 
+            'I: Yes, my daypack is _________'
     ]
     
     noThr = random.choice(noListThr)   
