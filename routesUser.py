@@ -133,7 +133,7 @@ def packing():
 @login_required
 def att_team():
 
-    legend = 'Attendance: ' + time.strftime('%A %B, %d %Y %H:%M')
+    legend = 'Attendance: ' + time.strftime('%A %b, %d %Y %H:%M')
 
     # check if attendance is open 
     openData = Attendance.query.filter_by(username='Chris').first()
@@ -165,7 +165,7 @@ def att_team():
     fields = Attendance.query.filter_by(username=current_user.username).first()     
     
     # set teamnumber to be zero by default (or not Zero in the case of solo classes)
-    if teamsize == 0:
+    if teamsize == 0 or 1:
         teamNumSet = current_user.id + 100
     else:
         teamNumSet = 0 
@@ -190,6 +190,7 @@ def att_team():
             attend=form.attend.data, teamnumber=form.teamnumber.data, 
             teamcount=form.teamcount.data, studentID=form.studentID.data, unit=lastID+1)      
             db.session.add(attendance)
+            db.session.commit()
             # long term log 
             if form.attend.data == 'On time':
                 attScore = 3

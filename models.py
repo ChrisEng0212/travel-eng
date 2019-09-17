@@ -24,7 +24,7 @@ class Attendance(db.Model):
     teamnumber = db.Column(db.Integer)
     teamsize = db.Column(db.Integer)
     teamcount = db.Column(db.Integer)
-    unit = db.Column(db.String(2))    
+    unit = db.Column(db.String(9))    
  
 class AttendLog(db.Model):
     id = db.Column(db.Integer, primary_key=True)     
