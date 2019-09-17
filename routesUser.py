@@ -1,4 +1,5 @@
 import sys, boto3, random, os, time, datetime
+from datetime import timedelta
 from sqlalchemy import asc, desc 
 from flask import render_template, url_for, flash, redirect, request, abort, jsonify  
 from app import app, db, bcrypt, mail
@@ -26,8 +27,12 @@ def home():
     else:
         attLog = None
     
+    attDict = {}
+    for log in attLog:
+        attDict[log]=[log.date_posted + timedelta(hours=8), log.attend, log.attScore, log.extraStr]
 
-    return render_template('instructor/home.html', title='home', attLog=attLog)
+
+    return render_template('instructor/home.html', title='home', attLog=attLog, attDict=attDict)
 
 
 @app.route ("/packing", methods = ['GET', 'POST'])
