@@ -128,6 +128,19 @@ def packing():
     return render_template('instructor/packing.html', title='Packing', **context)
 
 
+@app.route ("/agent", methods = ['GET', 'POST'])
+@login_required
+def agent(): 
+
+    context = {
+
+    }     
+
+
+    return render_template('instructor/packing.html', title='Packing', **context)
+
+
+
 ######## Attendance //////////////////////////////////////////////
 @app.route("/attend_team", methods = ['GET', 'POST'])
 @login_required
@@ -145,6 +158,10 @@ def att_team():
             form = AttendLate() 
         elif openCheck == 100:   # delete all rows
             db.session.query(Attendance).delete()
+            db.session.commit()
+            attendance = Attendance(username = 'Chris', 
+            attend='Notice', teamnumber=97, studentID='100000000')      
+            db.session.add(attendance)
             db.session.commit()
             flash('Attendance is not open yet, please try later', 'danger')
             return redirect(url_for('home')) 

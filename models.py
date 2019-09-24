@@ -134,6 +134,34 @@ class MidAnswers(db.Model):
     extraInt = db.Column(db.Integer)
     extraStr = db.Column(db.String)
 
+class AgentOne(db.Model):
+    id = db.Column(db.Integer, primary_key=True) 
+    username = db.Column(db.String) 
+
+    A01 = db.Column(db.String)
+    A02 = db.Column(db.String)
+    A03 = db.Column(db.String) 
+    A04 = db.Column(db.String)
+    A05 = db.Column(db.String) 
+    A06 = db.Column(db.String)        
+    
+    extraInt = db.Column(db.Integer)
+    extraStr = db.Column(db.String)
+
+class AgentTwo(db.Model):
+    id = db.Column(db.Integer, primary_key=True) 
+    username = db.Column(db.String) 
+
+    A01 = db.Column(db.String)
+    A02 = db.Column(db.String)
+    A03 = db.Column(db.String) 
+    A04 = db.Column(db.String)
+    A05 = db.Column(db.String) 
+    A06 = db.Column(db.String)        
+    
+    extraInt = db.Column(db.Integer)
+    extraStr = db.Column(db.String)
+
 
 class BaseProjects(db.Model):
     __abstract__ = True

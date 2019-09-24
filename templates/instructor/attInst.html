@@ -1,0 +1,65 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div class="content-section"> 
+    <legend class="border-bottom mb-4">Attendance Set Up</legend>       
+
+<a href="../admin/attendance">Attendance</a>
+
+
+    <form method="POST" action=""> 
+            {{ form.hidden_tag () }}        
+        <fieldset class="form-group">
+        
+        
+        
+            <div class="form-group"> 
+                {{ form.username.label (class="form-control-label")}}</br>                    
+                {{ form.username(class="form-control form-control-lg")}}                 
+            </div>
+
+            <div class="form-group"> 
+                {{ form.studentID.label (class="form-control-label")}}</br>
+                {{ form.studentID(class="form-control form-control-lg")}}                     
+            </div>
+
+            <div class="form-group"> 
+                {{ form.attend.label (class="form-control-label")}}</br>
+                {{ form.attend(class="form-control form-control-lg")}}                     
+            </div> 
+
+            Current Status: {{status}}
+
+            <div class="form-group"> 
+                {{ form.teamnumber.label (class="form-control-label")}}</br>
+                {{ form.teamnumber(class="form-control form-control-lg")}}                     
+            </div>               
+
+            
+            <div class="form-group"> 
+                {{ form.teamsize.label (class="form-control-label")}}</br>
+                {{ form.teamsize(class="form-control form-control-lg")}}                     
+            </div>  
+
+            <div class="form-group"> 
+                {{ form.teamcount.label (class="form-control-label")}}</br>
+                {{ form.teamcount(class="form-control form-control-lg")}}                     
+            </div> 
+
+            <div class="form-group"> 
+                {{ form.unit.label (class="form-control-label")}}</br>
+                {{ form.unit(class="form-control form-control-lg")}}                     
+            </div>    
+
+
+        </fieldset> 
+        <div class="form-group">
+                {{ form.submit(class="btn btn-outline-secondary")}}
+        </div>
+    </form>
+</div>
+
+
+
+{% endblock content %}

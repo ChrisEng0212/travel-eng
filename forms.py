@@ -22,6 +22,16 @@ class AttendLate(FlaskForm):
     teamcount = IntegerField ('Team Count')                                                  
     submit = SubmitField('Join')
 
+class AttendInst(FlaskForm):
+    attend = StringField ('Notice')   
+    username =  StringField ('Name in English', validators=[DataRequired(), Length(min=2, max=20)])
+    studentID = StringField ('Student ID', validators=[DataRequired(), Length(9)])                  
+    teamnumber = IntegerField ('Status') 
+    teamcount = IntegerField ('Team Count')   
+    teamsize = IntegerField ('Team Size (0 for no teams)')  
+    unit = StringField ('unit(2) eg 01 or MT', validators=[DataRequired(), Length(min=2, max=20)])                                         
+    submit = SubmitField('Join')
+
 class RegistrationForm(FlaskForm):
 
     username = StringField ('Name in English', 
@@ -160,8 +170,21 @@ class MidtermExample(FlaskForm):
     A04 = StringField (label='Q4')    
 
     Submit = SubmitField('Submit')
-       
- 
+
+class AgentOne(FlaskForm):     
+    
+    A01 = RadioField (label='I have some vacation time coming up and', choices=[('stress-free', 'I just want a stress-free holiday.'), ('good value','I need a good value package.'), 
+    ('no time','I don’t have time to organize a trip')])
+    A02 = RadioField (label='01', choices=[('stress-free', 'I just want a stress-free holiday.'), ('good value','I need a good value package.'), 
+    ('no time','I don’t have time to organize a trip')])
+
+    A02 = StringField (label='Q2')
+    A03 = StringField (label='Q3')
+    A04 = StringField (label='Q4')    
+
+    Submit = SubmitField('Submit')
+            
+
 class Project(FlaskForm):
     Title = TextAreaField (label='Project Title')    
     TextOne = TextAreaField (label='Speaking Text One', validators=[DataRequired(message='Please write your answers')])    

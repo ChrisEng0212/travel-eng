@@ -221,7 +221,45 @@ def teams():
                 attDict[user.username] = [user.studentID, 0]
 
     return render_template('instructor/teams.html', attDict=attDict, teamcount=teamcount)  
-   
+
+@app.route("/attend_int", methods = ['GET', 'POST'])
+@login_required
+def att_int():
+    if current_user.id != 1:
+        return abort(403)
+    form = AttendInst()
+
+    openData = Attendance.query.filter_by(username='Chris').first()
+
+    if openData:    
+        if form.validate_on_submit():
+            openData.attend = form.attend.data 
+            openData.teamnumber = form.teamnumber.data 
+            openData.teamsize = form.teamsize.data 
+            openData.teamcount = form.teamcount.data 
+            openData.unit =  form.unit.data        
+            db.session.commit()  
+              
+            db.session.commit()
+            flash('Attendance has been updated', 'secondary') 
+            return redirect(url_for('att_team')) 
+        else:
+            form.username.data = 'Chris'
+            form.studentID.data = '100000000'
+            try:
+                form.attend.data = openData.attend
+                form.teamnumber.data = openData.teamnumber
+                form.teamsize.data = openData.teamsize
+                form.teamcount.data = openData.teamcount
+                form.unit.data = openData.unit
+                
+            except: 
+                pass 
+    else:
+        flash('Attendance not started', 'secondary') 
+        return redirect(request.referrer)  
+
+    return render_template('instructor/attInst.html', form=form, status=openData.teamnumber)     
 
 
 def upload_picture(form_picture):    
