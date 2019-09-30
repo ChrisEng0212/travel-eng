@@ -5,7 +5,7 @@
 
 
 <div class="content-section">
-    <legend class="border-bottom mb-4">{{ legend }}</legend>
+    <legend class="border-bottom mb-4"><a href="../admin/user", target="_blank">Students</a></legend>
     
     
     <table class="table table-sm">
@@ -23,11 +23,12 @@
 
       <tbody>
       {% for student in students %}  
+          {% set attend = attDict[student.studentID][2] %}
           <tr>              
-          <td><img class="rounded-circle chat-img" src="{{LOCATION}}{{student.image_file}}"></td>
-          <td>{{student.username}} </td>
-          <td>{{student.studentID}}</td>  
-          <td><a href="../admin/attendance/edit/?id={{attDict[student.studentID][4]}}", target="_blank">{{attDict[student.studentID][2]}}</a> <a href="../admin/attendlog/edit/?id={{attDict[student.studentID][3]}}", target="_blank">___</a></td>          
+          <td style="width: 35px;"><img class="rounded-circle chat-img" src="{{LOCATION}}{{student.image_file}}"></td>
+          <td style="width: 100px;">{{student.username}} </td>
+          <td style="width: 125px;">{{student.studentID}}</td>  
+          {% if attend == 'Absent' %} <td style="background:pink">{% elif attend == 'On time' %} <td style="background:mediumaquamarine">{% else %} <td style="background:gainsboro">{% endif %} <a href="../admin/attendance/edit/?id={{attDict[student.studentID][4]}}", target="_blank">{{attend}}</a> <a href="../admin/attendlog/edit/?id={{attDict[student.studentID][3]}}", target="_blank">___</a></td>          
           <td><a href="{{student.email}}">Email</a></td>
           <td>{{student.device}}</td>
           <td>AttendanceTotal</td>
@@ -38,7 +39,7 @@
 </div> 
 
 <div class="content-section">
-    <legend class="border-bottom mb-4"><a href='https://affairs.just.edu.tw/TeacherStuApp/Default.aspx'> Attendance</a></legend>
+    <legend class="border-bottom mb-4"><a href='https://affairs.just.edu.tw/TeacherStuApp/Default.aspx', target="__blank"> Attendance</a></legend>
     
     <a href='http://deanapp.just.edu.tw/teacher/Default.aspx'>Syllabus</a>
     <a href='https://md.just.edu.tw/login/index.php'>Moodle</a>

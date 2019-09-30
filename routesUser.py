@@ -127,17 +127,313 @@ def packing():
 
     return render_template('instructor/packing.html', title='Packing', **context)
 
+@app.route ("/agent_list", methods = ['GET', 'POST'])
+@login_required
+def agent_list():
+    cust = Attendance.query.filter_by(role='cust').all()
+    work = Attendance.query.filter_by(role='work').all() 
+    custSet = AgentCust.query.all() 
+    workSet = AgentWork.query.all()
+    
+    roleDict = {}   
+    
+    countW = 1
+    for user in work:
+        roleDict[countW] = [user.username, '-', '-', '-']
+        countW +=1
+
+    countC = 1
+    for user in cust:
+        if countC in roleDict:
+            roleDict[countC][1] = user.username
+        else:
+            roleDict[countC] = ['-', user.username]
+        countC +=1
+    
+    custNames = []
+    for item in custSet:
+        custNames.append(item.username)
+    workNames = []
+    for item in workSet:
+        workNames.append(item.username)
+    
+    for key in roleDict:
+        if roleDict[key][0] in workNames:
+            roleDict[key][2] = roleDict[key][0]
+        if roleDict[key][1] in custNames:
+            roleDict[key][3] = roleDict[key][1]   
+
+    print (roleDict)
+
+    #create dictionary of answers
+    ansDict = {}    
+    custAns = AgentCust.query.all()    
+    for ans in custAns:
+        ansDict[ans.username] = [ans.A01, ans.A02, ans.A03, ans.A04, ans.A05, ans.A06]
+    
+    # create a list of names who duplicate
+    names = []    
+    ## create reverse dictionary to find duplicates
+    revDict = {}
+    for key in ansDict:
+        values = str(ansDict[key])
+        for item in revDict:
+            if item == values:                   
+                names.append(key)
+                names.append(revDict[item])
+        else: 
+            revDict[values] = key
+    
+    print (ansDict)
+    print (revDict)
+    print (names)
+
+    #calculate scores
+    #     # {    
+    #  agent : [matches, , ]}
+
+    scores = []        
+    matchesDict = {}
+    answers = AgentList.query.all() 
+    for ans in answers:
+        matchesDict[ans.username] = []
+        matchesList = eval(ans.match)
+        if len(matchesList) > 1:
+            for i in matchesList:
+                matchesDict[ans.username].append('00' + i)
+        elif len(matchesList) == 1:   
+            matchesDict[ans.username].append(matchesList[0]) 
+            scores.append(matchesList[0])
+    
+    print(scores)
+    print(matchesDict)
+
+    pairDict = {}
+    scoreDict = {}
+    for user in custSet:
+        scoreDict[user.username] = 0 
+        pairDict[user.username] = user.extraStr
+        for i in scores:
+            if i == user.username:
+                scoreDict[user.username] +=1
+
+    print(scoreDict)
+
+    context = {
+        'roleDict' : roleDict,
+        'names' : names, 
+        'scoreDict' : scoreDict,
+        'matchesDict' : matchesDict  
+    }          
+
+    return render_template('instructor/agent_list.html', title='Agent', **context)
+
 
 @app.route ("/agent", methods = ['GET', 'POST'])
 @login_required
 def agent(): 
 
+    if Attendance.query.filter_by(username='Chris').first().role == 'closed':
+        flash('Activity not started yet', 'danger') 
+        return redirect(url_for('home'))
+
+    attendCheck = Attendance.query.filter_by(username=current_user.username).first()
+    if attendCheck:
+        attend = attendCheck.role
+    else:
+        flash('Please attend the class first', 'danger') 
+        return redirect(url_for('att_team'))
+    
+    if attend == 'cust':
+        return redirect(url_for('agent_form', role='cust'))
+    elif attend == 'work':
+        return redirect(url_for('agent_form', role='work'))
+    else:
+        flash('Please attend the class first', 'danger') 
+        return redirect(url_for('att_team'))        
+    
+    flash('No Data Available', 'danger') 
+    return redirect(url_for('home'))
+   
+
+
+@app.route ("/agent_form/<string:role>", methods = ['GET', 'POST'])
+@login_required
+def agent_form(role):    
+    
+    if role == 'cust':
+        form = AgentCustomer()
+        model = AgentCust
+        title = 'Conversation as Customer'        
+    if role == 'work':
+        form = AgentWorker()
+        model = AgentWork
+        title = 'Conversation as Travel Agent'
+        
+    work = Attendance.query.filter_by(role='work').all()     
+
+    workNames = []
+    for item in work:
+        workNames.append(item.username)    
+
+    #random pairer
+    print(workNames)
+    myList = []
+    for i in range(7):
+        x = random.choice(workNames)
+        while x in myList:
+            x = random.choice(workNames)
+        myList.append(x)
+
+    print(myList)    
+    
+    answers = model.query.filter_by(username=current_user.username).first()
+    
+    if answers:
+        print ('action2')
+        return redirect(url_for('agent_conv', role=role))    
+    else:  
+        if form.validate_on_submit():
+            answers = model(username=current_user.username, 
+            A01=form.A01.data,
+            A02=form.A02.data,
+            A03=form.A03.data,
+            A04=form.A04.data,
+            A05=form.A05.data,
+            A06=form.A06.data, 
+            extraStr = str(myList)
+            )
+            db.session.add(answers) 
+            db.session.commit()
+            flash('Ready for activity', 'success') 
+            return redirect(url_for('agent_conv', role=role))
+        else:
+            pass
+
     context = {
+        'form' : form, 
+        'model' : model,
+        'head' : title      
+    } 
 
-    }     
+    return render_template('instructor/agent.html', title='Agent', **context)
 
+@app.route ("/agent_conv/<string:role>", methods = ['GET', 'POST'])
+@login_required
+def agent_conv(role): 
+    print ('action3')
+    if role == 'cust':
+        form = None        
+        model = AgentCust
+        title = 'Conversation as Customer'
+        answers = model.query.filter_by(username=current_user.username).first()
+        script = {
+        1: 'Agent: Hi.... help?',
+        2: AgentOne['1b'][0] + answers.A01,
+        3: 'Agent: How long... ?',
+        4: AgentOne['2b'][0] + answers.A02,
+        5: 'Agent: Where.... ?',
+        6: AgentOne['3b'][0] + answers.A03, 
+        7: 'Agent: Have you considered...?',         
+        8: AgentOne['4b'][0] + answers.A04, 
+        9: 'Agent: What kind of accomodation....?', 
+        10: AgentOne['5b'][0] + answers.A05, 
+        11: 'Agent: (suggestion....)', 
+        12: AgentOne['6b'][0] + answers.A06, 
+        13: 'Agent: Okay....'
+        }  
 
-    return render_template('instructor/packing.html', title='Packing', **context)
+    if role == 'work':
+        form = AgentListen()           
+        model = AgentWork
+        title = 'Conversation as Travel Agent'
+        answers = model.query.filter_by(username=current_user.username).first()
+        script = {
+        1: 'CUSTOMER ARRIVES: ' + AgentOne['1a'][0] + answers.A01,
+        2: 'Customer: I have vacation....', 
+        3: AgentOne['2a'][0] + answers.A02,
+        4: 'Customer: I have ___ days off',
+        5: AgentOne['3a'][0] + answers.A03,
+        6: 'Customer: I want to spend time in', 
+        7: AgentOne['4a'][0] + answers.A04,         
+        8: 'Customer: Okay...', 
+        9: AgentOne['5a'][0] + answers.A05,  
+        10: 'Customer: ', 
+        11: AgentOne['xx'][0],        
+        12: 'Customer: One more question', 
+        13: AgentOne['6a'][0] + answers.A06        
+        } 
+        
+        if form.validate_on_submit():
+            if Attendance.query.filter_by(username='Chris').first().role == 'wait':
+                flash('Waiting for all students to be ready', 'danger') 
+                return redirect(url_for('agent_conv', role=role))
+            else:
+                pass
+
+            #create dictionary of answers
+            ansDict = {}
+            custAns = AgentCust.query.all()
+            # create a list of names who match
+            names = []
+            matches = []
+            for ans in custAns:
+                ansDict[ans.username] = [ans.A01, ans.A02, ans.A03, ans.A04, ans.A05, ans.A06]
+
+            print (custAns)
+            # find students with the same data set
+            for key in ansDict:
+                convAns = [form.C01.data, form.C02.data, form.C03.data, form.C04.data, form.C05.data, form.C06.data]
+                print(convAns)
+                if ansDict[key] == convAns:
+                    names.append(key) 
+                    myList = AgentCust.query.filter_by(username=key).first().extraStr
+                    print (myList)                    
+                    # if agents name in the list (eval(extraStr)) associated with that customer (key)                  
+                    if current_user.username in eval(AgentCust.query.filter_by(username=key).first().extraStr):
+                        matches.append(key)
+
+            answers = AgentList(username=current_user.username, 
+            C01=form.C01.data,
+            C02=form.C02.data,
+            C03=form.C03.data,
+            C04=form.C04.data,
+            C05=form.C05.data,
+            C06=form.C06.data, 
+            name=str(names), 
+            match=str(matches)
+            )
+            db.session.add(answers) 
+            db.session.commit() 
+
+            if len(names) > 1:
+                if len(matches) == 1:
+                    flash(('CONGRATUALTIONS: You have a possible match - Check with the instructor'), 'success') 
+            elif len(matches) == 1: 
+                flash('CONGRATUALTIONS: You have a match with', str(matches), 'info') 
+            else:
+                flash(('SORRY: This conversation is not a match :('), 'success') 
+
+            return redirect(url_for('agent_conv', role=role))
+        else:
+            pass
+    
+    acco = [
+        AgentOne['xx'][1][1],
+        AgentOne['xx'][2][1],
+        AgentOne['xx'][3][1],
+        AgentOne['xx'][4][1]
+        ]
+    
+    context = {
+        'form' : form, 
+        'script' : script,
+        'head' : title, 
+        'role' : role, 
+        'acco' : acco     
+    } 
+
+    return render_template('instructor/agent_conv.html', title='Agent', **context)
 
 
 
@@ -182,7 +478,7 @@ def att_team():
     fields = Attendance.query.filter_by(username=current_user.username).first()     
     
     # set teamnumber to be zero by default (or not Zero in the case of solo classes)
-    if teamsize == 0 or 1:
+    if teamsize == 0:
         teamNumSet = current_user.id + 100
     else:
         teamNumSet = 0 
@@ -203,9 +499,16 @@ def att_team():
             # check last id for AttendLog 
             lastID = AttendLog.query.order_by(desc(AttendLog.id)).first().id   
             # team maker
+
+            #role control
+            wCount = Attendance.query.filter_by(role='work').count()
+            if wCount > 20:
+                flash('Sorry, there are too many TRAVEL AGENTS already. Please choose TRAVELLER', 'info')
+                return redirect(url_for('att_team'))
+
             attendance = Attendance(username = form.name.data, 
             attend=form.attend.data, teamnumber=form.teamnumber.data, 
-            teamcount=form.teamcount.data, studentID=form.studentID.data, unit=lastID+1)      
+            teamcount=form.teamcount.data, studentID=form.studentID.data, unit=lastID+1, role=form.role.data)      
             db.session.add(attendance)
             db.session.commit()
             # long term log 
@@ -397,7 +700,7 @@ def MTexample(idMarker):
     # only allow user and examples to be accessed  
     ex1 = controls()[1]
     ex2 = controls()[2]
-    allowedID = [ex1, Uid]  #allowedID = [ex1, ex2, Uid]
+    allowedID = [ex1, ex2, Uid]
 
     # open the exam 
     #allowed = MidTerm.query.all()

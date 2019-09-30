@@ -11,7 +11,8 @@ class Attend(FlaskForm):
     name =  StringField ('Name in English', validators=[DataRequired(), Length(min=2, max=20)])
     studentID = StringField ('Student ID (9 numbers)', validators=[DataRequired(), Length(9)])                  
     teamnumber = IntegerField ('Team Number')
-    teamcount = IntegerField ('Team Count')                                                  
+    teamcount = IntegerField ('Team Count') 
+    role =  RadioField('What role would you like today?', choices = [('work', 'TravelAgent'), ('cust', 'Traveller')])                                                
     submit = SubmitField('Join')
 
 class AttendLate(FlaskForm):
@@ -19,7 +20,8 @@ class AttendLate(FlaskForm):
     name =  StringField ('Name in English', validators=[DataRequired(), Length(min=2, max=20)])
     studentID = StringField ('Student ID (9 numbers)', validators=[DataRequired(), Length(9)])                  
     teamnumber = IntegerField ('Team Number')
-    teamcount = IntegerField ('Team Count')                                                  
+    teamcount = IntegerField ('Team Count')
+    role =  RadioField('What role would you like today?', choices = [('work', 'TravelAgent'), ('cust', 'Traveller')])                                                
     submit = SubmitField('Join')
 
 class AttendInst(FlaskForm):
@@ -171,19 +173,186 @@ class MidtermExample(FlaskForm):
 
     Submit = SubmitField('Submit')
 
-class AgentOne(FlaskForm):     
+#### Agent Conversations
+AgentOne = {
+    '1a' : ['Hi, ', 
+    ['How can I help you today?', 'How can I help you today?'],
+    ['What I can I help you with today?', 'What I can I help you with today?'],
+    ['What can I do for you today?' ,'What can I do for you today?']       
+    ],
+    '1b' : ['I have some vacation time coming up and ',
+        ['stress-free', 'I just want a stress-free holiday.'], 
+        ['good value','I need a good value package.'], 
+        ['no time','I don’t have time to organize a trip']
+    ],
+    '2a' : ['Okay, ', 
+    ['How long do you have off work?', 'How long do you have off work?'],
+    ['How long do you have for vacation?','How long do you have for vacation?'],
+    ['How long is your break?','How long is your break?']     
+    ],
+    '2b' : ['Well, ',
+        ['5 days', 'I just have a 5 day break'], 
+        ['8 days', 'I have 8 days off work'], 
+        ['10 days','Just the first 10 days in July'], 
+        ['16 days','Its about 16 days']
+    ],
+    '3a' : ['Great, that’s a nice amount of time. ',
+    ['Where would you like to go?','Where would you like to go?'],
+    ['Where did you have in mind?','Where did you have in mind?'],
+    ['Have you thought about a destination?','Have you thought about a destination?']
+    ],    
+    '3b' : ['Actually, I would love to spend time ',
+        ['nature', 'in nature'], 
+        ['city','in a big city'], 
+        ['ocean','close to the ocean']
+    ],
+    '4a' : ['Have you considered........',   
+        ['Nature: Hokkaido - City: Bangkok - Ocean: Bali', 'Nature: Hokkaido - City: Bangkok - Ocean: Bali'], 
+        ['Nature: Chang Mai - City: Tokyo - Ocean: Okinawa','Nature: Chang Mai - City: Tokyo - Ocean: Okinawa'], 
+        ['Nature: Guilin - City: Seoul - Ocean: Phuket', 'Nature: Guilin - City: Seoul - Ocean: Phuket']        
+    ],
+    '4b' : ['Okay, ', 
+        ['Sounds good', 'Sounds good'], 
+        ['Sounds perfect','Sounds perfect'], 
+        ['Sounds great','Sounds great']               
+    ],
+    '5a' : ['No problem, ',
+        ['So what kind of place would like to stay in?','So what kind of place would like to stay in?'],
+        ['So what about your accommodation?', 'So what about your accommodation?'],
+        ['So what kind of accommodation would you like?', 'So what kind of accommodation would you like?']
+    ],    
+    '5b' : ['For my accomodation, ',
+        ['nothing too fancy', 'I don’t want anything too fancy.'], 
+        ['just comfortable', 'I just want to be comfortable.'],
+        ['taken care of','I want everything to be taken care of.'], 
+        ['by myself','I like to do things by myself']
+    ],
+    'xx' : ['Okay... ',
+    ['nothing too fancy -- ', 'perhaps a small guest house would suit you.'],   
+    ['just comfortable -- ', 'we can recommend a decent hotel.'],
+    ['taken care of -- ','there is an all-inclusive resort that you might like.'], 
+    ['by myself -- ','we could look into renting an apartment in the area.']
+    ],
     
-    A01 = RadioField (label='I have some vacation time coming up and', choices=[('stress-free', 'I just want a stress-free holiday.'), ('good value','I need a good value package.'), 
-    ('no time','I don’t have time to organize a trip')])
-    A02 = RadioField (label='01', choices=[('stress-free', 'I just want a stress-free holiday.'), ('good value','I need a good value package.'), 
-    ('no time','I don’t have time to organize a trip')])
+    '6b' : ['Thanks, before I go can I ask about ',
+        ['visa requirements', 'the visa requirements'], 
+        ['car rental','the car rental options'], 
+        ['local tours','local tours on offer']
+    ],
+    '6a' : ['Certainly, ',
+    ['We will find out what the options are available','We will find out what options are available'],
+    ['I’ll check the information and get back to you','I’ll check the information and get back to you'],
+    ['I will prepare the details for you','I will prepare the details for you']        
+    ],  
+}
 
-    A02 = StringField (label='Q2')
-    A03 = StringField (label='Q3')
-    A04 = StringField (label='Q4')    
 
+class AgentListen(FlaskForm): 
+    C01 = RadioField (label='What is the customers situation?', choices=[
+            (AgentOne['1b'][1][1], AgentOne['1b'][1][0]), 
+            (AgentOne['1b'][2][1], AgentOne['1b'][2][0]), 
+            (AgentOne['1b'][3][1], AgentOne['1b'][3][0])
+        ]) 
+    C02 = RadioField (label='C02', choices=[
+            (AgentOne['2b'][1][1], AgentOne['2b'][1][0]), 
+            (AgentOne['2b'][2][1], AgentOne['2b'][2][0]), 
+            (AgentOne['2b'][3][1], AgentOne['2b'][3][0]),
+            (AgentOne['2b'][4][1], AgentOne['2b'][4][0])
+        ]) 
+    C03 = RadioField (label='C03', choices=[
+            (AgentOne['3b'][1][1], AgentOne['3b'][1][0]), 
+            (AgentOne['3b'][2][1], AgentOne['3b'][2][0]), 
+            (AgentOne['3b'][3][1], AgentOne['3b'][3][0])
+        ]) 
+    C04 = RadioField (label='C04', choices=[
+            (AgentOne['4b'][1][1], AgentOne['4b'][1][0]), 
+            (AgentOne['4b'][2][1], AgentOne['4b'][2][0]), 
+            (AgentOne['4b'][3][1], AgentOne['4b'][3][0])
+        ]) 
+    C05 = RadioField (label='C05', choices=[
+            (AgentOne['5b'][1][1], AgentOne['5b'][1][0]), 
+            (AgentOne['5b'][2][1], AgentOne['5b'][2][0]), 
+            (AgentOne['5b'][3][1], AgentOne['5b'][3][0]),
+            (AgentOne['5b'][4][1], AgentOne['5b'][4][0])
+        ]) 
+    C06 = RadioField (label='C06', choices=[
+            (AgentOne['6b'][1][1], AgentOne['6b'][1][0]), 
+            (AgentOne['6b'][2][1], AgentOne['6b'][2][0]), 
+            (AgentOne['6b'][3][1], AgentOne['6b'][3][0])           
+        ]) 
     Submit = SubmitField('Submit')
-            
+
+class AgentCustomer(FlaskForm): 
+    A01 = RadioField (label=AgentOne['1b'][0], choices=[
+            (AgentOne['1b'][1][1], AgentOne['1b'][1][1]), 
+            (AgentOne['1b'][2][1], AgentOne['1b'][2][1]), 
+            (AgentOne['1b'][3][1], AgentOne['1b'][3][1])
+        ]) 
+    A02 = RadioField (label=AgentOne['2b'][0], choices=[
+            (AgentOne['2b'][1][1], AgentOne['2b'][1][1]), 
+            (AgentOne['2b'][2][1], AgentOne['2b'][2][1]), 
+            (AgentOne['2b'][3][1], AgentOne['2b'][3][1]),
+            (AgentOne['2b'][4][1], AgentOne['2b'][4][1])
+        ])  
+    A03 = RadioField (label=AgentOne['3b'][0], choices=[
+            (AgentOne['3b'][1][1], AgentOne['3b'][1][1]), 
+            (AgentOne['3b'][2][1], AgentOne['3b'][2][1]), 
+            (AgentOne['3b'][3][1], AgentOne['3b'][3][1])
+        ]) 
+    A04 = RadioField (label=AgentOne['4b'][0], choices=[
+            (AgentOne['4b'][1][1], AgentOne['4b'][1][1]), 
+            (AgentOne['4b'][2][1], AgentOne['4b'][2][1]), 
+            (AgentOne['4b'][3][1], AgentOne['4b'][3][1])
+        ]) 
+    A05 = RadioField (label=AgentOne['5b'][0], choices=[
+            (AgentOne['5b'][1][1], AgentOne['5b'][1][1]), 
+            (AgentOne['5b'][2][1], AgentOne['5b'][2][1]), 
+            (AgentOne['5b'][3][1], AgentOne['5b'][3][1]),
+                (AgentOne['5b'][4][1], AgentOne['5b'][4][1])
+        ]) 
+    A06 = RadioField (label=AgentOne['6b'][0], choices=[
+            (AgentOne['6b'][1][1], AgentOne['6b'][1][1]), 
+            (AgentOne['6b'][2][1], AgentOne['6b'][2][1]), 
+            (AgentOne['6b'][3][1], AgentOne['6b'][3][1]),
+               
+        ])     
+    Submit = SubmitField('Submit')
+
+class AgentWorker(FlaskForm): 
+    A01 = RadioField (label=AgentOne['1a'][0], choices=[
+            (AgentOne['1a'][1][1], AgentOne['1a'][1][1]), 
+            (AgentOne['1a'][2][1], AgentOne['1a'][2][1]), 
+            (AgentOne['1a'][3][1], AgentOne['1a'][3][1])
+        ]) 
+    A02 = RadioField (label=AgentOne['2a'][0], choices=[
+            (AgentOne['2a'][1][1], AgentOne['2a'][1][1]), 
+            (AgentOne['2a'][2][1], AgentOne['2a'][2][1]), 
+            (AgentOne['2a'][3][1], AgentOne['2a'][3][1])
+        ])  
+    A03 = RadioField (label=AgentOne['3a'][0], choices=[
+            (AgentOne['3a'][1][1], AgentOne['3a'][1][1]), 
+            (AgentOne['3a'][2][1], AgentOne['3a'][2][1]), 
+            (AgentOne['3a'][3][1], AgentOne['3a'][3][1])
+        ])     
+    A04 = RadioField (label=AgentOne['4a'][0], choices=[
+            (AgentOne['4a'][1][1], AgentOne['4a'][1][1]), 
+            (AgentOne['4a'][2][1], AgentOne['4a'][2][1]), 
+            (AgentOne['4a'][3][1], AgentOne['4a'][3][1])
+        ]) 
+    A05 = RadioField (label=AgentOne['5a'][0], choices=[
+            (AgentOne['5a'][1][1], AgentOne['5a'][1][1]), 
+            (AgentOne['5a'][2][1], AgentOne['5a'][2][1]), 
+            (AgentOne['5a'][3][1], AgentOne['5a'][3][1])
+        ])  
+    A06 = RadioField (label=AgentOne['6a'][0], choices=[
+            (AgentOne['6a'][1][1], AgentOne['6a'][1][1]), 
+            (AgentOne['6a'][2][1], AgentOne['6a'][2][1]), 
+            (AgentOne['6a'][3][1], AgentOne['6a'][3][1])
+    ])  
+      
+    Submit = SubmitField('Submit')  
+
+           
 
 class Project(FlaskForm):
     Title = TextAreaField (label='Project Title')    

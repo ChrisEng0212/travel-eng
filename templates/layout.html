@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  
+  <link rel="icon" type="image/png" href="https://www.flaticon.com/premium-icon/icons/svg/1552/1552276.svg">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
@@ -31,7 +31,7 @@
                           <a class="nav-item nav-link" href= "{{ url_for ('about') }}">About</a>  
                           <a class="nav-item nav-link" href= "{{ url_for ('att_team') }}">Attendance</a>                            
                           <a class="nav-item nav-link" href= "{{ url_for ('course') }}">Course</a>  
-                          <a class="nav-item nav-link" href="{{ url_for ('packing') }}">Activity</a>
+                          <a class="nav-item nav-link" href="{{ url_for ('agent') }}">Activity</a>
                           <a class="nav-item nav-link" href= "{{ url_for ('mid_term') }}">Midterm</a>                              
                         </div>
                       
@@ -46,6 +46,7 @@
                             <div class="dropdown-menu" aria-labelledby="navbarDropdownIns" style="background:#e3e3e3">
                               <a class="dropdown-item" href="{{ url_for ('admin') }}", target="_blank">Admin</a> 
                               <a class="dropdown-item" href="{{ url_for ('students') }}">Students</a>  
+                              <a class="dropdown-item" href="{{ url_for ('att_int') }}">Att</a>
                               <a class="dropdown-item" href="{{ url_for ('teams') }}">Teams</a>                        
                               <div class="dropdown-divider"></div>
                               <a class="dropdown-item" href="#">Something else here</a>

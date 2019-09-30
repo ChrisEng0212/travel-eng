@@ -24,7 +24,8 @@ class Attendance(db.Model):
     teamnumber = db.Column(db.Integer)
     teamsize = db.Column(db.Integer)
     teamcount = db.Column(db.Integer)
-    unit = db.Column(db.String(9))    
+    unit = db.Column(db.String(9)) 
+    role = db.Column(db.String) 
  
 class AttendLog(db.Model):
     id = db.Column(db.Integer, primary_key=True)     
@@ -134,34 +135,43 @@ class MidAnswers(db.Model):
     extraInt = db.Column(db.Integer)
     extraStr = db.Column(db.String)
 
-class AgentOne(db.Model):
+class AgentCust(db.Model):
     id = db.Column(db.Integer, primary_key=True) 
     username = db.Column(db.String) 
-
     A01 = db.Column(db.String)
     A02 = db.Column(db.String)
     A03 = db.Column(db.String) 
     A04 = db.Column(db.String)
     A05 = db.Column(db.String) 
-    A06 = db.Column(db.String)        
-    
+    A06 = db.Column(db.String)     
     extraInt = db.Column(db.Integer)
     extraStr = db.Column(db.String)
 
-class AgentTwo(db.Model):
+class AgentWork(db.Model):
     id = db.Column(db.Integer, primary_key=True) 
     username = db.Column(db.String) 
-
     A01 = db.Column(db.String)
     A02 = db.Column(db.String)
     A03 = db.Column(db.String) 
     A04 = db.Column(db.String)
     A05 = db.Column(db.String) 
-    A06 = db.Column(db.String)        
-    
+    A06 = db.Column(db.String) 
     extraInt = db.Column(db.Integer)
     extraStr = db.Column(db.String)
 
+class AgentList(db.Model):
+    id = db.Column(db.Integer, primary_key=True) 
+    username = db.Column(db.String) 
+    C01 = db.Column(db.String)
+    C02 = db.Column(db.String)
+    C03 = db.Column(db.String) 
+    C04 = db.Column(db.String)
+    C05 = db.Column(db.String) 
+    C06 = db.Column(db.String)     
+    extraInt = db.Column(db.Integer)
+    match = db.Column(db.String)
+    name = db.Column(db.String)
+    extraStr = db.Column(db.String)
 
 class BaseProjects(db.Model):
     __abstract__ = True
@@ -242,7 +252,9 @@ admin.add_view(MyModelView(AttendLog, db.session))
 admin.add_view(MyModelView(Sources, db.session))
 admin.add_view(MyModelView(MidTerm, db.session))
 admin.add_view(MyModelView(MidAnswers, db.session))
-
+admin.add_view(MyModelView(AgentCust, db.session))
+admin.add_view(MyModelView(AgentWork, db.session))
+admin.add_view(MyModelView(AgentList, db.session))
 
 for unit in modListUnits:
     if unit is None:
