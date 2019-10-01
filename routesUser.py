@@ -128,12 +128,14 @@ def packing():
     return render_template('instructor/packing.html', title='Packing', **context)
 
 
-@app.route("/nameSet/<string:workname>/<string:custname>", methods = ['POST'])
+@app.route("/nameSet", methods = ['POST'])
 def nameSet(workname, custname):
+    #custname = request.form['custname']
 
-    modelItem = AgentList.query.filter_by(username=workname).first()
+    modelItem = AgentList.query.filter_by(username=current_user.username).first()
     modelItem.extraStr = custname
     db.session.commit()
+    print('commit')
     flash('Checking for match', 'secondary') 
     return redirect(url_for('agent_match', check=0))    
 
@@ -141,6 +143,7 @@ def nameSet(workname, custname):
 @login_required
 def agent_match(check):
      
+    
     x = 0
     answers = AgentList.query.all() 
     for ans in answers:
@@ -187,7 +190,7 @@ def agent_list():
         if countC in roleDict:
             roleDict[countC][1] = user.username
         else:
-            roleDict[countC] = ['-', user.username]
+            roleDict[countC] = ['-', user.username, '-', '-']
         countC +=1
     
     custNames = []
