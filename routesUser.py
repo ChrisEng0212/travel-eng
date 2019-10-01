@@ -140,7 +140,6 @@ def nameSet(workname, custname):
 @app.route ("/agent_match/<int:check>", methods = ['GET', 'POST'])
 @login_required
 def agent_match(check):
-    
      
     x = 0
     answers = AgentList.query.all() 
@@ -148,9 +147,22 @@ def agent_match(check):
         if current_user.username == ans.username:
             x += 1
     
+    message = None
+    
+    if x < 3: 
+        message = 'Keep going, you should try to meet 3 customers'
+    elif x == 3:
+        message = 'Maybe one more? Or close the Agency'
+    elif x > 3:
+        message = 'Maybe it is time to close the agency'
+    else:
+        message = None
+
+
     context = {
         'x' : x,
-        'check' : check
+        'check' : check,
+        'message' : message
     }          
 
     return render_template('instructor/agent_match.html', title='Agent', **context)
@@ -436,13 +448,13 @@ def agent_conv(role):
 
             if len(names) > 1:                
                 if len(matches) == 1:
-                    flash(('_______________________________CONGRATUALTIONS: You have a possible match - Check with the instructor_______________________________'), 'success') 
+                    flash(('_______________________________ CONGRATUALTIONS: You have a possible match - Check with the instructor _______________________________'), 'info') 
                     check = 1 
             elif len(matches) == 1: 
-                flash('_______________________________CONGRATUALTIONS: You have a match with ' + str(matches) + '_______________________________', 'info') 
+                flash('_______________________________ CONGRATUALTIONS: You have a match with ' + str(matches) + ' _______________________________', 'success') 
                 check = 0 
             else:
-                flash(('_______________________________SORRY: This conversation is not a match :( _______________________________'), 'success') 
+                flash(('_______________________________ SORRY: This conversation is not a match :( _______________________________'), 'danger') 
                 check = 0 
             return redirect(url_for('agent_match', check=check))
         else:
