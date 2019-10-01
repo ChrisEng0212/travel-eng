@@ -127,6 +127,34 @@ def packing():
 
     return render_template('instructor/packing.html', title='Packing', **context)
 
+
+@app.route("/nameSet/<string:workname>/<string:custname>", methods = ['POST'])
+def nameSet(workname, custname):
+
+    modelItem = AgentList.query.filter_by(username=workname).first()
+    modelItem.extraStr = custname
+    db.session.commit()
+    flash('Checking for match', 'secondary') 
+    return redirect(url_for('agent_match', check=0))    
+
+@app.route ("/agent_match/<int:check>", methods = ['GET', 'POST'])
+@login_required
+def agent_match(check):
+    
+     
+    x = 0
+    answers = AgentList.query.all() 
+    for ans in answers:
+        if current_user.username == ans.username:
+            x += 1
+    
+    context = {
+        'x' : x,
+        'check' : check
+    }          
+
+    return render_template('instructor/agent_match.html', title='Agent', **context)
+
 @app.route ("/agent_list", methods = ['GET', 'POST'])
 @login_required
 def agent_list():
@@ -406,15 +434,17 @@ def agent_conv(role):
             db.session.add(answers) 
             db.session.commit() 
 
-            if len(names) > 1:
+            if len(names) > 1:                
                 if len(matches) == 1:
-                    flash(('CONGRATUALTIONS: You have a possible match - Check with the instructor'), 'success') 
+                    flash(('_______________________________CONGRATUALTIONS: You have a possible match - Check with the instructor_______________________________'), 'success') 
+                    check = 1 
             elif len(matches) == 1: 
-                flash('CONGRATUALTIONS: You have a match with', str(matches), 'info') 
+                flash('_______________________________CONGRATUALTIONS: You have a match with ' + str(matches) + '_______________________________', 'info') 
+                check = 0 
             else:
-                flash(('SORRY: This conversation is not a match :('), 'success') 
-
-            return redirect(url_for('agent_conv', role=role))
+                flash(('_______________________________SORRY: This conversation is not a match :( _______________________________'), 'success') 
+                check = 0 
+            return redirect(url_for('agent_match', check=check))
         else:
             pass
     

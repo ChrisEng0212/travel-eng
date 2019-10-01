@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+{% if check == 1 %}
+<div style="display:none" class="content-section">
+{% elif check == 0 %}
+<div style="display:none" class="content-section">
+{% endif %}
+<h3> Customer Name</h3>
+<form class="" method="post" action="/setName/{{workname}}/custname">  
+
+<input type="text">
+<button class="btn btn-info" type="submit">Send</button>
+</div>
+
+
+
+<div class="content-section">
+<legend class="border-bottom mb-4">You have listened to {{x}} customers</legend>
+<div>
+<button  class="btn btn-lg" style="background:hotpink"><a href= "{{ url_for ('agent') }}">Next Customer</a></button>
+</div>
+    <br>
+</div>
+
+
+
+
+{% endblock %}
+
+
+
+
+{% block script %}
+{% endblock %}
