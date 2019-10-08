@@ -100,9 +100,10 @@ def att_team():
 
             #role control
             wCount = Attendance.query.filter_by(role='work').count()
-            if wCount > 14:
-                flash('Sorry, there are too many IMMIGRATION OFFICERS already. Please choose TRAVELLER', 'info')
-                return redirect(url_for('att_team'))
+            if form.role.data == 'work':
+                if wCount > 14:
+                    flash('Sorry, there are too many IMMIGRATION OFFICERS already. Please choose TRAVELLER', 'info')
+                    return redirect(url_for('att_team'))
 
             attendance = Attendance(username = form.name.data, 
             attend=form.attend.data, teamnumber=form.teamnumber.data, 
