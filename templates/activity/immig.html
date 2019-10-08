@@ -1,0 +1,61 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div class="content-section">
+<h3> Immigration Roleplay </h3>
+</div>
+
+<div class="content-section">
+<h4> {{head}}</h4>
+</div>
+
+<div class="content-section">
+<legend class="border-bottom mb-4">Set up your answers</legend> 
+    <form method="POST" action=""> 
+            {{ form.hidden_tag () }}        
+        <fieldset class="form-group">
+      
+        {% set aList = [form.A01, form.A01x, form.A02, form.A03, form.A04, form.A05, form.A06] %}
+        {% for a in aList %}
+
+            <div class="form-group">   
+                        <h3 style="color:hotpink"> {{ a.label (class="form-control-label")}}</h3>                 
+                            
+                            {% if a.errors %}
+                                {{ a (class="form-control form-control-lg is-invalid")}}  <!-- is invalid is the class-->
+                                <div class="invalid-feedback">
+                                    {% for error in a.errors %}
+                                        <span>{{ error }}</span>
+                                    {% endfor %}
+                                </div>                          
+                            {% else %}
+                                {% for subfield in a %}
+                                <tr >
+                                    <td>{{ subfield }}</td>
+                                    <td><strong style="font-size: 20px;">{{ subfield.label }}</strong></td>
+                                </tr></br>
+                                {% endfor %}
+                            {% endif %} 
+            </div>
+
+        {% endfor %}   
+            
+        </fieldset> 
+        <div class="form-group">
+                {{ form.Submit(class="btn btn-outline-secondary")}}
+        </div>
+    </form>
+
+</div> 
+
+
+
+
+{% endblock %}
+
+
+
+
+{% block script %}
+{% endblock %}

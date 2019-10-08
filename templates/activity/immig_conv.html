@@ -1,0 +1,194 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div class="content-section">
+<h3> Immigration Roleplay </h3>
+</div>
+
+<div class="content-section">
+<h4> {{head}}</h4>
+<img style="width:100%" src="{{image}}">
+</div>
+
+<div class="content-section">
+<legend class="border-bottom mb-4">Your Script</legend> 
+
+{% if role == 'cust' %}
+    
+    {% for key in script %}
+        {% if key%2 == 0  %}
+            <h3 style="color:hotpink"> {{script[key]}} </h3> <br>
+        {% else %}
+            <h4 style=""> {{script[key]}} </h4>
+        {% endif %}
+    {% endfor %}
+
+{% elif role == 'work' %}
+
+    <form method="POST" action=""> 
+            {{ form.hidden_tag () }}        
+        <fieldset class="form-group">
+    <br>
+    <h3 style="color:hotpink"> {{script[1]}} </h3>     
+    <h4 style=""> {{script[2]}} </h4>
+
+                    <div class="form-group">    
+                            {% if form.C01.errors %}
+                                {{ form.C01 (class="form-control form-control-lg is-invalid")}}  
+                                <div class="invalid-feedback">
+                                    {% for error in form.C01.errors %}
+                                        <span>{{ error }}</span>
+                                    {% endfor %}
+                                </div>                          
+                            {% else %}
+                                {% for subfield in form.C01 %}
+                                <tr >
+                                    <td>{{ subfield }}</td>
+                                    <td><strong style="font-size: 20px;">{{ subfield.label }}</strong></td>
+                                </tr></br>
+                                {% endfor %}
+                            {% endif %} 
+                    </div>
+    <br>
+    <h3 style="color:hotpink"> {{script[3]}} </h3>     
+    <h4 style=""> {{script[4]}} </h4>
+
+    <br>
+    <h3 style="color:hotpink"> {{script[5]}} </h3>     
+    <h4 style=""> {{script[6]}} </h4>
+
+                    <div class="form-group">    
+                            {% if form.C02.errors %}
+                                {{ form.C02 (class="form-control form-control-lg is-invalid")}}  
+                                <div class="invalid-feedback">
+                                    {% for error in form.C02.errors %}
+                                        <span>{{ error }}</span>
+                                    {% endfor %}
+                                </div>                          
+                            {% else %}
+                                {% for subfield in form.C02 %}
+                                <tr >
+                                    <td>{{ subfield }}</td>
+                                    <td><strong style="font-size: 20px;">{{ subfield.label }}</strong></td>
+                                </tr></br>
+                                {% endfor %}
+                            {% endif %} 
+                    </div>
+
+    <br> 
+    <h3 style="color:hotpink"> {{script[7]}} </h3>    
+    <h4 style=""> {{script[8]}} </h4>
+
+                    <div class="form-group">    
+                            {% if form.C03.errors %}
+                                {{ form.C03 (class="form-control form-control-lg is-invalid")}} 
+                                <div class="invalid-feedback">
+                                    {% for error in form.C03.errors %}
+                                        <span>{{ error }}</span>
+                                    {% endfor %}
+                                </div>                          
+                            {% else %}
+                                {% for subfield in form.C03 %}
+                                <tr >
+                                    <td>{{ subfield }}</td>
+                                    <td><strong style="font-size: 20px;">{{ subfield.label }}</strong></td>
+                                </tr></br>
+                                {% endfor %}
+                            {% endif %} 
+                    </div>
+    <br>
+    <h3 style="color:hotpink"> {{script[9]}} </h3>     
+    <h4 style=""> {{script[10]}} </h4>
+                <div class="form-group">    
+                            {% if form.C04.errors %}
+                                {{ form.C04 (class="form-control form-control-lg is-invalid")}} 
+                                <div class="invalid-feedback">
+                                    {% for error in form.C04.errors %}
+                                        <span>{{ error }}</span>
+                                    {% endfor %}
+                                </div>                          
+                            {% else %}
+                                {% for subfield in form.C04 %}
+                                <tr>
+                                    <td>{{ subfield }}</td>
+                                    <td><strong style="font-size: 20px;">{{ subfield.label }}</strong></td>
+                                </tr></br>
+                                {% endfor %}
+                            {% endif %} 
+                    </div>
+
+    <br>
+    <h3 style="color:hotpink"> {{script[11]}} </h3>     
+    <h4 style=""> {{script[12]}} </h4>
+
+                    <div class="form-group" id="acco">    
+                            {% if form.C05.errors %}
+                                {{ form.C05 (class="form-control form-control-lg is-invalid")}}  
+                                <div class="invalid-feedback">
+                                    {% for error in form.C05.errors %}
+                                        <span>{{ error }}</span>
+                                    {% endfor %}
+                                </div>                          
+                            {% else %}
+                                {% for subfield in form.C05 %}
+                                <tr>
+                                    <td>{{ subfield }}</td>
+                                    <td><strong style="font-size: 20px;">{{ subfield.label }}</strong></td>
+                                </tr></br>
+                                {% endfor %}
+                            {% endif %} 
+                    </div>
+    
+    
+ <br>
+    <h3 style="color:hotpink"> {{script[13]}} <text id="acco_text"> </text> </h3> 
+    <h4 style=""> {{script[14]}} </h4>
+     
+
+                <div class="form-group">    
+                            {% if form.C06.errors %}
+                                {{ form.C06 (class="form-control form-control-lg is-invalid")}}  
+                                <div class="invalid-feedback">
+                                    {% for error in form.C06.errors %}
+                                        <span>{{ error }}</span>
+                                    {% endfor %}
+                                </div>                          
+                            {% else %}
+                                {% for subfield in form.C06 %}
+                                <tr>
+                                    <td>{{ subfield }}</td>
+                                    <td><strong style="font-size: 20px;">{{ subfield.label }}</strong></td>
+                                </tr></br>
+                                {% endfor %}
+                            {% endif %} 
+                    </div>  
+    
+    <h3 style="color:hotpink"> {{script[15]}} </h3>  
+
+      
+
+
+        </fieldset> 
+        <div class="form-group">
+                {{ form.Submit(class="btn btn-outline-secondary")}}
+        </div>
+    </form>   
+
+{% endif %}
+
+
+
+
+{% endblock %}
+
+
+
+
+{% block script %}
+
+<script>
+
+</script>
+
+{% endblock %}

@@ -12,7 +12,7 @@ class Attend(FlaskForm):
     studentID = StringField ('Student ID (9 numbers)', validators=[DataRequired(), Length(9)])                  
     teamnumber = IntegerField ('Team Number')
     teamcount = IntegerField ('Team Count') 
-    role =  RadioField('What role would you like today?', choices = [('work', 'TravelAgent'), ('cust', 'Traveller')])                                                
+    role =  RadioField('What role would you like today?', choices = [('work', 'Immigration Officer'), ('cust', 'Country Visitor')])                                                
     submit = SubmitField('Join')
 
 class AttendLate(FlaskForm):
@@ -246,9 +246,207 @@ AgentOne = {
     ],  
 }
 
+#### Immigration Conversations
+ImmigOne = {
+    '1a' : ['Good afternoon, ', 
+        'Where are coming from today?',
+        'Where have you flown from?',
+        'Where did you start your journey?'       
+    ],
+    '1b' : ["I'm coming from ",
+        'Tokyo', 
+        'New York', 
+        'Paris', 
+        'London', 
+        'Bangkok'
+    ],
+    '1c' : ['Okay, ', 
+        'May I have your passport?',
+        'Passport please', 
+        'I need to see your passport'     
+    ],
+    '1d' : ['My passport, ',
+        'Here you go...', 
+        'Here you are...', 
+        'Right here ...' 
+    ],
+    '2a' : ['Thank you, and ',
+        'What is the nature of your visit?',
+        'What is the purpose of your trip?',
+        'What do you plan to do here?'
+    ],    
+    '2b' : ["I'm here ",
+        'for a vacation', 
+        'to see family',
+        'for business',
+        'to visit a friend'
+    ],
+    '3a' : ['JOB: ',   
+        'What is your occupation?',
+        'What do you do in your home country?',
+        'What is your line of work?'            
+    ],
+    '3b' : ['I am a ', 
+        'student',
+        'teacher',
+        'salesperson', 
+        'doctor',
+        'nurse'
+    ],
+    '4a' : ['ACCOMODATION: ', 
+        'Where will you be staying?',
+        'Where is your accommodation?',
+        'What address are you staying at?'       
+    ],
+    '4b' : ['I’m staying ',
+        'at a hotel',
+        'at a guest house',
+        'with a friend',
+        'with a relative'
+    ],  
+    '5a' : ['TIME: ',
+        'How long do you intend to stay?',
+        'What is the duration of your stay?',
+        'How long will you be in the country?'
+    ], 
+    ###
+    '5b' : ["I'm here for ",
+        ['one week', 'just over a week'], 
+        ['20 days','for about 20 days'], 
+        ['3 months','totally 3 months']
+    ],    
+    '6a' : ['VISIT BEFORE: ',
+        'Is this your first time here?',
+        'Have you been here before?'        
+    ],  
+    ###
+    '6b' : ['Actually..',
+        ['No', 'No, this is my first time'],
+        ['Yes', 'Yes, I was here last year']        
+    ], 
+
+}
+
+class ImmigOfficer(FlaskForm): 
+    A01 = RadioField (label=ImmigOne['1a'][0], choices=[
+            (ImmigOne['1a'][1], ImmigOne['1a'][1]), 
+            (ImmigOne['1a'][2], ImmigOne['1a'][2]), 
+            (ImmigOne['1a'][3], ImmigOne['1a'][3])
+        ]) 
+    A01x = RadioField (label=ImmigOne['1c'][0], choices=[
+            (ImmigOne['1c'][1], ImmigOne['1c'][1]), 
+            (ImmigOne['1c'][2], ImmigOne['1c'][2]), 
+            (ImmigOne['1c'][3], ImmigOne['1c'][3])
+        ])  
+    A02 = RadioField (label=ImmigOne['2a'][0], choices=[
+            (ImmigOne['2a'][1], ImmigOne['2a'][1]), 
+            (ImmigOne['2a'][2], ImmigOne['2a'][2]), 
+            (ImmigOne['2a'][3], ImmigOne['2a'][3])
+        ])  
+    A03 = RadioField (label=ImmigOne['3a'][0], choices=[
+            (ImmigOne['3a'][1], ImmigOne['3a'][1]), 
+            (ImmigOne['3a'][2], ImmigOne['3a'][2]), 
+            (ImmigOne['3a'][3], ImmigOne['3a'][3])
+        ])     
+    A04 = RadioField (label=ImmigOne['4a'][0], choices=[
+            (ImmigOne['4a'][1], ImmigOne['4a'][1]), 
+            (ImmigOne['4a'][2], ImmigOne['4a'][2]), 
+            (ImmigOne['4a'][3], ImmigOne['4a'][3])
+        ]) 
+    A05 = RadioField (label=ImmigOne['5a'][0], choices=[
+            (ImmigOne['5a'][1], ImmigOne['5a'][1]), 
+            (ImmigOne['5a'][2], ImmigOne['5a'][2]), 
+            (ImmigOne['5a'][3], ImmigOne['5a'][3])
+        ]) 
+    A06 = RadioField (label=ImmigOne['6a'][0], choices=[
+            (ImmigOne['6a'][1], ImmigOne['6a'][1]), 
+            (ImmigOne['6a'][2], ImmigOne['6a'][2])            
+        ])        
+    Submit = SubmitField('Submit')  
+
+class ImmigListen(FlaskForm): 
+    C01 = RadioField (label=ImmigOne['1b'][0], choices=[
+            (ImmigOne['1b'][1], ImmigOne['1b'][1]), 
+            (ImmigOne['1b'][2], ImmigOne['1b'][2]), 
+            (ImmigOne['1b'][3], ImmigOne['1b'][3]),
+            (ImmigOne['1b'][4], ImmigOne['1b'][4]),
+            (ImmigOne['1b'][5], ImmigOne['1b'][5])
+        ])     
+    C02 = RadioField (label=ImmigOne['2b'][0], choices=[
+            (ImmigOne['2b'][1], ImmigOne['2b'][1]), 
+            (ImmigOne['2b'][2], ImmigOne['2b'][2]), 
+            (ImmigOne['2b'][3], ImmigOne['2b'][3]),
+            (ImmigOne['2b'][4], ImmigOne['2b'][4])
+        ])  
+    C03 = RadioField (label=ImmigOne['3b'][0], choices=[
+            (ImmigOne['3b'][1], ImmigOne['3b'][1]), 
+            (ImmigOne['3b'][2], ImmigOne['3b'][2]), 
+            (ImmigOne['3b'][3], ImmigOne['3b'][3]),
+            (ImmigOne['3b'][4], ImmigOne['3b'][4]),
+            (ImmigOne['3b'][5], ImmigOne['3b'][5])
+        ])     
+    C04 = RadioField (label=ImmigOne['4b'][0], choices=[
+            (ImmigOne['4b'][1], ImmigOne['4b'][1]), 
+            (ImmigOne['4b'][2], ImmigOne['4b'][2]), 
+            (ImmigOne['4b'][3], ImmigOne['4b'][3]),
+            (ImmigOne['4b'][4], ImmigOne['4b'][4])
+        ]) 
+    C05 = RadioField (label=ImmigOne['5b'][0], choices=[
+            (ImmigOne['5b'][1][1], ImmigOne['5b'][1][0]), 
+            (ImmigOne['5b'][2][1], ImmigOne['5b'][2][0]), 
+            (ImmigOne['5b'][3][1], ImmigOne['5b'][3][0]),            
+        ]) 
+    C06 = RadioField (label=ImmigOne['6b'][0], choices=[
+            (ImmigOne['6b'][1][1], ImmigOne['6b'][1][0]), 
+            (ImmigOne['6b'][2][1], ImmigOne['6b'][2][0])        
+        ])        
+    Submit = SubmitField('Submit') 
+
+class ImmigTraveller(FlaskForm): 
+    A01 = RadioField (label=ImmigOne['1b'][0], choices=[
+            (ImmigOne['1b'][1], ImmigOne['1b'][1]), 
+            (ImmigOne['1b'][2], ImmigOne['1b'][2]), 
+            (ImmigOne['1b'][3], ImmigOne['1b'][3]),
+            (ImmigOne['1b'][4], ImmigOne['1b'][4]),
+            (ImmigOne['1b'][5], ImmigOne['1b'][5])
+        ]) 
+    A01x = RadioField (label=ImmigOne['1d'][0], choices=[
+            (ImmigOne['1d'][1], ImmigOne['1d'][1]), 
+            (ImmigOne['1d'][2], ImmigOne['1d'][2]), 
+            (ImmigOne['1d'][3], ImmigOne['1d'][3])
+        ])  
+    A02 = RadioField (label=ImmigOne['2b'][0], choices=[
+            (ImmigOne['2b'][1], ImmigOne['2b'][1]), 
+            (ImmigOne['2b'][2], ImmigOne['2b'][2]), 
+            (ImmigOne['2b'][3], ImmigOne['2b'][3]),
+            (ImmigOne['2b'][4], ImmigOne['2b'][4])
+        ])  
+    A03 = RadioField (label=ImmigOne['3b'][0], choices=[
+            (ImmigOne['3b'][1], ImmigOne['3b'][1]), 
+            (ImmigOne['3b'][2], ImmigOne['3b'][2]), 
+            (ImmigOne['3b'][3], ImmigOne['3b'][3]),
+            (ImmigOne['3b'][4], ImmigOne['3b'][4]),
+            (ImmigOne['3b'][5], ImmigOne['3b'][5])
+        ])     
+    A04 = RadioField (label=ImmigOne['4b'][0], choices=[
+            (ImmigOne['4b'][1], ImmigOne['4b'][1]), 
+            (ImmigOne['4b'][2], ImmigOne['4b'][2]), 
+            (ImmigOne['4b'][3], ImmigOne['4b'][3]),
+            (ImmigOne['4b'][4], ImmigOne['4b'][4])
+        ]) 
+    A05 = RadioField (label=ImmigOne['5b'][0], choices=[
+            (ImmigOne['5b'][1][1], ImmigOne['5b'][1][1]), 
+            (ImmigOne['5b'][2][1], ImmigOne['5b'][2][1]), 
+            (ImmigOne['5b'][3][1], ImmigOne['5b'][3][1])            
+        ]) 
+    A06 = RadioField (label=ImmigOne['6b'][0], choices=[
+            (ImmigOne['6b'][1][1], ImmigOne['6b'][1][1]), 
+            (ImmigOne['6b'][2][1], ImmigOne['6b'][2][1])        
+        ])        
+    Submit = SubmitField('Submit')         
 
 class AgentListen(FlaskForm): 
-    C01 = RadioField (label='What is the customers situation?', choices=[
+    C01 = RadioField (label='C01', choices=[
             (AgentOne['1b'][1][1], AgentOne['1b'][1][0]), 
             (AgentOne['1b'][2][1], AgentOne['1b'][2][0]), 
             (AgentOne['1b'][3][1], AgentOne['1b'][3][0])

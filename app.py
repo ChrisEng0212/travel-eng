@@ -39,6 +39,7 @@ mail = Mail(app)
 
 from routesUser import *
 from routesAdmin import *
+from routesActivity import *
 
 
 if __name__ == '__main__': 

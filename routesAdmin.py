@@ -192,8 +192,63 @@ def logout():
     logout_user () # no arguments becasue it already knows who is logged in 
     return redirect(url_for('home'))
 
+@app.route ("/att_log")
+@login_required
+def att_log():  
+    if current_user.id != 1:
+        return abort(403)
+
+    course = Sources.query.order_by(asc(Sources.date)).all()   
+
+    dateList = []
+    for c in course:
+        date = c.date
+        dateList.append(date.strftime("%m/%d"))
+    
+    print('dateList', dateList)
+    
+    studentIDs = [120354066,120374012,120514006,120514049,
+    120553108,120714160,120715231,120754002,120754003,120754004,
+    120754006,120754009,120754011,120754012,120754013,120754015,
+    120754016,120754018,120754020,120754021,120754024,120754026,
+    120754029,120754030,120754031,120754034,120754037,120754038,
+    120754040,120754041,120754044,120754045,120754047,120754050,
+    120754051,120754053,120754054,120754055,120754057,120754058,
+    120754059,120754060,120754061,120754062,120754063,120754065,
+    120754066,120754502,120754505,120754509,120754510,120754511,
+    120754515,320451349,320514127,320716134,320716145
+    ]
+    
+    attLogDict = {}
+    for number in studentIDs:        
+        attLogDict[number] = []
+
+    for attLog in attLogDict:
+        logs = AttendLog.query.filter_by(studentID=str(attLog)).all() 
+        attGrade = 0        
+        if logs:                        
+            for log in logs:
+                d = log.date_posted
+                dStr = d.strftime("%m/%d")                
+                attLogDict[attLog].append(dStr) 
+                attGrade = attGrade + log.attScore
+            attLogDict[attLog].insert(0, attGrade) 
+
+    today = datetime.now()
+    todayDate = today.strftime("%m/%d")  
+    
+    print('attLogDict', attLogDict)
+
+    userDict = {}
+    users = User.query.all()
+    for user in users:
+        userDict[int(user.studentID)] = user.username
+
+
+    return render_template('instructor/att_log.html', attLogDict=attLogDict, dateList=dateList, todayDate=todayDate, userDict=userDict)  
 
 @app.route ("/teams")
+@login_required
 def teams():  
     if current_user.id != 1:
         return abort(403)
