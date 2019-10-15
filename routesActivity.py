@@ -6,6 +6,7 @@ from app import app, db, bcrypt, mail
 from flask_login import login_user, current_user, logout_user, login_required
 from forms import * 
 from models import *
+import ast # for eval of list string
 
 try:
     from aws import Settings    
@@ -998,7 +999,7 @@ def hotel_conv(role):
         7: 'CLERK: Answer', 
         8: 'And I just want to ask, does the room have ' + answers.A06,
         9: 'CLERK: Answer',
-        10: 'One more thing, is there a ' + answers.A07, 
+        10: 'One more thing, is there ' + answers.A07, 
         11: 'CLERK: Answer',  
         12: answers.A08
         }  
@@ -1026,8 +1027,10 @@ def hotel_conv(role):
             guest = None
             for name in namesDict:
                 if namesDict[name] == form.C01.data:  
-                    guest = HotelGuest.query.filter_by(username=name).first()
-                    if current_user.username in guest.extraStr:
+                    guest = HotelGuest.query.filter_by(username=name).first()                                        
+                    matchList = ast.literal_eval(guest.extraStr)
+                    print ('xxxx', matchList)
+                    if current_user.username in matchList:
                         match = guest.username
                     else: 
                         match = 'None'                        
