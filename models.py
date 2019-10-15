@@ -25,7 +25,7 @@ class Attendance(db.Model):
     teamsize = db.Column(db.Integer)
     teamcount = db.Column(db.Integer)
     unit = db.Column(db.String(9)) 
-    role = db.Column(db.String) 
+    role = db.Column(db.String)     
  
 class AttendLog(db.Model):
     id = db.Column(db.Integer, primary_key=True)     
@@ -69,8 +69,6 @@ class User(db.Model, UserMixin): #import the model
 
     def __repr__(self):  # double underscore method or dunder method, marks the data, this is how it is printed
         return f"User('{self.username}', '{self.email}', '{self.image_file}')"
-
-
 
 class Sources(db.Model):
     id = db.Column(db.Integer, primary_key=True)  
@@ -132,6 +130,9 @@ class MidAnswers(db.Model):
     extraInt = db.Column(db.Integer)
     extraStr = db.Column(db.String)
 
+
+### IMMIG ####################
+
 class ImmigTrav(db.Model):
     id = db.Column(db.Integer, primary_key=True) 
     username = db.Column(db.String) 
@@ -171,6 +172,50 @@ class ImmigList(db.Model):
     match = db.Column(db.String)
     name = db.Column(db.String)
     extraStr = db.Column(db.String)
+
+### IMMIG ####################
+
+class HotelGuest(db.Model):
+    id = db.Column(db.Integer, primary_key=True) 
+    username = db.Column(db.String) 
+    A01 = db.Column(db.String)    
+    A02 = db.Column(db.String)
+    A03 = db.Column(db.String) 
+    A04 = db.Column(db.String)
+    A05 = db.Column(db.String) 
+    A06 = db.Column(db.String) 
+    A07 = db.Column(db.String) 
+    A08 = db.Column(db.String)     
+    extraInt = db.Column(db.Integer)
+    extraStr = db.Column(db.String)
+
+class HotelClerk(db.Model):
+    id = db.Column(db.Integer, primary_key=True) 
+    username = db.Column(db.String) 
+    A01 = db.Column(db.String)    
+    A02 = db.Column(db.String)
+    A03 = db.Column(db.String) 
+    A04 = db.Column(db.String)
+    A05 = db.Column(db.String) 
+    A06 = db.Column(db.String) 
+    A07 = db.Column(db.String)
+    A08 = db.Column(db.String) 
+    A09 = db.Column(db.String) 
+    A10 = db.Column(db.String)
+    A11 = db.Column(db.String) 
+    extraInt = db.Column(db.Integer)
+    extraStr = db.Column(db.String)
+
+class HotelList(db.Model):
+    id = db.Column(db.Integer, primary_key=True) 
+    username = db.Column(db.String) 
+    C01 = db.Column(db.String)         
+    extraInt = db.Column(db.Integer)
+    match = db.Column(db.String)
+    name = db.Column(db.String)
+    extraStr = db.Column(db.String)
+
+### Travel Agent ####
 
 class AgentCust(db.Model):
     id = db.Column(db.Integer, primary_key=True) 
@@ -292,9 +337,12 @@ admin.add_view(MyModelView(MidAnswers, db.session))
 #admin.add_view(MyModelView(AgentCust, db.session))
 #admin.add_view(MyModelView(AgentWork, db.session))
 #admin.add_view(MyModelView(AgentList, db.session))
-admin.add_view(MyModelView(ImmigTrav, db.session))
-admin.add_view(MyModelView(ImmigOffr, db.session))
-admin.add_view(MyModelView(ImmigList, db.session))
+#admin.add_view(MyModelView(ImmigTrav, db.session))
+#admin.add_view(MyModelView(ImmigOffr, db.session))
+#admin.add_view(MyModelView(ImmigList, db.session))
+admin.add_view(MyModelView(HotelGuest, db.session))
+admin.add_view(MyModelView(HotelClerk, db.session))
+admin.add_view(MyModelView(HotelList, db.session))
 
 for unit in modListUnits:
     if unit is None:

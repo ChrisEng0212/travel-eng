@@ -1,0 +1,159 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div class="content-section">
+<h3> Hotel Role Play </h3>
+</div>
+
+<div class="content-section">
+
+    <h3 style="color:hotpink"> {{script[1][0]}} </h3> 
+    
+    <h3 style="color:purple"> {{script[1][1]}} </h3>
+     
+    <h3 style="color:hotpink"> {{script[1][2]}} </h3>     
+    <br>
+    
+    <form action="">
+
+      
+    
+
+    <div class="form-group"> 
+    <h4 style=""> {{script[2]}} </h4>  
+    <input type="radio" name="request" > ocean view <br>
+    <input type="radio" name="request" > extra bed<br> 
+    <input type="radio" name="request" > non-smoking room<br>    
+    </div>
+
+    <h3 style="color:hotpink"> {{script[3]}} </h3> 
+    
+    <br>    
+
+    <div class="form-group" id="roomSelect"> 
+    <h4 style=""> {{script[4]}} </h4>
+    <input type="radio" name="room" id="item5"> wifi <br>
+    <input type="radio" name="room" id="item6"> a safe<br> 
+    <input type="radio" name="room" id="item7"> a minibar<br>
+    </div>
+    
+    <h3 style="color:hotpink" id="room"> ... </h3>  
+    <br>
+
+    <div class="form-group" id="facilSelect"> 
+    <h4 style=""> {{script[8]}} </h4>  
+    <input type="radio" name="service" id="item9">  a gym<br>
+    <input type="radio" name="service" id="item10"> a swimming pool<br> 
+    <input type="radio" name="service" id="item11"> a laundry service<br>
+    </div>
+
+    <h3 style="color:hotpink" id="service"> ... </h3> 
+    <br>
+
+    <div class="form-group" id="finalSelect"> 
+    <h4 style=""> {{script[12]}} </h4>  
+    <input type="radio" name="final" > So is my room ready? <br>
+    <input type="radio" name="final" > Can I check in now?<br> 
+    <input type="radio" name="final" > Is the booking okay?<br>
+    </div>
+    </form>    
+        
+
+     <h4 style=""> ______________ </h4> 
+     <br>
+     
+
+    <div style="display:none"> 
+    <h3 id="script5"> {{script[5]}} </h3> 
+    <h3 id="script6"> {{script[6]}} </h3> 
+    <h3 id="script7"> {{script[7]}} </h3>
+    <h3 id="script9"> {{script[9]}} </h3> 
+    <h3 id="script10"> {{script[10]}} </h3> 
+    <h3 id="script11"> {{script[11]}} </h3>
+    </div>
+</div>
+
+<div class="content-section">
+{% if match == 'None' %}
+<button class="btn" id='roomcheck' type="button" disabled data-toggle="collapse" data-target="#collapseNone" aria-expanded="false", aria-controls="collapseNone"> <h4 style="color:white">{{script[13]}} </h4> </button>  
+
+<div id="collapseNone" class="collapse">
+<br>
+<h3 style="color:red"> Sorry {{guest}}, {{script[15]}} </h3>
+<br> 
+<div>
+<img style="max-width:100%" src="https://travel-eng.s3-ap-northeast-1.amazonaws.com/images/angry_guest2.jpg">
+</div>
+<br>
+<button  class="btn btn-lg" style="background:lightpink"><a href= "{{ url_for ('activity', activity='hotel') }}">Next Guest</a></button>
+</div>
+</div>
+{% else %}
+<button class="btn" id='roomcheck' type="button" disabled data-toggle="collapse" data-target="#collapseMatch" aria-expanded="false" aria-controls="collapseMatch"> <h4 style="color:white">{{script[13]}} </h4> </button>  
+<br>
+<div id="collapseMatch" class="collapse">
+<br>
+<h3 style=""> Match with {{match}} </h3>
+<h3 style="color:green"> {{script[14]}} </h3>
+<br> 
+<div>
+<img style="max-width:100%" src="https://travel-eng.s3-ap-northeast-1.amazonaws.com/images/happy_guest2.png">
+</div>
+<br>
+<div>
+<button  class="btn btn-lg" style="background:lightpink"><a href= "{{ url_for ('activity', activity='hotel') }}">Next Guest</a></button>
+</div>
+</div>
+{% endif %}
+</div>
+
+
+
+
+
+
+
+
+
+{% endblock %}
+
+
+
+
+{% block script %}
+
+<script>
+
+document.getElementById("roomSelect").onchange = function()  {
+if (document.getElementById("item5").checked){
+    document.getElementById("room").innerHTML = document.getElementById("script5").innerHTML
+    }  
+if (document.getElementById("item6").checked){
+    document.getElementById("room").innerHTML = document.getElementById("script6").innerHTML
+    } 
+if (document.getElementById("item7").checked){
+    document.getElementById("room").innerHTML = document.getElementById("script7").innerHTML
+    } 
+}
+
+document.getElementById("facilSelect").onchange = function()  {
+if (document.getElementById("item9").checked){
+    document.getElementById("service").innerHTML = document.getElementById("script9").innerHTML
+    }  
+if (document.getElementById("item10").checked){
+    document.getElementById("service").innerHTML = document.getElementById("script10").innerHTML
+    } 
+if (document.getElementById("item11").checked){
+    document.getElementById("service").innerHTML = document.getElementById("script11").innerHTML
+    }
+}
+
+document.getElementById("finalSelect").onchange = function()  {
+    document.getElementById("roomcheck").style.background = 'hotpink';
+    document.getElementById("roomcheck").removeAttribute('disabled');    
+} 
+            
+</script>
+
+{% endblock %}

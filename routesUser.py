@@ -101,8 +101,8 @@ def att_team():
             #role control
             wCount = Attendance.query.filter_by(role='work').count()
             if form.role.data == 'work':
-                if wCount > 14:
-                    flash('Sorry, there are too many IMMIGRATION OFFICERS already. Please choose TRAVELLER', 'info')
+                if wCount > 21:
+                    flash('Sorry, there are too many HOTEL CLERKS already. Please choose HOTEL GUEST', 'info')
                     return redirect(url_for('att_team'))
 
             attendance = Attendance(username = form.name.data, 
@@ -119,7 +119,7 @@ def att_team():
                 attScore = 1          
             attendLog = AttendLog(username = form.name.data, 
             attend=form.attend.data,teamnumber=form.teamnumber.data, 
-            studentID=form.studentID.data, attScore=attScore)
+            studentID=form.studentID.data, attScore=attScore, extraStr=form.midterm.data)
             db.session.add(attendLog)
             # commit both
             db.session.commit()

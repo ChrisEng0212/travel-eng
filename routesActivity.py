@@ -589,7 +589,6 @@ def immig_list():
 
     return render_template('activity/immig_list.html', title='Immigration', **context)
 
-
 @app.route ("/immig", methods = ['GET', 'POST'])
 @login_required
 def immig(): 
@@ -616,8 +615,6 @@ def immig():
     flash('No Data Available', 'danger') 
     return redirect(url_for('home'))
    
-
-
 @app.route ("/immig_form/<string:role>", methods = ['GET', 'POST'])
 @login_required
 def immig_form(role):    
@@ -800,7 +797,6 @@ def immig_conv(role):
 
     return render_template('activity/immig_conv.html', title='Immigration', **context)
 
-
 @app.route ("/immig_match/<int:result>/<string:name>", methods = ['GET', 'POST'])
 @login_required
 def immig_match(result, name):  
@@ -813,3 +809,277 @@ def immig_match(result, name):
     }          
 
     return render_template('activity/immig_match.html', title='Immigration', **context)
+
+### HOTEL ##################################
+
+
+@app.route ("/hotel_list", methods = ['GET', 'POST'])
+@login_required
+def hotel_list():
+    
+    cust = Attendance.query.filter_by(role='cust').all()
+    work = Attendance.query.filter_by(role='work').all() 
+    custSet = HotelGuest.query.all() 
+    workSet = HotelClerk.query.all()
+        
+    workDict = {} 
+    for item in work:
+        workDict[item.username] = [1, 0, []]
+    for item in workSet:
+        if workDict[item.username]:
+            workDict[item.username][0] = 'Set'
+    print('workDict', workDict)  
+
+    custDict = {}
+    for item in cust:
+        custDict[item.username] = [1, 0, []]
+    for item in custSet:
+        if custDict[item.username]:
+            custDict[item.username][0] = 'Set'    
+    print('custDict', custDict) 
+    
+    answers = HotelList.query.all() 
+    for ans in answers:
+        if workDict[ans.username]:
+            workDict[ans.username][1] += 1
+            workDict[ans.username][2].append(ans.match)    
+        if ans.match in custDict:
+            custDict[ans.name][1] += 1
+            custDict[ans.name][2].append(ans.username)
+        else:
+            custDict[ans.name][2].append('None')
+
+       
+    context = {
+        'workDict' : workDict,
+        'custDict' : custDict        
+    }          
+
+    return render_template('activity/hotel_list.html', title='Hotel', **context)
+
+@app.route ("/activity/<string:activity>", methods = ['GET', 'POST'])
+@login_required
+def activity(activity): 
+
+    directions = {
+        'hotel' : 'hotel_form'
+    }
+
+    if Attendance.query.filter_by(username='Chris').first().role == 'closed':
+        flash('Activity not started yet', 'danger') 
+        return redirect(url_for('home'))
+
+    attendCheck = Attendance.query.filter_by(username=current_user.username).first()
+    if attendCheck:
+        attend = attendCheck.role
+    else:
+        flash('Please attend the class first', 'danger') 
+        return redirect(url_for('att_team'))
+    
+    if attend == 'cust':
+        return redirect(url_for(directions[activity], role='cust'))
+    elif attend == 'work':
+        return redirect(url_for(directions[activity], role='work'))
+    else:
+        flash('Please attend the class first', 'danger') 
+        return redirect(url_for('att_team'))        
+    
+    flash('No Data Available', 'danger') 
+    return redirect(url_for('home'))
+   
+@app.route ("/hotel_form/<string:role>", methods = ['GET', 'POST'])
+@login_required
+def hotel_form(role):    
+    
+    if role == 'cust':
+        form = HotGuest()
+        model = HotelGuest
+        title = 'Conversation as Guest'        
+    if role == 'work':
+        form = HotClerk()
+        model = HotelClerk
+        title = 'Conversation as Hotel Clerk'
+        
+    work = Attendance.query.filter_by(role='work').all()     
+
+    workNames = []
+    for item in work:
+        workNames.append(item.username)    
+
+    #random pairer
+    print(workNames)
+    myList = []
+    if len(workNames) > 5:    
+        for i in range(7):
+            x = random.choice(workNames)
+            while x in myList:
+                x = random.choice(workNames)
+            myList.append(x)
+    else: 
+        myList = workNames
+
+    print(myList)    
+    
+    answers = model.query.filter_by(username=current_user.username).first()
+    
+    if answers:
+        print ('action2')
+        return redirect(url_for('hotel_conv', role=role))    
+    else:  
+        if form.validate_on_submit(): 
+            if role == 'work':
+                answers = model(
+                username=current_user.username, 
+                A01=form.A01.data,           
+                A02=form.A02.data,
+                A03=form.A03.data,
+                A04=form.A04.data,
+                A05=form.A05.data,
+                A06=form.A06.data,
+                A07=form.A07.data,
+                A08=form.A08.data,
+                A09=form.A09.data,
+                A10=form.A10.data,
+                A11=form.A11.data,
+                extraStr = str(myList)
+                )
+            else: 
+                answers = model(
+                username=current_user.username, 
+                A01=form.A01.data,           
+                A02=form.A02.data,
+                A03=form.A03.data,
+                A04=form.A04.data,
+                A05=form.A05.data,
+                A06=form.A06.data,
+                A07=form.A07.data,  
+                A08=form.A08.data,              
+                extraStr = str(myList)
+                )
+
+            db.session.add(answers)   
+            db.session.commit()
+            flash('Ready for activity', 'success') 
+            return redirect(url_for('hotel_conv', role=role))
+        else:
+            pass
+
+    context = {
+        'form' : form, 
+        'model' : model,
+        'head' : title,
+        'role' : role      
+    } 
+
+    return render_template('activity/hotel.html', title='Hotel', **context)
+
+@app.route ("/hotel_conv/<string:role>", methods = ['GET', 'POST'])
+@login_required
+def hotel_conv(role): 
+    
+    
+    namesDict = {
+                'Jerry': 'Jerry', 'Kai': 'Kai', 'Lulu': 'Lulu', 'Felisia': 'Felisia', 'Test2': 'Enoch', 'Chris': 'Chris', 'Abby': 'Abby', 'David ': 'David','Jason': 'Jason', 'William': 'William', 'Owen': 'Owen', 'Tommy': 'Tommy', 'Sara': 'Sara', 'Alice': 'Alice', 'Sarah': 'Sarah', 'Test': 'Roger', 'SamTsai': 'Sam', 'Cindy': 'Cindy', 'Jimmy': 'Jimmy', 'Jessy': 'Jessy', 'JimmyWei': 'James', 'Jasmine': 'Jasmine', 'Gina': 'GinaT', 'Victor': 'Victor', 'Raymond': 'Raymond', 'Eric': 'Eric', 'Una': 'Una', 'Peggy': 'Peggy', 'Disa': 'Disa', 'Coral': 'Coral', 'Michelle': 'Michelle', 'Rebecca': 'Rebecca', 'Kenny ': 'Kenny', 'Bruce': 'Bruce', 'Wendy': 'Wendy', 'Monica': 'Monica', 'Carrie': 'Carrie', 'Anny': 'Anny', 'Jay': 'Jay', 'Joshua': 'Joshua', 'Alyvia': 'Alyvia', 'Rae': 'Rae', 'Chiho': 'Chiho', 'Angus': 'Angus', 'Sherry': 'Sherry', 'Lin': 'Linn', 'Vellna': 'Vellna', 'Kelly ': 'Kelly', 'Oliver': 'Oliver', 'Max': 'Max', 'Crystal': 'Crystal', 'Amber ': 'Amber', 'Justin': 'Justin', 'Alina': 'Alina', 'GinaLai': 'Gina', 'Albee': 'Albee', 'Emma': 'Emma', 'Emmy': 'Emmy', 'Wei': 'Wei', 'Jeremy ': 'Jeremy', 'Pony': 'Pony', 'Winnie': 'Winnie'}
+
+
+    if role == 'cust':
+        form = None        
+        model = HotelGuest
+        title = 'Conversation as Hotel Guest'
+        image = 'https://travel-eng.s3-ap-northeast-1.amazonaws.com/images/HotGuest.jpg'
+        answers = model.query.filter_by(username=current_user.username).first()
+        script = {
+        1: 'ARRIVE AT HOTEL:',
+        2: answers.A01,        
+        3: 'NAME:',
+        4: answers.A02 + namesDict[current_user.username],
+        5: 'LISTEN TO DETAILS: ' + answers.A03 + '/' + answers.A04,
+        6: 'Yes, and I requested ' + answers.A05, 
+        7: 'CLERK: Answer', 
+        8: 'And I just want to ask, does the room have ' + answers.A06,
+        9: 'CLERK: Answer',
+        10: 'One more thing, is there a ' + answers.A07, 
+        11: 'CLERK: Answer',  
+        12: answers.A08
+        }  
+
+    if role == 'work':
+        form = HotListen()           
+        model = HotelClerk
+        title = 'Conversation as Hotel Receptionist'
+        image = 'https://travel-eng.s3-ap-northeast-1.amazonaws.com/images/HotClerk.jpg'
+        answers = model.query.filter_by(username=current_user.username).first()
+        script = {
+        1: 'GUEST ARRIVES: ' + HotelOne['2a'][0] + answers.A01,
+        2: 'GUEST: checking in', 
+        3: HotelOne['2b'][0] + answers.A02,
+        4: 'Get the name:',
+        5: HotelOne['2c'][0] + answers.A03        
+        }         
+        if form.validate_on_submit():
+            if Attendance.query.filter_by(username='Chris').first().role == 'wait':
+                flash('Waiting for all students to be ready', 'danger') 
+                return redirect(url_for('hotel_conv', role=role))
+            else:
+                pass              
+            
+            guest = None
+            for name in namesDict:
+                if namesDict[name] == form.C01.data:  
+                    guest = HotelGuest.query.filter_by(username=name).first()
+                    if current_user.username in guest.extraStr:
+                        match = guest.username
+                    else: 
+                        match = 'None'                        
+            
+            if guest == None: 
+                flash('Name not found, please try again', 'danger') 
+                return redirect(url_for('hotel_conv', role=role))
+            else: 
+                answers = HotelList(username=current_user.username, 
+                C01=guest.username, name=guest.username, match=match 
+                )   
+                db.session.add(answers) 
+                db.session.commit() 
+                return redirect(url_for('hotel_roomcheck', guest=guest.username, match=match))        
+        
+    context = {
+        'form' : form, 
+        'script' : script,
+        'head' : title, 
+        'role' : role,
+        'image' : image
+    }         
+
+    return render_template('activity/hotel_conv.html', title='Hotel', **context)
+
+@app.route ("/hotel_roomcheck/<string:guest>/<string:match>", methods = ['GET', 'POST'])
+@login_required
+def hotel_roomcheck(guest, match): 
+
+    Guest = HotelGuest.query.filter_by(username=guest).first()
+    listen = HotelList.query.filter_by(username=current_user.username).first()    
+    clerk = HotelClerk.query.filter_by(username=current_user.username).first()
+
+    form = HotList2() 
+    title = 'Conversation as Hotel Receptionist'
+    script = {
+        1: ['I see your booking is ',  Guest.A03 + Guest.A04, ' is that right?'], 
+        2: 'GUEST: request 1', 
+        3: 'Yes, that will be fine',
+        4: 'GUEST: request 2',
+        5: clerk.A04,
+        6: clerk.A05,
+        7: clerk.A06,
+        8: 'GUEST: request 3',
+        9: clerk.A07,
+        10: clerk.A08,
+        11: clerk.A09,
+        12: 'GUEST: request 4', 
+        13: 'Okay, just checking now...', 
+        14: clerk.A10,
+        15: clerk.A11   
+        }       
+    return render_template('activity/hotel_roomcheck.html', title='Hotel', script=script, match=match, guest=guest)
+
+

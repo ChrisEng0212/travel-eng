@@ -4,6 +4,7 @@ from flask_login import current_user # now we can use this for the account updat
 from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField, SelectField, HiddenField, validators, IntegerField, RadioField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError, InputRequired
 from models import *  
+from flask_login import current_user
 
 
 class Attend(FlaskForm):
@@ -12,7 +13,15 @@ class Attend(FlaskForm):
     studentID = StringField ('Student ID (9 numbers)', validators=[DataRequired(), Length(9)])                  
     teamnumber = IntegerField ('Team Number')
     teamcount = IntegerField ('Team Count') 
-    role =  RadioField('What role would you like today?', choices = [('work', 'Immigration Officer'), ('cust', 'Country Visitor')])                                                
+    role =  RadioField('What role would you like today?', choices = [('work', 'Hotel Receptionist'), ('cust', 'Hotel Guest')])                                                
+    midterm = RadioField('Have you thought about your midterm group video?', choices = [
+        ('Not thought about midterm yet', "I haven't thought about the midterm yet"), 
+        ('Know the team members', 'I know my midterm team members'), 
+        ('Know the midterm topic', 'I know my midterm team members and we know the topic'), 
+        ('Started the midterm already', 'We have started writing the midterm already!')
+        ])                                                
+    
+    
     submit = SubmitField('Join')
 
 class AttendLate(FlaskForm):
@@ -326,6 +335,221 @@ ImmigOne = {
     ], 
 
 }
+
+
+HotelOne = {
+    '1g' : ["Greeting", 
+        "Hi,I'm here to check in",
+        'Hello, may I check in?',
+        "Hello, I know it's early but can I check in?"                
+    ], 
+    '1n' : ['NAME: ',
+        'The name is ',
+        'It is under ', 
+        'We booked for ' 
+    ],
+    '1a' : ['What kind of room did you book?, ', 
+        'a double room ',
+        'a single room ',
+        'a twin room ', 
+        'a deluxe room ', 
+        'an economy room '       
+    ],
+    '1b' : ['How long did you reserve a room for?',
+        "for the weekend", 
+        "for one week", 
+        "for 10 days"       
+    ],
+    '1c' : ['What else do you request?',
+        "a non-smoking room", 
+        "an ocean view", 
+        "an extra bed"          
+    ],
+    '1d' : ['What else do you want to ask about?',
+        "wifi?", 
+        "a safe?",          
+        "a minibar?"          
+    ],
+    '1e' : ["What facilities do you need?", 
+        'a gym?',
+        'a swimming pool?',
+        'a laundry service?'
+    ], 
+    '1f' : ["Check the room: ", 
+        'So is my room ready?',
+        'Can I check in now?',
+        'Is the booking okay?'
+    ], 
+
+
+    '2a' : ["Hello, welcome to ", 
+        'Hilton Hotel', 
+        'Hyatt Hotel', 
+        'Marriott Hotel', 
+        'Inter-Continental Hotel'
+    ],
+    '2b' : ['Okay, ', 
+        'what is the booking name?',
+        'who is the reservation for?', 
+        'is the room under your name?'     
+    ],    
+    '2c' : ['Thank you, ',
+        'let me check your booking',
+        'let me check the system',
+        'let me look up your details'
+    ],     
+    '2w' : ['Is there wifi in the room?',
+        'Yes, you can find your password in the room',
+        'No, but you can use free wifi in the lobby and bar'        
+    ], 
+    '2s' : ['Is there a safe in the room?',
+        'Yes, just follow the instructions inside',
+        'No, but you can store your valuables here at reception'       
+    ], 
+    '2m' : ['Is there a minibar in the room?',
+        'Yes, you can see the prices inside',
+        'No, but you can order room service anytime'       
+    ],
+    '2g' : ['Is there a gym?',
+        "Yes, we have a full gym on the top floor",
+        "No, sorry but it's closed this week for repairs" 
+    ], 
+    '2p' : ['Is there a swimming pool?',
+        "Yes, it's downstairs on floor B2",
+        'No, but we have a map to the local pool'       
+    ], 
+    '2l' : ['Is there a laundry service?',
+        "Yes, you can give it to our housekeeping staff",
+        'No, but we have a self service laundry room'       
+    ], 
+    '2e' : ["I've checked your room and ",
+        "Congratulations, we have given you an upgrade!", 
+        "Your room is ready and you can go up now!", 
+        "Here is your keycard, enjoy your stay!"    
+    ],
+    '2f' : ["I've checked your room and ",
+        "the room is not ready yet, please wait in the lobby.", 
+        "we are overbooked and your is taken already.", 
+        "there was a mistake with your booking so we changed your room."    
+    ]
+}
+
+
+
+class HotGuest(FlaskForm): 
+    A01 = RadioField (label=HotelOne['1g'][0], choices=[
+            (HotelOne['1g'][1], HotelOne['1g'][1]), 
+            (HotelOne['1g'][2], HotelOne['1g'][2]), 
+            (HotelOne['1g'][3], HotelOne['1g'][3])
+        ])     
+    A02 = RadioField (label=HotelOne['1n'][0], choices=[
+            (HotelOne['1n'][1], HotelOne['1n'][1]), 
+            (HotelOne['1n'][2], HotelOne['1n'][2]), 
+            (HotelOne['1n'][3], HotelOne['1n'][3])
+        ])  
+    A03 = RadioField (label=HotelOne['1a'][0], choices=[
+            (HotelOne['1a'][1], HotelOne['1a'][1]), 
+            (HotelOne['1a'][2], HotelOne['1a'][2]),
+            (HotelOne['1a'][3], HotelOne['1a'][3]),
+            (HotelOne['1a'][4], HotelOne['1a'][4]),
+            (HotelOne['1a'][5], HotelOne['1a'][5])            
+        ])     
+    A04 = RadioField (label=HotelOne['1b'][0], choices=[
+            (HotelOne['1b'][1], HotelOne['1b'][1]), 
+            (HotelOne['1b'][2], HotelOne['1b'][2]),
+            (HotelOne['1b'][3], HotelOne['1b'][3])            
+        ])  
+    A05 = RadioField (label=HotelOne['1c'][0], choices=[
+            (HotelOne['1c'][1], HotelOne['1c'][1]), 
+            (HotelOne['1c'][2], HotelOne['1c'][2]),
+            (HotelOne['1c'][3], HotelOne['1c'][3])            
+        ])  
+    A06 = RadioField (label=HotelOne['1d'][0], choices=[
+            (HotelOne['1d'][1], HotelOne['1d'][1]), 
+            (HotelOne['1d'][2], HotelOne['1d'][2]),
+            (HotelOne['1d'][3], HotelOne['1d'][3])            
+        ])  
+    A07 = RadioField (label=HotelOne['1e'][0], choices=[
+            (HotelOne['1e'][1], HotelOne['1e'][1]), 
+            (HotelOne['1e'][2], HotelOne['1e'][2]),
+            (HotelOne['1e'][3], HotelOne['1e'][3])            
+        ])    
+    A08 = RadioField (label=HotelOne['1f'][0], choices=[
+            (HotelOne['1f'][1], HotelOne['1f'][1]), 
+            (HotelOne['1f'][2], HotelOne['1f'][2]),
+            (HotelOne['1f'][3], HotelOne['1f'][3])            
+        ])  
+    
+    Submit = SubmitField('Submit')  
+
+class HotListen(FlaskForm): 
+    C01 = StringField (label='Guest Name')        
+    Submit = SubmitField('Check Booking') 
+
+class HotList2(FlaskForm): 
+    A01 = RadioField (label=HotelOne['2a'][0], choices=[
+            (HotelOne['2a'][1], HotelOne['2a'][1]), 
+            (HotelOne['2a'][2], HotelOne['2a'][2]), 
+            (HotelOne['2a'][3], HotelOne['2a'][3]), 
+            (HotelOne['2a'][4], HotelOne['2a'][4])
+        ])    
+    Submit = SubmitField('Check Booking') 
+
+class HotClerk(FlaskForm): 
+    A01 = RadioField (label=HotelOne['2a'][0], choices=[
+            (HotelOne['2a'][1], HotelOne['2a'][1]), 
+            (HotelOne['2a'][2], HotelOne['2a'][2]), 
+            (HotelOne['2a'][3], HotelOne['2a'][3]), 
+            (HotelOne['2a'][4], HotelOne['2a'][4])
+        ])
+        
+    A02 = RadioField (label=HotelOne['2b'][0], choices=[
+            (HotelOne['2b'][1], HotelOne['2b'][1]), 
+            (HotelOne['2b'][2], HotelOne['2b'][2]), 
+            (HotelOne['2b'][3], HotelOne['2b'][3])
+        ])  
+    A03 = RadioField (label=HotelOne['2c'][0], choices=[
+            (HotelOne['2c'][1], HotelOne['2c'][1]), 
+            (HotelOne['2c'][2], HotelOne['2c'][2]), 
+            (HotelOne['2c'][3], HotelOne['2c'][3])
+        ])  
+    A04 = RadioField (label=HotelOne['2w'][0], choices=[
+            (HotelOne['2w'][1], HotelOne['2w'][1]), 
+            (HotelOne['2w'][2], HotelOne['2w'][2])
+        ]) 
+    A05 = RadioField (label=HotelOne['2s'][0], choices=[
+            (HotelOne['2s'][1], HotelOne['2s'][1]), 
+            (HotelOne['2s'][2], HotelOne['2s'][2])
+        ]) 
+    A06 = RadioField (label=HotelOne['2m'][0], choices=[
+            (HotelOne['2m'][1], HotelOne['2m'][1]), 
+            (HotelOne['2m'][2], HotelOne['2m'][2])
+        ]) 
+    A07 = RadioField (label=HotelOne['2g'][0], choices=[
+            (HotelOne['2g'][1], HotelOne['2g'][1]), 
+            (HotelOne['2g'][2], HotelOne['2g'][2])
+        ]) 
+    A08 = RadioField (label=HotelOne['2p'][0], choices=[
+            (HotelOne['2p'][1], HotelOne['2p'][1]), 
+            (HotelOne['2p'][2], HotelOne['2p'][2])
+        ])   
+    A09 = RadioField (label=HotelOne['2l'][0], choices=[
+            (HotelOne['2l'][1], HotelOne['2l'][1]), 
+            (HotelOne['2l'][2], HotelOne['2l'][2])
+        ])
+    A10 = RadioField (label=HotelOne['2e'][0], choices=[
+            (HotelOne['2e'][1], HotelOne['2e'][1]), 
+            (HotelOne['2e'][2], HotelOne['2e'][2]),
+            (HotelOne['2e'][3], HotelOne['2e'][3])
+        ])
+    A11 = RadioField (label=HotelOne['2f'][0], choices=[
+            (HotelOne['2f'][1], HotelOne['2f'][1]), 
+            (HotelOne['2f'][2], HotelOne['2f'][2]),
+            (HotelOne['2f'][3], HotelOne['2f'][3])
+        ])      
+             
+    Submit = SubmitField('Submit')         
+
 
 class ImmigOfficer(FlaskForm): 
     A01 = RadioField (label=ImmigOne['1a'][0], choices=[
