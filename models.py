@@ -130,6 +130,18 @@ class MidAnswers(db.Model):
     extraInt = db.Column(db.Integer)
     extraStr = db.Column(db.String)
 
+class MidGrades(db.Model):
+    id = db.Column(db.Integer, primary_key=True)    
+    date_posted = db.Column(db.DateTime, nullable=False, default=datetime.now)
+    username =  db.Column(db.String, unique=True, nullable=False)
+    studentID = db.Column(db.String(9), unique=True, nullable=False)
+    cpg = db.Column(db.Integer)
+    mvg = db.Column(db.Integer)
+    cpg_comments = db.Column(db.String)      
+    mvg_comments = db.Column(db.String) 
+    extraInt = db.Column(db.Integer)
+    extraStr = db.Column(db.String)
+
 
 ### IMMIG ####################
 
@@ -334,15 +346,16 @@ admin.add_view(MyModelView(AttendLog, db.session))
 admin.add_view(MyModelView(Sources, db.session))
 admin.add_view(MyModelView(MidTerm, db.session))
 admin.add_view(MyModelView(MidAnswers, db.session))
+admin.add_view(MyModelView(MidGrades, db.session))
 #admin.add_view(MyModelView(AgentCust, db.session))
 #admin.add_view(MyModelView(AgentWork, db.session))
 #admin.add_view(MyModelView(AgentList, db.session))
 #admin.add_view(MyModelView(ImmigTrav, db.session))
 #admin.add_view(MyModelView(ImmigOffr, db.session))
 #admin.add_view(MyModelView(ImmigList, db.session))
-admin.add_view(MyModelView(HotelGuest, db.session))
-admin.add_view(MyModelView(HotelClerk, db.session))
-admin.add_view(MyModelView(HotelList, db.session))
+#admin.add_view(MyModelView(HotelGuest, db.session))
+#admin.add_view(MyModelView(HotelClerk, db.session))
+#admin.add_view(MyModelView(HotelList, db.session))
 
 for unit in modListUnits:
     if unit is None:
