@@ -23,6 +23,18 @@ except:
     COLOR_SCHEMA = os.environ['COLOR_SCHEMA'] 
     print('SUCCESS',s3_resource, S3_LOCATION, S3_BUCKET_NAME, COLOR_SCHEMA)
 
+studentIDs = [120354066,120374012,120514006,120514049,
+    120553108,120714160,120715123,120715231,120754002,120754003,120754004,
+    120754006,120754009,120754011,120754012,120754013,120754015,
+    120754016,120754018,120754020,120754021,120754024,120754026,
+    120754029,120754030,120754031,120754034,120754037,120754038,
+    120754040,120754041,120754044,120754045,120754047,120754050,
+    120754051,120754053,120754054,120754055,120754057,120754058,
+    120754059,120754060,120754061,120754062,120754063,120754065,
+    120754066,120754502,120754505,120754509,120754510,120754511,
+    120754515,320451349,320514127,320716134,320716145
+    ]
+
 
 
 # set the color schema ## https://htmlcolorcodes.com/color-names/
@@ -212,21 +224,22 @@ def att_log():
     
     print('dateList', dateList)
     
-    studentIDs = [120354066,120374012,120514006,120514049,
-    120553108,120714160,120715231,120754002,120754003,120754004,
-    120754006,120754009,120754011,120754012,120754013,120754015,
-    120754016,120754018,120754020,120754021,120754024,120754026,
-    120754029,120754030,120754031,120754034,120754037,120754038,
-    120754040,120754041,120754044,120754045,120754047,120754050,
-    120754051,120754053,120754054,120754055,120754057,120754058,
-    120754059,120754060,120754061,120754062,120754063,120754065,
-    120754066,120754502,120754505,120754509,120754510,120754511,
-    120754515,320451349,320514127,320716134,320716145
-    ]
+    userDict = {}
+    users = User.query.all()
+    for user in users:
+        userDict[int(user.studentID)] = user.username
+        try: 
+            pass
+            grades = MidGrades(username=user.username, studentID=user.studentID)
+            db.session.add(grades)
+            db.sesion.commit()
+        except:
+            pass
     
     attLogDict = {}
     for number in studentIDs:        
-        attLogDict[number] = []
+        attLogDict[number] = []              
+
 
     for attLog in attLogDict:
         logs = AttendLog.query.filter_by(studentID=str(attLog)).all() 
@@ -234,20 +247,25 @@ def att_log():
         if logs:                        
             for log in logs:
                 d = log.date_posted
-                dStr = d.strftime("%m/%d")                
+                dStr = d.strftime("%m/%d")
+                # add all dates attended as list of values                
                 attLogDict[attLog].append(dStr) 
+                # total up the grades
                 attGrade = attGrade + log.attScore
+            # add the total grade at the start of the list
             attLogDict[attLog].insert(0, attGrade) 
+            #userGrade = MidGrades.query.filter_by(studentID=str(attLog)).first()
+            #userGrade.cpg = attGrade
+            #db.session.commit()
+
+
 
     today = datetime.now()
     todayDate = today.strftime("%m/%d")  
     
     print('attLogDict', attLogDict)
 
-    userDict = {}
-    users = User.query.all()
-    for user in users:
-        userDict[int(user.studentID)] = user.username
+    
 
 
     return render_template('instructor/att_log.html', attLogDict=attLogDict, dateList=dateList, todayDate=todayDate, userDict=userDict)  
@@ -281,6 +299,33 @@ def teams():
                 attDict[user.username] = [user.studentID, 0]
 
     return render_template('instructor/teams.html', attDict=attDict, teamcount=teamcount)  
+
+@app.route ("/midteams")
+@login_required
+def midteams():  
+    if current_user.id != 1:
+        return abort(403)
+
+    idList = studentIDs
+    users = User.query.all()
+    midterms = MidTerm.query.all() 
+    for item in midterms:
+        studentList = [item.teamMemOne, item.teamMemTwo, item.teamMemThr]
+        for mem in studentList:  
+            try:
+                idList.remove(mem)
+            except:
+                print('Nonremovable_ID: ', mem)
+                pass
+    
+    nameList = []
+    for item in idList:
+        nameList.append(User.query.filter_by(studentID=str(item)).first().username)
+    
+
+    return render_template('instructor/midTeams.html', midterms=midterms, nameList=nameList)  
+
+
 
 @app.route("/attend_int", methods = ['GET', 'POST'])
 @login_required
