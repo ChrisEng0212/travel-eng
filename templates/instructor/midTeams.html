@@ -1,0 +1,54 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div class="content-section">    
+    <h1> Midterm Teams </h1>   
+</div> 
+
+
+<div class="content-section">      
+
+    <table class="table table-sm" width="100">
+        <thead>
+            <tr>
+              <th scope="col">Teams</th>              
+              <th scope="col">Topic</th>
+              <th scope="col">Vid</th> 
+              <th scope="col">Status</th>                                            
+            </tr>
+        </thead>
+         
+        <!-- Team Table______________________________________________-->
+
+        <tbody> 
+            {% for item in midterms %} 
+            <tr>                
+                <td>{{item.names}}</td>
+                <td>{{item.vidOption}}</td>
+                <td>{{item.vidLink}}</td>
+                <td>{{item.checkQue}}</td>     
+            <tr>           
+            {% endfor %}            
+        </tbody>
+
+    </table>  
+       
+</div>
+
+<div class="content-section">    
+    <h1> Waiting </h1>   
+
+    {{nameList}}
+</div> 
+
+
+{% endblock %}   
+
+{% block script %}
+<script>
+
+
+
+</script>
+{% endblock %}

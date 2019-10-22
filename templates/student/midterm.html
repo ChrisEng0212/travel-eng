@@ -19,7 +19,7 @@
 <a href="https://drive.google.com/open?id=1aFwbcSp-M7bjRTfN1XTW_ojg3Procai4">Travel Agent Conversation</a>
 <a href="https://drive.google.com/open?id=1Fisg-UHslfWA4hhzkM5uh_OTt0wW2qwx">Immigration Conversation</a>
 <a href="https://drive.google.com/open?id=1D79H6fBCBxbzDC56Dw0aI9ETKt_yVSp1">Hotel Checkin Conversation</a>
-
+<br>
 {% if control == None %}
 {% else %}
 
@@ -59,7 +59,7 @@
         {% if user.midterm == 2 %}                
                 <button class="btn btn-lg btn-success" style="display: inline-block"><a href="{{ url_for ('MTexample', idMarker=userID)}}" style="color:white">Test Project</a></button> 
         {% else %}                
-                <button class="btn btn-lg btn-danger"><a href="" style="color:white">Project Incomplete (0pts)</a></button> 
+                <button class="btn btn-lg btn-danger"><a href="" disabled style="color:white">Project Incomplete (0pts)</a></button> 
         {% endif %}
         <text style="font-size:15pt">{% if testProj > 0 %} - Done (1pt) {% endif %} </text> 
         <br>

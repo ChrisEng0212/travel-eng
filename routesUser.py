@@ -31,8 +31,14 @@ def home():
     for log in attLog:
         attDict[log]=[log.date_posted + timedelta(hours=8), log.attend, log.attScore, log.extraStr]
 
-
-    return render_template('instructor/home.html', title='home', attLog=attLog, attDict=attDict)
+    grades = MidGrades.query.filter_by(username=current_user.username).first()
+    
+    if grades.cpg != None:
+        cpg = round(grades.cpg / 18 * 50)
+    else: 
+        cpg = 0
+    
+    return render_template('instructor/home.html', title='home', attLog=attLog, attDict=attDict, grades=grades, cpg=cpg)
 
 
 ######## Attendance //////////////////////////////////////////////
@@ -107,7 +113,7 @@ def att_team():
 
             attendance = Attendance(username = form.name.data, 
             attend=form.attend.data, teamnumber=form.teamnumber.data, 
-            teamcount=form.teamcount.data, studentID=form.studentID.data, unit=lastID+1, role=form.role.data)      
+            teamcount=form.teamcount.data, studentID=form.studentID.data, unit=lastID+1) #role=form.role.data
             db.session.add(attendance)
             db.session.commit()
             # long term log 
@@ -182,7 +188,7 @@ def controls():
         controls = MidTerm.query.filter_by(teamMemOne='100000000').order_by(asc(MidTerm.id)).all()   
         ##SET CONTROL  ##
         ## If control = None  ==> don't show extra features ##
-        control = controls[0].extraInt   
+        control = controls[0].extraInt # set extraInt to 1 and open the exam prep
         exOneID=controls[0].id         
         exTwoID=controls[1].id     
     except: 
@@ -193,7 +199,7 @@ def controls():
 
     return [control, exOneID, exTwoID]
 
-def mtDictMaker(id):    
+def mtDictMaker(idNum):    
     model = MidTerm    
     mids = model.query.all()
     
@@ -214,11 +220,11 @@ def mtDictMaker(id):
                 studentDict[mid.id] = [a,b,c]
             else:            
                 studentDict[mid.id] = [a,b] 
-        if id:
-            for dictList in studentDict[id]:
+        if idNum:
+            for dictList in studentDict[idNum]:
                 names.append(dictList[1])    
                 images.append(dictList[2]) 
-            studentDict.pop(id) 
+            studentDict.pop(idNum) 
         for item in studentDict:
             for i in studentDict[item]:                           
                 stids.append(i[0])     
@@ -229,6 +235,7 @@ def mtDictMaker(id):
     return [studentDict, stids, names, images]
 
 def fieldsChecker():
+    # query the midterms and return the fields which the students is working on
     model = MidTerm
     fieldsCheck1 = model.query.filter_by(teamMemOne=current_user.studentID).first()
     fieldsCheck2 = model.query.filter_by(teamMemTwo=current_user.studentID).first()
@@ -257,9 +264,9 @@ def embedMaker(link):
         else:
             code = preCode
         embedSource = 'https://www.youtube.com/embed/' + code
-        
+      
     
-    if link.find('drive') != -1:     
+    elif link.find('drive') != -1:     
         if link.find('open') != -1:  
             driveLink = link.split("=")
             code = driveLink[1]
@@ -270,6 +277,9 @@ def embedMaker(link):
             code = max(driveLink, key=len)
 
         embedSource = 'https://drive.google.com/file/d/' + code + '/preview'    
+    
+    else: 
+        embedSource = link
 
     print('EMBED:', embedSource)      
     #  https://drive.google.com/file/d/13qoP_5wPYHguCUB8qNXCGUtI136rHfCB/view?usp=sharing    
@@ -301,7 +311,7 @@ def MTexample(idMarker):
     ex2 = controls()[2]
     allowedID = [ex1, ex2, Uid]
 
-    # open the exam 
+    # open/close the exam 
     #allowed = MidTerm.query.all()
     #for mod in allowed:
         #allowedID.append(mod.id)      
@@ -309,9 +319,7 @@ def MTexample(idMarker):
     if idMarker not in allowedID:
         flash('THIS EXAM IS NOT AVAILABLE AT THE MOMENT', 'primary')
         return redirect(url_for('mid_term'))
-    
-    
-
+     
     form = MidtermExample()
     formList = [
         form.A01, 
@@ -320,12 +328,11 @@ def MTexample(idMarker):
         form.A04
     ]
   
-    
     # models    
     fields = MidTerm.query.filter_by(id=idMarker).first()
     user = User.query.filter_by(username=current_user.username).first()
-    print("FFFF", fields)
-    print("UUUU", user)
+    print("Fields: ", fields)
+    print("User: ", user)
     
     # embedMaker
     link = fields.vidLink
@@ -336,7 +343,6 @@ def MTexample(idMarker):
     names = mDM[2]
     images = mDM[3]  
     
-
     ansFields= [fields.qOne, fields.qTwo, fields.qThr, fields.qFor]
     
     ansCheck = MidAnswers.query.filter_by(username=current_user.username).all()
@@ -347,13 +353,11 @@ def MTexample(idMarker):
             
     print('ANSF', ansFields)
     
-
     #start exam grading
-    if user.exam == None:
-        user.exam = 0 
-        db.session.commit()    
+    #if user.exam == None:
+        #user.exam = 0 
+        #db.session.commit()    
     
-
     if form.validate_on_submit():        
         response = MidAnswers(A01=form.A01.data, A02=form.A02.data, 
         A03=form.A03.data, A04=form.A04.data, username=current_user.username, 
@@ -402,6 +406,7 @@ def MTedit():
             teamMemOne=form.MT03.data, teamMemTwo=form.MT04.data, teamMemThr=form.MT05.data, duplicate=duplicate, checkQue=0)
             db.session.add(response)
             db.session.commit() 
+            
             flash('Your project has been set up', 'success') 
             return redirect(url_for('MTbuild'))            
         elif request.method == 'GET':
@@ -432,8 +437,8 @@ def MTedit():
         if form.MT05.data in stids: 
             duplicate.append(form.MT05.data) 
         fields.duplicate = duplicate
+        db.session.commit()        
 
-        db.session.commit()
         flash('Your project has been set up', 'success') 
         return redirect(url_for('MTbuild'))  
     elif request.method == 'GET':
@@ -453,8 +458,7 @@ def MTedit():
 @login_required
 def MTbuild():        
 
-    model = MidTerm
-    
+    model = MidTerm    
     fields = fieldsChecker()
     
     if fields == None:
@@ -499,6 +503,9 @@ def MTbuild():
         for name in names:
             User.query.filter_by(username=name).first().midterm = 1
             db.session.commit() 
+            MidGrades.query.filter_by(username=name).first().midterm = 1
+            db.session.commit() 
+
 
     # form in update mode
     if form.validate_on_submit():   
@@ -530,6 +537,8 @@ def MTbuild():
             for name in names:
                 User.query.filter_by(username=name).first().midterm = 2
                 db.session.commit() 
+                MidGrades.query.filter_by(username=name).first().extraInt = 2
+                db.session.commit() 
 
         flash('Your project has been updated', 'success') 
         return redirect(request.url)  
@@ -545,10 +554,9 @@ def MTbuild():
 @app.route("/midterm", methods = ['GET', 'POST'])
 @login_required
 def mid_term():
-    user = User.query.filter_by(username=current_user.username).first()
-    userMidterm = user.midterm
-    userExam = user.exam
-
+    # grades saved in User table, but also in MidGrades 
+    user = User.query.filter_by(username=current_user.username).first()  
+    
     midExams = MidTerm.query.all()
     modAnswers = MidAnswers.query.filter_by(username=current_user.username).all()
 

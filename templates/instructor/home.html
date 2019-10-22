@@ -18,6 +18,32 @@
 </div>
 {% endif %}
 
+<div class="content-section">
+<legend class="border-bottom mb-4">Midterm Grading</legend>
+<br>
+
+<table class="table table-sm">
+        <thead>
+            <tr>
+              <th scope="col" style="width: 3px;">Class <br>Participation</th>
+              <th scope="col" style="width: 3px;">Midterm Video Sharing</th>  
+            </tr>
+        </thead>
+        <tbody>
+            <tr>            
+              <td> <h2> {{cpg}}/50 </h2></td>   
+              <td>  <h2> --/50 </h2></td>              
+            </tr>  
+            <tr>            
+              <td> {{grades.cpg_comments}}</td>   
+              <td> Deadline Nov 1</td>              
+            </tr>      
+        </tbody>
+</table> 
+
+
+
+</div>
 
 <div class="content-section">
     <legend class="border-bottom mb-4">Attendance History</legend>    

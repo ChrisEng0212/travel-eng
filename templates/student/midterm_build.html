@@ -1,11 +1,14 @@
 {% extends "layout.html" %}
 
 {% block content %}
-    
-{% if fields.checkQue > 0 %}
+
+{% if fields.checkQue == None %}
+
+{% elif fields.checkQue > 0 %}
 <div class="content-section"> 
 <button class="btn btn-lg btn-success"><a style="color:white" href="{{ url_for ('MTexample', idMarker=fields.id)}}", target="_blank">Test Your Project</a></button>   
-</div>       
+</div>  
+{% else %}     
 {% endif %}
 
 
