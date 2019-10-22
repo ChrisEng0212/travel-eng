@@ -127,7 +127,7 @@ class UpdateAccountForm(FlaskForm):
 class MidtermSetUp(FlaskForm):    
     MT01 = RadioField (label='Number of students in team', choices = [('2', '2'), ('3', '3')])
     MT02 = RadioField (label='Role Play Format', choices=[('Travel Prep (2)', 'Travel Prep (2)'), ('Travel Agent (2)','Travel Agent (2)'), 
-    ('Travel Agent (3)','Travel Agent (3)'), ('Immigration (3)','Immigration (3)'), ('Hotel (3)','Hotel (3)'), ('Taxi(2)','Taxi(2)')])
+    ('Travel Agent (3)','Travel Agent (3)'), ('Immigration (3)','Immigration (3)'), ('Hotel (3)','Hotel (3)')])
     MT03 = StringField (label='Student ID 1', validators=[DataRequired(), Length(9)]) 
     MT04 = StringField (label='Student ID 2', validators=[DataRequired(), Length(9)])
     MT05 = StringField (label='Student ID 3 (if only 2 students then use 000000000)', validators=[DataRequired(), Length(9)], default='000000000') 
