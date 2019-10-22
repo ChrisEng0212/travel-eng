@@ -13,7 +13,7 @@ class Attend(FlaskForm):
     studentID = StringField ('Student ID (9 numbers)', validators=[DataRequired(), Length(9)])                  
     teamnumber = IntegerField ('Team Number')
     teamcount = IntegerField ('Team Count') 
-    role =  RadioField('What role would you like today?', choices = [('work', 'Hotel Receptionist'), ('cust', 'Hotel Guest')])                                                
+    #role =  RadioField('What role would you like today?', choices = [('work', 'Hotel Receptionist'), ('cust', 'Hotel Guest')])                                                
     midterm = RadioField('Have you thought about your midterm group video?', choices = [
         ('Not thought about midterm yet', "I haven't thought about the midterm yet"), 
         ('Know the team members', 'I know my midterm team members'), 

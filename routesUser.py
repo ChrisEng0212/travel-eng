@@ -98,18 +98,20 @@ def att_team():
         users = None     
 
     # prepare initial form
-    if count == 0:               
-        if form.validate_on_submit():            
+    if count == 0:
+        print('xxxxxxxxx')                  
+        if form.validate_on_submit(): 
+                    
             # check last id for AttendLog 
             lastID = AttendLog.query.order_by(desc(AttendLog.id)).first().id   
             # team maker
 
             #role control
-            wCount = Attendance.query.filter_by(role='work').count()
-            if form.role.data == 'work':
-                if wCount > 21:
-                    flash('Sorry, there are too many HOTEL CLERKS already. Please choose HOTEL GUEST', 'info')
-                    return redirect(url_for('att_team'))
+            #wCount = Attendance.query.filter_by(role='work').count()
+            #if form.role.data == 'work':
+                #if wCount > 21:
+                    #flash('Sorry, there are too many HOTEL CLERKS already. Please choose HOTEL GUEST', 'info')
+                    #return redirect(url_for('att_team'))
 
             attendance = Attendance(username = form.name.data, 
             attend=form.attend.data, teamnumber=form.teamnumber.data, 
