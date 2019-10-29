@@ -26,7 +26,7 @@
             <tr>                
                 <td>{{item.names}}</td>
                 <td>{{item.vidOption}}</td>
-                <td>{{item.vidLink}}</td>
+                <td><a href="{{url_for('MTexample', idMarker=item.id)}}", target="_blank">{{item.vidLink}}<a></td>
                 <td>{{item.checkQue}}</td>     
             <tr>           
             {% endfor %}            

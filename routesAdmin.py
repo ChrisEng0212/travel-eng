@@ -230,18 +230,20 @@ def att_log():
         userDict[int(user.studentID)] = user.username
         try: 
             pass
-            grades = MidGrades(username=user.username, studentID=user.studentID)
-            db.session.add(grades)
-            db.sesion.commit()
+            #grades = MidGrades(username=user.username, studentID=user.studentID)
+            #db.session.add(grades)
+            #db.sesion.commit()
         except:
             pass
     
     attLogDict = {}
     for number in studentIDs:        
-        attLogDict[number] = []              
+        attLogDict[number] = []      
+    print('AttLogDict',  attLogDict)        
 
 
     for attLog in attLogDict:
+        
         logs = AttendLog.query.filter_by(studentID=str(attLog)).all() 
         attGrade = 0        
         if logs:                        
@@ -306,14 +308,15 @@ def midteams():
     if current_user.id != 1:
         return abort(403)
 
-    idList = studentIDs
+    idList = studentIDs.copy()
     users = User.query.all()
     midterms = MidTerm.query.all() 
     for item in midterms:
         studentList = [item.teamMemOne, item.teamMemTwo, item.teamMemThr]
         for mem in studentList:  
             try:
-                idList.remove(mem)
+                idList.remove(int(mem))
+                print('Remove: ', mem)
             except:
                 print('Nonremovable_ID: ', mem)
                 pass

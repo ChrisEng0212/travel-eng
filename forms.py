@@ -158,8 +158,8 @@ class MidtermSetUp(FlaskForm):
 
 class MidtermDetails(FlaskForm):        
     
-    MT06 = StringField (label='Link to your script') 
-    MT07 = StringField (label='Link to your video')
+    MT06 = StringField (label='Link to your script', default='link') 
+    MT07 = StringField (label='Link to your video (use Youtube or Google Drive)')
     
     MT08 = StringField (label='Question 1')
     MT09 = StringField (label='Question 2')
