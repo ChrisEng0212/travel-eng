@@ -336,11 +336,13 @@ def MTexample(idMarker):
     ex2 = controls()[2]
     allowedID = [ex1, ex2, Uid]
 
-    if True:  # set as True to open exam
+    if 'Exam' in MidTerm.query.filter_by(id=1).first().extraStr or current_user.id == 1:
         allowed = MidTerm.query.all()
         for mod in allowed:
             allowedID.append(mod.id)      
-    
+    print ('allowedID', allowedID)
+
+
     if idMarker not in allowedID:
         flash('THIS EXAM IS NOT AVAILABLE AT THE MOMENT', 'primary')
         return redirect(url_for('mid_term'))
@@ -356,8 +358,9 @@ def MTexample(idMarker):
     # models    
     fields = MidTerm.query.filter_by(id=idMarker).first()
     user = User.query.filter_by(username=current_user.username).first()
-    print("Fields: ", fields)
-    print("User: ", user)
+    
+    #print("Fields: ", fields)
+    #print("User: ", user)
     
     # embedMaker
     link = fields.vidLink
@@ -376,7 +379,7 @@ def MTexample(idMarker):
         if ans.examID == idMarker:
             ansFields = ansFields + [ans.A01, ans.A02, ans.A03, ans.A04, fields.aOne, fields.aTwo, fields.aThr, fields.aFor]
             
-    print('ANSF', ansFields)
+    #print('ANSF', ansFields)
     
     #start exam grading
     #if user.exam == None:
@@ -617,7 +620,7 @@ def mid_term():
         if exam.id in idList:
             print ('pass1', exam.id)
             pass
-        elif exam.checkQue == 1:
+        elif exam.checkQue == 1:            
             examList.append(exam.id)
         else:
             print ('pass2', exam.id)
