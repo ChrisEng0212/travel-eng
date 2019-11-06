@@ -73,11 +73,11 @@
                             {% endif %} 
                     </div>
                             
-            <div class="form-group"> 
+            <!--<div class="form-group"> 
                 <legend class="border-bottom mb-4">Midterm</legend>  
                             <h3 style=""> {{ form.midterm.label (class="form-control-label")}}</h3>  
                             {% if form.midterm.errors %}
-                                {{ form.midterm (class="form-control form-control-lg is-invalid")}}  <!-- is invalid is the class-->
+                                {{ form.midterm (class="form-control form-control-lg is-invalid")}} 
                                 <div class="invalid-feedback">
                                     {% for error in form.midterm.errors %}
                                         <span>{{ error }}</span>
@@ -90,8 +90,8 @@
                                     <td><strong style="font-size: 20px;">{{ subfield.label }}</strong></td>
                                 </tr></br>
                                 {% endfor %}
-                            {% endif %} 
-                    </div>
+                            {% endif %}
+                    </div> -->
         </fieldset> 
         <div class="form-group">
                 {{ form.submit(class="btn btn-outline-secondary")}}

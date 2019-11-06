@@ -9,10 +9,12 @@ from models import *
 
 try:
     from aws import Settings    
-    s3_resource = Settings.s3_resource  
+    s3_resource = Settings.s3_resource 
+    s3_client = Settings.s3_client 
     S3_LOCATION = Settings.S3_LOCATION
     S3_BUCKET_NAME = Settings.S3_BUCKET_NAME   
 except:
+    s3_client = boto3.client('s3')
     s3_resource = boto3.resource('s3')
     S3_LOCATION = os.environ['S3_LOCATION'] 
     S3_BUCKET_NAME = os.environ['S3_BUCKET_NAME']    
@@ -38,7 +40,28 @@ def home():
     else: 
         cpg = 0
     
-    return render_template('instructor/home.html', title='home', attLog=attLog, attDict=attDict, grades=grades, cpg=cpg)
+    mtrm = MidTerm.query.all()
+    mtDict = {}
+    for mt in mtrm:
+        mtDict[mt.id] = [mt.teamMemOne, mt.teamMemTwo, mt.teamMemThr, mt.checkQue]
+    
+    proj = 'None' 
+    for key in mtDict:
+        if current_user.studentID in mtDict[key]:
+            proj = 'Done'
+    
+    mAns = MidAnswers.query.filter_by(username=current_user.username).all()
+
+    ansDict = {}
+    for ans in mAns:        
+        ansDict[ans.examID] = ans.username
+
+    try: 
+        vids =  len(ansDict)
+    except: 
+        vids = 0
+
+    return render_template('instructor/home.html', title='home', attLog=attLog, attDict=attDict, grades=grades, cpg=cpg, vids=vids, proj=proj)
 
 
 ######## Attendance //////////////////////////////////////////////
@@ -360,15 +383,12 @@ def MTexample(idMarker):
         #user.exam = 0 
         #db.session.commit()    
     
-    if form.validate_on_submit():        
+    if form.validate_on_submit():                
         response = MidAnswers(A01=form.A01.data, A02=form.A02.data, 
         A03=form.A03.data, A04=form.A04.data, username=current_user.username, 
         grade=1, examID=idMarker) # add the id marker     
         db.session.add(response)                
-        db.session.commit()
-
-        user.exam = user.exam + 1 
-        db.session.commit()   
+        db.session.commit()        
 
         flash('Your answer has been submitted', 'success') 
         return redirect(request.url)
@@ -511,7 +531,6 @@ def MTbuild():
 
     # form in update mode
     if form.validate_on_submit():   
-        fields.scrLink = form.MT06.data
         fields.vidLink = form.MT07.data
         fields.qOne = form.MT08.data
         fields.qTwo = form.MT09.data 
@@ -596,9 +615,16 @@ def mid_term():
     #generate random exam 
     for exam in midExams:
         if exam.id in idList:
+            print ('pass1', exam.id)
             pass
-        else:
+        elif exam.checkQue == 1:
             examList.append(exam.id)
+        else:
+            print ('pass2', exam.id)
+            pass
+    
+    print ('available', examList)   
+    
     try:
         randID = random.choice(examList)
     except:
@@ -649,15 +675,8 @@ def team_details ():
         print ('Teamnumber: ', teamnumber)
     return [teamnumber, nameRange]
 
-def create_folder(unit, teamnumber, nameRange):
-    #s3_resource = boto3.resource('s3',
-    #     aws_access_key_id=AWS_ACCESS_KEY_ID,
-    #     aws_secret_access_key= AWS_SECRET_ACCESS_KEY)
-    s3_client = boto3.client('s3',
-         aws_access_key_id=AWS_ACCESS_KEY_ID,
-         aws_secret_access_key= AWS_SECRET_ACCESS_KEY)
+def create_folder(unit, teamnumber, nameRange): 
     keyName = (unit + '/' + teamnumber + '/')  #adding '/' makes a folder object
-
     try: 
         # use s3_client instead of resource to use head_object or list_objects
         response = s3_client.head_object(Bucket=S3_BUCKET_NAME, Key=keyName)
@@ -670,7 +689,7 @@ def create_folder(unit, teamnumber, nameRange):
     else:
         pass    
     return keyName
-    
+     
 
 def unit_audio(audio, unit, team, rec):    
     _ , f_ext = os.path.splitext(audio.filename) # _  replaces f_name which we don't need #f_ext  file extension 

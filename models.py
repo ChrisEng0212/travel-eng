@@ -273,7 +273,7 @@ class BaseProjects(db.Model):
     teamNames =  db.Column(db.String)
     teamnumber = db.Column(db.Integer)
     topic = db.Column(db.String)
-    Title = db.Column(db.String)
+    Title = db.Column(db.String)    
     TextOne = db.Column(db.String)
     PictureOne = db.Column(db.String)
     RecordOne = db.Column(db.String)
@@ -296,29 +296,16 @@ class BaseProjects(db.Model):
     Stage =   db.Column(db.Integer)
 
 
-class U01U(BaseProjects):
+class P1_NM(BaseProjects):
     id = db.Column(db.Integer, primary_key=True)
-modListUnits.append(U01U)
+modListUnits.append(P1_NM)
 
-#class U02U(BaseProjects):
-    #id = db.Column(db.Integer, primary_key=True)
-#modListUnits.append(U02U)
+class P2_TA(BaseProjects):
+    id = db.Column(db.Integer, primary_key=True)
+modListUnits.append(P2_TA)
 
-#class U03U(BaseProjects):
-    #id = db.Column(db.Integer, primary_key=True)
-#modListUnits.append(U03U)
 
-#class U04U(BaseProjects):
-    #id = db.Column(db.Integer, primary_key=True)
-#modListUnits.append(U04U)
 
-#class U05U(BaseProjects):
-    #id = db.Column(db.Integer, primary_key=True)
-#modListUnits.append(U05U)
-
-#class U06U(BaseProjects):
-    #id = db.Column(db.Integer, primary_key=True)
-#modListUnits.append(U06U)
 
 
 

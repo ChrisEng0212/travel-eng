@@ -14,13 +14,12 @@ class Attend(FlaskForm):
     teamnumber = IntegerField ('Team Number')
     teamcount = IntegerField ('Team Count') 
     #role =  RadioField('What role would you like today?', choices = [('work', 'Hotel Receptionist'), ('cust', 'Hotel Guest')])                                                
-    midterm = RadioField('Have you thought about your midterm group video?', choices = [
-        ('Not thought about midterm yet', "I haven't thought about the midterm yet"), 
-        ('Know the team members', 'I know my midterm team members'), 
-        ('Know the midterm topic', 'I know my midterm team members and we know the topic'), 
-        ('Started the midterm already', 'We have started writing the midterm already!')
-        ])                                                
-    
+    #midterm = RadioField('Have you thought about your midterm group video?', choices = [
+     #   ('Not thought about midterm yet', "I haven't thought about the midterm yet"), 
+    #  ('Know the team members', 'I know my midterm team members'), 
+     #   ('Know the midterm topic', 'I know my midterm team members and we know the topic'), 
+      #  ('Started the midterm already', 'We have started writing the midterm already!')
+     #   ])   
     
     submit = SubmitField('Join')
 
@@ -175,10 +174,10 @@ class MidtermDetails(FlaskForm):
 
 class MidtermExample(FlaskForm):     
     
-    A01 = StringField (label='Q1')
-    A02 = StringField (label='Q2')
-    A03 = StringField (label='Q3')
-    A04 = StringField (label='Q4')    
+    A01 = StringField (label='Q1', validators=[DataRequired()])
+    A02 = StringField (label='Q2', validators=[DataRequired()])
+    A03 = StringField (label='Q3', validators=[DataRequired()])
+    A04 = StringField (label='Q4', validators=[DataRequired()])    
 
     Submit = SubmitField('Submit')
 

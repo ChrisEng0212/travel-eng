@@ -24,7 +24,7 @@
         <tbody> 
             {% for item in midterms %} 
             <tr>                
-                <td>{{item.names}}</td>
+                <td><a href="">{{item.names}}</a></td>
                 <td>{{item.vidOption}}</td>
                 <td><a href="{{url_for('MTexample', idMarker=item.id)}}", target="_blank">{{item.vidLink}}<a></td>
                 <td>{{item.checkQue}}</td>     
