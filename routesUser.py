@@ -336,7 +336,7 @@ def MTexample(idMarker):
     ex2 = controls()[2]
     allowedID = [ex1, ex2, Uid]
 
-    if current_user.id == 1:  # set as True to open exam
+    if True:  # set as True to open exam
         allowed = MidTerm.query.all()
         for mod in allowed:
             allowedID.append(mod.id)      
