@@ -208,7 +208,14 @@
 {% block script %}
 
 <script>
-   
+
+    if (navigator.userAgent.includes('Line')){
+        alert('WARNING: It looks like you are using Line App to view this website. Please switch to Chrome or Safari browser to Upload Files')
+    }
+    if (navigator.userAgent.includes('FB')){
+        alert('WARNING: It looks like you are using Facebook Chat App to view this website. Please switch to Chrome or Safari browser to Upload Files')
+    }
+    
 
 function submit(){
     alert('File Uploaded - Please wait for reload')

@@ -12,12 +12,14 @@ try:
     s3_resource = Settings.s3_resource 
     s3_client = Settings.s3_client 
     S3_LOCATION = Settings.S3_LOCATION
-    S3_BUCKET_NAME = Settings.S3_BUCKET_NAME   
+    S3_BUCKET_NAME = Settings.S3_BUCKET_NAME
+    test = True   
 except:
     s3_client = boto3.client('s3')
     s3_resource = boto3.resource('s3')
     S3_LOCATION = os.environ['S3_LOCATION'] 
-    S3_BUCKET_NAME = os.environ['S3_BUCKET_NAME']    
+    S3_BUCKET_NAME = os.environ['S3_BUCKET_NAME']   
+    test = False 
 
 
 @app.route ("/final")
@@ -29,7 +31,7 @@ def final():
 
     titles = [
         None, 
-        'At the NightMarket', 
+        'At the Night Market', 
         'Around Taipei'
     ]
 
@@ -39,13 +41,18 @@ def final():
         for row in modelQuery:            
             if current_user.username in ast.literal_eval(row.teamNames):
                 status = ast.literal_eval(row.Status)
-                projDict[count] = [count, titles[count], ast.literal_eval(row.teamNames), row.teamNumber, status, sum(status)]        
+                projDict[count] = [str(count), titles[count], ast.literal_eval(row.teamNames), str(row.teamNumber), status, sum(status)]        
         count += 1
-        
+
+    if test: 
+        href = 'http://127.0.0.1:5000/project/'
+    else: 
+        href = 'https://travel-eng.herokuapp/project/'
+    
     print (projDict)
 
 
-    return render_template('project/final.html', projDict=projDict)
+    return render_template('project/final.html', projDict=projDict, href=href)
  
 
 def create_folder(unit, teamnumber, nameRange): 
@@ -83,8 +90,7 @@ def project_teams(unit):
     for pro in project.query.all():
         teams.append(pro.teamNumber)
 
-
-    manualAdd = {}
+    
 
     #create a dictionary of teams
     attTeams = Attendance.query.all()
@@ -95,16 +101,25 @@ def project_teams(unit):
         else: 
             teamDict[att.teamnumber] = [att.username]
 
-    returnStr = str(teamsDict)
     
-    for team in teamsDict:
+    
+    
+    manualAdd = {
+        15 : []
+    }
+
+    #add the extra teams -->  dictionary = manuakAdd
+    dictionary = teamsDict
+
+    returnStr = str(dictionary)
+    for team in dictionary:
         if team in teams:
             returnStr = 'Error - check table' 
             break    
-        create_folder(unit, str(team), teamsDict[team])
+        create_folder(unit, str(team), dictionary[team])
         teamStart = project(
             teamNumber=team, 
-            teamNames=str(teamsDict[team])
+            teamNames=str(dictionary[team])
             )        
         db.session.add(teamStart)
         db.session.commit()  
@@ -117,11 +132,7 @@ def upload_data(data, unit, team, mark):
     _ , f_ext = os.path.splitext(data.filename) # _  replaces f_name which we don't need #f_ext  file extension 
     s3_folder = '/' + str(unit) + '/'
     data_filename =  s3_folder + str(unit) + '/' + str(team) + '/' + mark + f_ext 
-    s3_filename =  S3_LOCATION + data_filename 
-    #s3_resource = boto3.resource('s3',
-    #     aws_access_key_id=AWS_ACCESS_KEY_ID,
-    #     aws_secret_access_key= AWS_SECRET_ACCESS_KEY)  
-    #s3_resource = boto3.resource('s3')
+    s3_filename =  S3_LOCATION + data_filename     
     s3_resource.Bucket(S3_BUCKET_NAME).put_object(Key=data_filename, Body=data) 
 
     return data_filename
@@ -145,33 +156,6 @@ def project_build(pro_num, team_num, part_num):
         pass
     elif current_user.username not in names:
         return None # dashboard
-   
-    if part_num == 0 or part_num == 4:
-        form = P_InOut()
-        dicMod = {         
-        'Rec' : '', 
-        'Tex' : '', 
-        'Pic' : ''    
-        }  
-        image_file = S3_LOCATION + dicMod['Pic']
-        audio_file = S3_LOCATION + dicMod['Rec']       
-    else:
-        form = P_Part()
-        dicMod = {         
-        'Rec' : '', 
-        'Tex' : '', 
-        'Pic' : '', 
-        'Q1' : '', 
-        'A1' : '',
-        'QA1rec' : '',
-        'Q2' : '',
-        'A2' : '',       
-        'QA2rec' : ''
-        }  
-        image_file = S3_LOCATION + dicMod['Pic']
-        audio_file = S3_LOCATION + dicMod['Rec']
-        q1_file = S3_LOCATION + dicMod['QA1rec']
-        q2_file = S3_LOCATION + dicMod['QA2rec']
     
 
     #get the mod field
@@ -184,11 +168,39 @@ def project_build(pro_num, team_num, part_num):
         teamMod.PartThr,  
         teamMod.Outro 
     ]     
-
-    try: 
-        dicMod = ast.literal_eval(modFields[part_num])
-    except:         
-        pass
+   
+    if part_num == 0 or part_num == 4:
+        form = P_InOut()
+        try: 
+            dicMod = ast.literal_eval(modFields[part_num])
+        except:       
+            dicMod = {         
+            'Rec' : '', 
+            'Tex' : '', 
+            'Pic' : ''    
+            }  
+        image_file = S3_LOCATION + dicMod['Pic']
+        audio_file = S3_LOCATION + dicMod['Rec']       
+    else:
+        form = P_Part()
+        try: 
+            dicMod = ast.literal_eval(modFields[part_num])
+        except:     
+            dicMod = {         
+            'Rec' : '', 
+            'Tex' : '', 
+            'Pic' : '', 
+            'Q1' : '', 
+            'A1' : '',
+            'QA1rec' : '',
+            'Q2' : '',
+            'A2' : '',       
+            'QA2rec' : ''
+            }    
+        image_file = S3_LOCATION + dicMod['Pic']
+        audio_file = S3_LOCATION + dicMod['Rec']
+        q1_file = S3_LOCATION + dicMod['QA1rec']
+        q2_file = S3_LOCATION + dicMod['QA2rec']
     
     try: 
         statList = ast.literal_eval(teamMod.Status)
