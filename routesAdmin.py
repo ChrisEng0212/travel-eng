@@ -302,6 +302,33 @@ def teams():
 
     return render_template('instructor/teams.html', attDict=attDict, teamcount=teamcount)  
 
+@app.route("/MTGrades", methods = ['GET', 'POST'])
+@login_required
+def MTGrades():
+    midGrades = MidGrades.query.order_by(asc(MidGrades.studentID)).all()
+      
+    mtDict = {}
+    for item in midGrades:
+        cpg = round(item.cpg / 18 * 50)
+        mvg = int(item.mvg_comments)
+        
+        
+        count = 0
+        answers = MidAnswers.query.filter_by(username=item.username).all()
+        for ans in answers:
+            count+= 1
+        
+        if count*3 > 20:
+            vids = 20 
+        else:
+            vids = count*3
+        total = cpg + mvg*3 + vids
+        mtDict[item.studentID] = [total, item.username, cpg, mvg, count]
+         
+                
+                
+    return render_template('instructor/midGrades.html', title='MTGrades', midGrades=midGrades, mtDict=mtDict)
+
 @app.route ("/midteams")
 @login_required
 def midteams():  

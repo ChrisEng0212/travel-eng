@@ -1,0 +1,55 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div class="content-section">    
+    <h1> Midterm Grades </h1>   
+</div> 
+
+
+<div class="content-section">      
+
+    <table class="table table-sm" width="100">
+        <thead>
+            <tr>
+              <th scope="col">No</th>             
+              <th scope="col">ID</th>
+              <th scope="col">Total</th> 
+              <th scope="col">Name</th> 
+              <th scope="col">cvg</th> 
+              <th scope="col">mvg</th> 
+              <th scope="col">vids</th>                                                            
+            </tr>
+        </thead>
+         
+        <!-- Team Table______________________________________________-->
+
+        <tbody> 
+        {% set count = [1] %} 
+            {% for key in mtDict %}               
+            <tr>
+            <td>{{count|length}}</td> 
+                           
+                <td>{{key}}</td>
+                {% for item in mtDict[key] %}
+                <td>{{item}}</td>
+                {% endfor %}     
+            <tr> 
+            {% set __ = count.append(1) %}    
+            {% endfor %}
+        </tbody>
+
+    </table>  
+       
+</div>
+
+
+{% endblock %}   
+
+{% block script %}
+<script>
+
+
+
+</script>
+{% endblock %}

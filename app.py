@@ -40,6 +40,8 @@ mail = Mail(app)
 from routesUser import *
 from routesAdmin import *
 from routesActivity import *
+from routesProject import *
+from routesMidterm import *
 
 
 if __name__ == '__main__': 

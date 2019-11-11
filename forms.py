@@ -773,30 +773,32 @@ class AgentWorker(FlaskForm):
       
     Submit = SubmitField('Submit')  
 
-           
 
-class Project(FlaskForm):
-    Title = TextAreaField (label='Project Title')    
-    TextOne = TextAreaField (label='Speaking Text One', validators=[DataRequired(message='Please write your answers')])    
-    PictureOne = FileField (label='Picture One', validators=[FileAllowed(['jpg', 'png'], message="Please upload jpeg/png image")])
-    RecordOne = FileField (label='Record One', validators=[FileAllowed(['mp3', 'm4a', 'mp4'], message="Please upload mp3/m4a/mp4")])
-    TextTwo  = TextAreaField (label='Speaking Text Two ', validators=[DataRequired(message='Please write your answers')])    
-    PictureTwo  = FileField (label='Picture Two ', validators=[FileAllowed(['jpg', 'png'], message="Please upload jpeg/png image")])
-    RecordTwo  = FileField (label='Record Two ', validators=[FileAllowed(['mp3', 'm4a', 'mp4'], message="Please upload mp3/m4a/mp4")])
-    TextThree = TextAreaField (label='Speaking Text Three', validators=[DataRequired(message='Please write your answers')])    
-    PictureThree = FileField (label='Picture Three', validators=[FileAllowed(['jpg', 'png'], message="Please upload jpeg/png image")])
-    RecordThree = FileField (label='Record Three', validators=[FileAllowed(['mp3', 'm4a', 'mp4'], message="Please upload mp3/m4a/mp4")])
-    TextFour = TextAreaField (label='Speaking Text Four', validators=[DataRequired(message='Please write your answers')])    
-    PictureFour = FileField (label='Picture Four', validators=[FileAllowed(['jpg', 'png'], message="Please upload jpeg/png image")])
-    RecordFour = FileField (label='Record Four', validators=[FileAllowed(['mp3', 'm4a', 'mp4'], message="Please upload mp3/m4a/mp4")])
-    TextFive = TextAreaField (label='Speaking Text Five', validators=[DataRequired(message='Please write your answers')])    
-    PictureFive = FileField (label='Picture Five', validators=[FileAllowed(['jpg', 'png'], message="Please upload jpeg/png image")])
-    RecordFive = FileField (label='Record Five', validators=[FileAllowed(['mp3', 'm4a', 'mp4'], message="Please upload mp3/m4a/mp4")])
-    TextSix = TextAreaField (label='Speaking Text Six', validators=[DataRequired(message='Please write your answers')])    
-    PictureSix = FileField (label='Picture Six', validators=[FileAllowed(['jpg', 'png'], message="Please upload jpeg/png image")])
-    RecordSix = FileField (label='Record Six', validators=[FileAllowed(['mp3', 'm4a', 'mp4'], message="Please upload mp3/m4a/mp4")])
-    Complete = RadioField('Attendance', choices = [('No, not yet', 'No, not yet'), ('Yes, please check', 'Yes, please check')], default='No, not yet')
-    Stage = IntegerField ('Team Number')
+
+class P_InOut(FlaskForm):    
+    Tex = TextAreaField (label='Text')   
+    Pic = FileField (label='Picture Upload', validators=[FileAllowed(['jpg', 'png'], message="Please upload jpeg/png image")])
+    Rec = FileField (label='Recording Upload', validators=[FileAllowed(['mp3', 'm4a', 'mp4'], message="Please upload mp3/m4a/mp4")])
     Submit = SubmitField('Submit')
+
+class P_Part(FlaskForm):
+    Tex  = TextAreaField (label='Text')        
+    Pic  = FileField (label='Picture Upload', validators=[FileAllowed(['jpg', 'png'], message="Please upload jpeg/png image")])
+    Rec  = FileField (label='Record Upload', validators=[FileAllowed(['mp3', 'm4a', 'mp4'], message="Please upload mp3/m4a/mp4")])
+    Q1  = TextAreaField (label='Question 1')
+    A1  = TextAreaField (label='Answer 1')    
+    QA1rec  = FileField (label='Q&A 1 Rec', validators=[FileAllowed(['mp3', 'm4a', 'mp4'], message="Please upload mp3/m4a/mp4")]) 
+    Q2  = TextAreaField (label='Question 2')
+    A2  = TextAreaField (label='Answer 2') 
+    QA2rec = FileField (label='Q&A 2 Rec', validators=[FileAllowed(['mp3', 'm4a', 'mp4'], message="Please upload mp3/m4a/mp4")]) 
+    Submit = SubmitField('Submit')    
+
+
+
+
+
+
+    
+    
 
 

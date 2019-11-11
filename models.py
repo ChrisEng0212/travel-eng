@@ -271,42 +271,19 @@ class BaseProjects(db.Model):
     __abstract__ = True
     date_posted = db.Column(db.DateTime, nullable=False, default=datetime.now)
     teamNames =  db.Column(db.String)
-    teamnumber = db.Column(db.Integer)
-    topic = db.Column(db.String)
-    Title = db.Column(db.String)    
-    TextOne = db.Column(db.String)
-    PictureOne = db.Column(db.String)
-    RecordOne = db.Column(db.String)
-    TextTwo = db.Column(db.String)
-    PictureTwo = db.Column(db.String)
-    RecordTwo = db.Column(db.String)
-    TextThree = db.Column(db.String)
-    PictureThree = db.Column(db.String)
-    RecordThree = db.Column(db.String)  
-    TextFour = db.Column(db.String)
-    PictureFour = db.Column(db.String)
-    RecordFour = db.Column(db.String)
-    TextFive = db.Column(db.String)
-    PictureFive = db.Column(db.String)
-    RecordFive = db.Column(db.String)
-    TextSix = db.Column(db.String)
-    PictureSix = db.Column(db.String)
-    RecordSix = db.Column(db.String)    
-    Complete = db.Column(db.String)  
-    Stage =   db.Column(db.Integer)
+    teamNumber = db.Column(db.Integer, unique=True)    
+    Intro = db.Column(db.String)    
+    PartOne = db.Column(db.String)
+    PartTwo = db.Column(db.String)
+    PartThr = db.Column(db.String)
+    Outro = db.Column(db.String)   
+    Status = db.Column(db.String)
+    ProInt = db.Column(db.Integer)
+    ProStr = db.Column(db.String)
 
 
 class P1_NM(BaseProjects):
     id = db.Column(db.Integer, primary_key=True)
-modListUnits.append(P1_NM)
-
-class P2_TA(BaseProjects):
-    id = db.Column(db.Integer, primary_key=True)
-modListUnits.append(P2_TA)
-
-
-
-
 
 
 
@@ -334,6 +311,7 @@ admin.add_view(MyModelView(Sources, db.session))
 admin.add_view(MyModelView(MidTerm, db.session))
 admin.add_view(MyModelView(MidAnswers, db.session))
 admin.add_view(MyModelView(MidGrades, db.session))
+admin.add_view(MyModelView(P1_NM, db.session))
 #admin.add_view(MyModelView(AgentCust, db.session))
 #admin.add_view(MyModelView(AgentWork, db.session))
 #admin.add_view(MyModelView(AgentList, db.session))

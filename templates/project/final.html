@@ -1,0 +1,79 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    
+<div class="content-section">    
+        <h1 > Final Dashboard</h1>   
+<br>
+
+<legend class="border-bottom mb-4">Notes</legend>
+
+     <div class="content-section">  
+        <div class="embed-responsive embed-responsive-4by3">
+            <iframe src=""></iframe>
+        </div> 
+     </div>
+
+<legend class="border-bottom mb-4">Your Projects</legend>
+
+<div style="overflow-x:auto;">
+    <table class="table table-sm">
+      <thead>
+          <tr>
+            <th scope="col" style="">No.</th>                       
+            <th scope="col" style="">Title</th>
+            <th scope="col" style="">Team</th>            
+            <th scope="col" style="">Intro</th>
+            <th scope="col" style="">Part 1</th>      
+            <th scope="col" style="">Part 2</th>
+            <th scope="col" style="">Part 3</th>  
+            <th scope="col" style="">Ending</th>
+            <th scope="col" style="">Status</th>                          
+          </tr>
+      </thead>
+     
+          
+      {% for i in projDict %}      
+      <tbody id="">
+          <tr style="height:50px;">            
+            <td> {{projDict[i][0]}}</td>
+            <td> {{projDict[i][1]}}</td>
+            <td> {{projDict[i][2]}}</td>
+            <td> <a href="{{url_for('project_build', pro_num=projDict[i][0], team_num=projDict[i][3], part_num=0 )}}", target="_blank">Intro </a>({{projDict[i][4][0]}}) </td>
+            <td> <a href="{{url_for('project_build', pro_num=projDict[i][0], team_num=projDict[i][3], part_num=1 )}}", target="_blank">Part 1 </a>({{projDict[i][4][1]}})</td>
+            <td> <a href="{{url_for('project_build', pro_num=projDict[i][0], team_num=projDict[i][3], part_num=2 )}}", target="_blank">Part 2 </a>({{projDict[i][4][2]}})</td>
+            <td> <a href="{{url_for('project_build', pro_num=projDict[i][0], team_num=projDict[i][3], part_num=3 )}}", target="_blank">Part 3 </a>({{projDict[i][4][3]}})</td>
+            <td> <a href="{{url_for('project_build', pro_num=projDict[i][0], team_num=projDict[i][3], part_num=4 )}}", target="_blank">End </a>({{projDict[i][4][4]}})</td>
+            <td> {{projDict[i][5]}}/5</td>
+          </tr>       
+      </tbody>      
+      
+      {% endfor %}
+      
+      </table>
+      </div>
+
+
+
+<div>
+<button class="btn btn-lg btn-danger"><a href="" style="color:white">Start Project</a></button>          
+</div>
+<br>
+
+<legend class="border-bottom mb-4">Final Score</legend>
+
+<h3 > Zero points</h3> 
+<br>
+
+</div>
+        
+
+             
+{% endblock  %}
+
+     
+ 
+      
+    
+  
+ 
