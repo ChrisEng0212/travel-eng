@@ -278,7 +278,7 @@ def project_build(pro_num, team_num, part_num):
         'Around Taipei'
     ]
 
-    parts = [ None, 'Intro', 'Part 1','Part 2','Part 3','Ending']  
+    parts = ['Intro', 'Part 1','Part 2','Part 3','Ending']  
 
     context = {
         'form' : form,
