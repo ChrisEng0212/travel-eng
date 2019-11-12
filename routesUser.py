@@ -164,7 +164,7 @@ def att_team():
                 attScore = 1          
             attendLog = AttendLog(username = form.name.data, 
             attend=form.attend.data,teamnumber=form.teamnumber.data, 
-            studentID=form.studentID.data, attScore=attScore, extraStr=form.midterm.data)
+            studentID=form.studentID.data, attScore=attScore)
             db.session.add(attendLog)
             # commit both
             db.session.commit()
