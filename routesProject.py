@@ -77,7 +77,8 @@ def create_folder(unit, teamnumber, nameRange):
 @app.route ("/proteams/<string:unit>/", methods=['GET','POST'])
 @login_required
 def project_teams(unit):
-    # team builder
+    if current_user.id != 1:
+        return abort(403)
 
     modList = [
         None,
@@ -97,18 +98,18 @@ def project_teams(unit):
     teamsDict = {}
     for att in attTeams:
         if att.teamnumber in teamsDict:
-            teamDict[att.teamnumber].append(att.username)
+            teamsDict[att.teamnumber].append(att.username)
         else: 
-            teamDict[att.teamnumber] = [att.username]
+            teamsDict[att.teamnumber] = [att.username]
 
     
     
     
     manualAdd = {
-        15 : []
+        15 : ['Chris', 'Bob', 'Taylor']
     }
 
-    #add the extra teams -->  dictionary = manuakAdd
+    #add the extra teams -->  dictionary = teamsDict --> manualAdd
     dictionary = teamsDict
 
     returnStr = str(dictionary)
@@ -119,7 +120,8 @@ def project_teams(unit):
         create_folder(unit, str(team), dictionary[team])
         teamStart = project(
             teamNumber=team, 
-            teamNames=str(dictionary[team])
+            teamNames=str(dictionary[team]),
+            Status=str([0,0,0,0,0])
             )        
         db.session.add(teamStart)
         db.session.commit()  
@@ -129,9 +131,8 @@ def project_teams(unit):
 
 def upload_data(data, unit, team, mark):   
     # S3_Location / 1 / 1 / mark 
-    _ , f_ext = os.path.splitext(data.filename) # _  replaces f_name which we don't need #f_ext  file extension 
-    s3_folder = '/' + str(unit) + '/'
-    data_filename =  s3_folder + str(unit) + '/' + str(team) + '/' + mark + f_ext 
+    _ , f_ext = os.path.splitext(data.filename) # _  replaces f_name which we don't need #f_ext  file extension     
+    data_filename =  str(unit) + '/' + str(team) + '/' + mark + f_ext 
     s3_filename =  S3_LOCATION + data_filename     
     s3_resource.Bucket(S3_BUCKET_NAME).put_object(Key=data_filename, Body=data) 
 
