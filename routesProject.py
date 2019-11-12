@@ -47,7 +47,7 @@ def final():
     if test: 
         href = 'http://127.0.0.1:5000/project/'
     else: 
-        href = 'https://travel-eng.herokuapp/project/'
+        href = 'https://travel-eng.herokuapp.com/project/'
     
     print (projDict)
 
