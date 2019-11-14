@@ -106,7 +106,8 @@ def project_teams(unit):
     
     
     manualAdd = {
-        15 : ['Chris', 'Bob', 'Taylor']
+        15 : ['Peggy', 'Wei', 'Coral'],
+        16: ['Felisia', 'Michelle', 'Jasmine']
     }
 
     #add the extra teams -->  dictionary = teamsDict --> manualAdd
@@ -287,7 +288,10 @@ def project_build(pro_num, team_num, part_num):
         'title' : titles[pro_num],  
         'part' : parts[part_num],
         'part_num' : part_num,
-        'complete' : statList[part_num]          
+        'complete' : statList[part_num], 
+        'q2_file' : q2_file, 
+        'q1_file' : q1_file, 
+
     }
 
     return render_template('project/project_layout.html', **context)
