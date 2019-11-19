@@ -52,13 +52,22 @@ def final():
         'Around Taipei'
         ]
 
+    
     projDict = {}    
     for queryInt in queryList:
-        for row in queryList[queryInt]:            
+        stopCounter = 0 
+        for row in queryList[queryInt]:                        
             if current_user.username in ast.literal_eval(row.teamNames):
                 status = ast.literal_eval(row.Status)
                 projDict[queryInt] = [str(queryInt), titles[queryInt], ast.literal_eval(row.teamNames), str(row.teamNumber), status, sum(status)]        
-        
+            else:
+                if stopCounter == 0: 
+                    projDict[queryInt] = [str(queryInt), titles[queryInt], 'No Team Yet', '0', 0] 
+                    stopCounter = 1
+                else:
+                    pass       
+            
+                
     
     if test: 
         href = 'http://127.0.0.1:5000/project/'

@@ -63,19 +63,20 @@
 
 <script>
 
+// for 5 parts
+// for 4 projects
 for (i = 0; i < 5; i++){
-  for (j = 1; j < 3; j++) {
-try {
+  for (j = 1; j < 5; j++) {
+
   var string1 = 'status' + i + j +'1'
   var string0 = 'status' + i + j +'0'
-  document.getElementById(string1).innerHTML = 'Done'
-  document.getElementById(string1).style = 'background:lightgreen;'
-}
-catch(error) {
-  console.error(error);
-  document.getElementById(string0).innerHTML = 'Edit'
-  document.getElementById(string0).style = 'background:pink;'
-}
+  if (document.getElementById(string1)){
+    document.getElementById(string1).innerHTML = 'Done';
+    document.getElementById(string1).style = 'background:lightgreen;';
+  } else if (document.getElementById(string0)) {
+    document.getElementById(string0).innerHTML = 'Edit';
+    document.getElementById(string0).style = 'background:pink;'
+  }
 
   }
 }
