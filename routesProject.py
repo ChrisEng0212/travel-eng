@@ -220,7 +220,9 @@ def project_build(pro_num, team_num, part_num):
             'Pic' : ''    
             }  
         image_file = S3_LOCATION + dicMod['Pic']
-        audio_file = S3_LOCATION + dicMod['Rec']       
+        audio_file = S3_LOCATION + dicMod['Rec']  
+        q2_file = None
+        q1_file = None     
     else:
         form = P_Part()
         try: 
