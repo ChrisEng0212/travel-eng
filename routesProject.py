@@ -21,28 +21,44 @@ except:
     S3_BUCKET_NAME = os.environ['S3_BUCKET_NAME']   
     test = False 
 
+modList = [
+        None,
+        P1_NM, 
+        P2_TA
+        ]
+
+queryList = {
+       1 : P1_NM.query.all(), 
+       2 : P2_TA.query.all()
+    }   
+
+titles = [
+        None, 
+        'At the Night Market', 
+        'Around Taipei'
+        ]
 
 @app.route ("/final")
 def final():
 
-    queryList = [        
-        P1_NM.query.all() 
-        ] 
+    queryList = {
+       1 : P1_NM.query.all(), 
+       2 : P2_TA.query.all()
+    }   
 
     titles = [
         None, 
         'At the Night Market', 
         'Around Taipei'
-    ]
+        ]
 
-    projDict = {}
-    count = 1 
-    for modelQuery in queryList:
-        for row in modelQuery:            
+    projDict = {}    
+    for queryInt in queryList:
+        for row in queryList[queryInt]:            
             if current_user.username in ast.literal_eval(row.teamNames):
                 status = ast.literal_eval(row.Status)
-                projDict[count] = [str(count), titles[count], ast.literal_eval(row.teamNames), str(row.teamNumber), status, sum(status)]        
-        count += 1
+                projDict[queryInt] = [str(queryInt), titles[queryInt], ast.literal_eval(row.teamNames), str(row.teamNumber), status, sum(status)]        
+        
 
     if test: 
         href = 'http://127.0.0.1:5000/project/'
@@ -82,16 +98,15 @@ def project_teams(unit):
 
     modList = [
         None,
-        P1_NM 
+        P1_NM, 
+        P2_TA
         ]
 
     project = modList[int(unit)]
 
     teams = []
     for pro in project.query.all():
-        teams.append(pro.teamNumber)
-
-    
+        teams.append(pro.teamNumber)    
 
     #create a dictionary of teams
     attTeams = Attendance.query.all()
@@ -100,10 +115,7 @@ def project_teams(unit):
         if att.teamnumber in teamsDict:
             teamsDict[att.teamnumber].append(att.username)
         else: 
-            teamsDict[att.teamnumber] = [att.username]
-
-    
-    
+            teamsDict[att.teamnumber] = [att.username]    
     
     manualAdd = {
         15 : ['Peggy', 'Wei', 'Coral'],
@@ -139,15 +151,41 @@ def upload_data(data, unit, team, mark):
 
     return data_filename
 
+@app.route ("/project_dash", methods=['GET','POST'])
+@login_required
+def project_dash():
+    
+    
+    dashDict = {
+        1 : {}, 
+        2 : {}, 
+        3 : {}, 
+        4 : {}
+    }
+    
+    count = 1
+    for queryInt in queryList:
+        for row in queryList[queryInt]: 
+            status = ast.literal_eval(row.Status)
+            dashDict[queryInt][count] = {
+                'team' : str(row.teamNumber), 
+                'names' : ast.literal_eval(row.teamNames), 
+                'status' : status, 
+                'score' : sum(status)  
+            }
+            count += 1
+
+    return render_template('project/final_dash.html', dashDict=dashDict)
+            
+               
+        
+
 
 @app.route ("/project/<int:pro_num>/<int:team_num>/<int:part_num>", methods=['GET','POST'])
 @login_required
 def project_build(pro_num, team_num, part_num):
     
-    modList = [
-        None,
-        P1_NM 
-        ]  
+    
     proMod = modList[pro_num]   
 
     #search model for team
@@ -273,12 +311,7 @@ def project_build(pro_num, team_num, part_num):
             form.Q2.data = dicMod['Q2']
             form.A2.data = dicMod['A2']
    
-    titles = [
-        None, 
-        'At the NightMarket', 
-        'Around Taipei'
-    ]
-
+    
     parts = ['Intro', 'Part 1','Part 2','Part 3','Ending']  
 
     context = {
@@ -295,5 +328,103 @@ def project_build(pro_num, team_num, part_num):
     }
 
     return render_template('project/project_layout.html', **context)
+
+
+
+
+@app.route ("/projtest/<int:pro_num>/<int:team_num>", methods=['GET','POST'])
+@login_required
+def project_test(pro_num, team_num):
+
+    formList = [
+        None, 
+        P_Ans()
+    ]
+
+    form = formList[pro_num]
+
+    formParts = {
+        1 : [form.Part1, form.Part11, form.Part12], 
+        2 : [form.Part2, form.Part21, form.Part22], 
+        3 : [form.Part3, form.Part31, form.Part32], 
+    }
+    
+    proMod = modList[pro_num]   
+
+    #search model for team
+    teamModel = proMod.query.filter_by(teamNumber=team_num).first()
+    names = ast.literal_eval(teamModel.teamNames)
+
+    users = {}
+    for name in names:        
+        image = User.query.filter_by(username=name).first().image_file        
+        users[name] = [name, S3_LOCATION + image]
+    
+
+    if current_user.id == 1:
+        pass
+    elif current_user.username not in names:
+        return None # dashboard
+    
+
+    #get the mod field
+    teamMod = proMod.query.filter_by(teamNumber=team_num).first()
+    
+    modFields = [ 
+        teamMod.Intro, 
+        teamMod.PartOne, 
+        teamMod.PartTwo, 
+        teamMod.PartThr,  
+        teamMod.Outro 
+    ]  
+
+    dicModA = {         
+            'Rec' : '', 
+            'Tex' : '', 
+            'Pic' : ''    
+            }  
+    
+    dicModB = {         
+            'Rec' : '', 
+            'Tex' : '', 
+            'Pic' : '', 
+            'Q1' : '', 
+            'A1' : '',
+            'QA1rec' : '',
+            'Q2' : '',
+            'A2' : '',       
+            'QA2rec' : ''
+            }  
+
+    dataDict = {
+        0 : dicModA,
+        1 : dicModB,
+        2 : dicModB,
+        3 : dicModB,
+        4 : dicModB,
+        5 : dicModA
+    }
+
+    for part in modFields:
+        try: 
+            liteval = ast.literal_eval(part)
+            dataDict[modFields.index(part)] = liteval
+        except: 
+            pass
+
+   
+    
+    context = {    
+        'form' : form,    
+        'title' : titles[pro_num],        
+        'S3_LOCATION' : S3_LOCATION,
+        'dataDict' : dataDict, 
+        'team' : team_num, 
+        'users' : users, 
+        'formParts' : formParts,
+        'QNA'  :  [None, 'QA1rec', 'QA2rec']
+    }
+
+    return render_template('project/project_test.html', **context)
 
 

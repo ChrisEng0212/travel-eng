@@ -1,0 +1,79 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    
+<div class="content-section">    
+        <h1 > Instructor Dashboard</h1>   
+<br>
+
+{% for dash in dashDict %}
+<legend class="border-bottom mb-4">Projects {{dash}}</legend>
+
+<div style="overflow-x:auto;">
+    <table class="table table-sm">
+      <thead>
+          <tr>            
+            <th scope="col" style="">Team</th>            
+            <th scope="col" style="">Names</th>
+            <th scope="col" style="">Status</th>      
+            <th scope="col" style="">Score</th>                                                 
+          </tr>
+      </thead>
+     
+          
+      {% for i in dashDict[dash] %}      
+      <tbody id="">
+          <tr style="height:50px;">  
+            <td> <a href="{{url_for('project_test', pro_num=dash, team_num=dashDict[dash][i]['team'])}}", target="_blank">Team {{dashDict[dash][i]['team']}}</a></td>
+            <td> {{dashDict[dash][i]['names']}}</td>
+            <td> {{dashDict[dash][i]['status']}}</td>
+            <td> {{dashDict[dash][i]['score']}}</td>
+            </tr>       
+      </tbody>      
+      
+      {% endfor %}
+      
+      </table>
+      </div>
+
+{% endfor %}
+
+</div>
+        
+
+             
+{% endblock  %}
+
+
+{% block script %}
+
+<script>
+
+for (i = 0; i < 5; i++){
+  for (j = 1; j < 2; j++) {
+try {
+  var string1 = 'status' + i + j +'1'
+  var string0 = 'status' + i + j +'0'
+  document.getElementById(string1).innerHTML = 'Done'
+  document.getElementById(string1).style = 'background:lightgreen;'
+}
+catch(error) {
+  console.error(error);
+  document.getElementById(string0).innerHTML = 'Edit'
+  document.getElementById(string0).style = 'background:pink;'
+}
+
+  }
+}
+
+
+
+
+</script>
+
+{% endblock %}
+ 
+      
+    
+  
+ 

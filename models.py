@@ -285,6 +285,8 @@ class BaseProjects(db.Model):
 class P1_NM(BaseProjects):
     id = db.Column(db.Integer, primary_key=True)
 
+class P2_TA(BaseProjects):
+    id = db.Column(db.Integer, primary_key=True)
 
 
 class Info ():    
@@ -312,6 +314,7 @@ admin.add_view(MyModelView(MidTerm, db.session))
 admin.add_view(MyModelView(MidAnswers, db.session))
 admin.add_view(MyModelView(MidGrades, db.session))
 admin.add_view(MyModelView(P1_NM, db.session))
+admin.add_view(MyModelView(P2_TA, db.session))
 #admin.add_view(MyModelView(AgentCust, db.session))
 #admin.add_view(MyModelView(AgentWork, db.session))
 #admin.add_view(MyModelView(AgentList, db.session))

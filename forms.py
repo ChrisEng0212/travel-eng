@@ -794,7 +794,18 @@ class P_Part(FlaskForm):
     Submit = SubmitField('Submit')    
 
 
-
+class P_Ans(FlaskForm):
+    Part0 = TextAreaField (label='Describe one detail mentioned about nightmarkets')   
+    Part1 = TextAreaField (label='What is the feature?')       
+    Part11 = TextAreaField (label='Answer')  
+    Part12 = TextAreaField (label='Answer') 
+    Part2 = TextAreaField (label='What is the feature?')       
+    Part21 = TextAreaField (label='Answer')  
+    Part22 = TextAreaField (label='Answer') 
+    Part3 = TextAreaField (label='What is the feature?')       
+    Part31 = TextAreaField (label='Answer')  
+    Part32 = TextAreaField (label='Answer')
+    Submit = SubmitField('Submit')    
 
 
 
