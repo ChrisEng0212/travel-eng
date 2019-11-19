@@ -59,7 +59,7 @@ def final():
                 status = ast.literal_eval(row.Status)
                 projDict[queryInt] = [str(queryInt), titles[queryInt], ast.literal_eval(row.teamNames), str(row.teamNumber), status, sum(status)]        
         
-
+    
     if test: 
         href = 'http://127.0.0.1:5000/project/'
     else: 
