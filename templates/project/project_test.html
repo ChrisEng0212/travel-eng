@@ -7,152 +7,153 @@
 </div>
 
 <div class="content-section">
-<legend class="border-bottom mb-4">Team {{team}} </legend>   
-        <table>
-        {% for user in users %}
-                    <th scope="col" style="">
-                    <div align="center">
-                        <img class="rounded-circle chat-img" src="{{users[user][1]}}"> 
-                        <br>
-                         {{users[user][0]}}
-                        </div>
-                    </th>                  
-        {% endfor %}   
-        </table>
+<legend class="border-bottom mb-4">Team {{team}} </legend>
+		<table>
+		{% for user in users %}
+					<th scope="col" style="">
+					<div align="center">
+						<img class="rounded-circle chat-img" src="{{users[user][1]}}">
+						<br>
+						 {{users[user][0]}}
+						</div>
+					</th>
+		{% endfor %}
+		</table>
+
 
 </div>
 
 
 
-<form method="POST" action="" enctype="multipart/form-data">        
-        {{ form.hidden_tag () }}
-        <!-- adding a csfr token, protection-->
-        <fieldset class="form-group">  
+<form method="POST" action="" enctype="multipart/form-data">
+		{{ form.hidden_tag () }}
+		<!-- adding a csfr token, protection-->
+		<fieldset class="form-group">
 
-        <div class="content-section" align="center">
-            <div class="media"> 
-                <audio id="modelAudio" autoplay controls>   
-            </div>
-        <br>  
-            
-        <img class="rounded img-fluid" alt="No file yet" src="{{ S3_LOCATION + dataDict[0]['Pic'] }}">   
-            
-        <br> 
-        <br> 
-            <button id="button0"  align="center" type="button" class="btn btn-warning" style="" value="{{ S3_LOCATION + dataDict[0]['Rec']}}" onclick="modelPlay(0)">Introduction</button>
-        <br>
-        <br>                
-        </div>  
+		<div class="content-section" align="center">
+			<div class="media">
+				<audio id="modelAudio" autoplay controls>
+			</div>
+		<br>
 
-        <div class="content-section">
-        <text> 
-           {{ dataDict[0]['Tex']  }}
-        </text> 
-            <div class="form-group"> 
-                        {{ form.Part0.label (class="form-control-label")}}
-                        {% if form.Part0.errors %}
-                        {{ form.Part0 (class="form-control form-control-lg is-invalid")}} 
-                        <div class="invalid-feedback">
-                            {% for error in form.Part0.errors %}
-                                <span>{{ error }}</span>
-                            {% endfor %}
-                        </div>                          
-                        {% else %}
-                            {{ form.Part0 (class="form-control form-control-lg")}}
-                        {% endif %}                                           
-            </div>
-                <button class="btn btn-sm btn-info" onchange="submit()">Save</button> 
-        </div>  
+		<img class="rounded img-fluid" alt="No file yet" src="{{ S3_LOCATION + dataDict[0]['Pic'] }}">
 
-        <div class="content-section">
-         <table class="table table-sm">
-                <tr>  
-                    {% for i in range(1,4)%}          
-                    <th scope="col" style="">
-                    <div align="center">
-                        <img class="rounded-circle proj-img" src="{{ S3_LOCATION + dataDict[i]['Pic']}}"> 
-                        <br>
-                        <button id="img{{i}}" type="button" class="btn btn-warning" style="" value="" data-toggle="collapse" data-target="#part{{i}}" onclick="playPart({{i}})">Listen</button>
-                    </div>
-                    </th>  
-                    {% endfor %}                                       
-                </tr>           
-        </table>
-        </div>
+		<br>
+		<br>
+			<button id="button0"  align="center" type="button" class="btn btn-warning" style="" value="{{ S3_LOCATION + dataDict[0]['Rec']}}" onclick="modelPlay(0)">Introduction</button>
+		<br>
+		<br>
+		</div>
+
+		<div class="content-section">
+		<text>
+		   {{ dataDict[0]['Tex']  }}
+		</text>
+			<div class="form-group">
+						{{ form.Part0.label (class="form-control-label")}}
+						{% if form.Part0.errors %}
+						{{ form.Part0 (class="form-control form-control-lg is-invalid")}}
+						<div class="invalid-feedback">
+							{% for error in form.Part0.errors %}
+								<span>{{ error }}</span>
+							{% endfor %}
+						</div>
+						{% else %}
+							{{ form.Part0 (class="form-control form-control-lg")}}
+						{% endif %}
+			</div>
+				<button class="btn btn-sm btn-info" onchange="submit()">Save</button>
+		</div>
+
+		<div class="content-section">
+		 <table class="table table-sm">
+				<tr>
+					{% for i in range(1,4)%}
+					<th scope="col" style="">
+					<div align="center">
+						<img class="rounded-circle proj-img" src="{{ S3_LOCATION + dataDict[i]['Pic']}}">
+						<br>
+						<button id="img{{i}}" type="button" class="btn btn-warning" style="" value="" data-toggle="collapse" data-target="#part{{i}}" onclick="playPart({{i}})">Listen</button>
+					</div>
+					</th>
+					{% endfor %}
+				</tr>
+		</table>
+		</div>
 
 <!-- ################################################################################-->
 
-        {% for i in range(1,4)%}  
-        <div class="collapse" id="part{{i}}"  >  
+		{% for i in range(1,4)%}
+		<div class="collapse" id="part{{i}}"  >
 
-            <div class="content-section" align="center">
-            
-                <audio id="partAudio{{i}}" autoplay controls>  </audio> 
-                <img class="rounded img-fluid" alt="No file yet" src="{{ S3_LOCATION + dataDict[i]['Pic'] }}">  
-                <br>  
-            </div>
+			<div class="content-section" align="center">
 
-            <div class="content-section">
-                <text> 
-                {{ dataDict[i]['Tex']  }}
-                </text> 
-            <div class="form-group"> 
-                        {{ formParts[i][0].label (class="form-control-label")}}
-                        {% if formParts[i][0].errors %}
-                        {{ formParts[i][0] (class="form-control form-control-lg is-invalid")}} 
-                        <div class="invalid-feedback">
-                            {% for error in formParts[i][0].errors %}
-                                <span>{{ error }}</span>
-                            {% endfor %}
-                        </div>                          
-                        {% else %}
-                            {{ formParts[i][0] (class="form-control form-control-lg")}}
-                        {% endif %}                                           
-            </div>
-                <button class="btn btn-sm btn-info" onchange="submit()">Save</button> 
-            </div>  
+				<audio id="partAudio{{i}}" autoplay controls>  </audio>
+				<img class="rounded img-fluid" alt="No file yet" src="{{ S3_LOCATION + dataDict[i]['Pic'] }}">
+				<br>
+			</div>
 
-            
+			<div class="content-section">
+				<text>
+				{{ dataDict[i]['Tex']  }}
+				</text>
+			<div class="form-group">
+						{{ formParts[i][0].label (class="form-control-label")}}
+						{% if formParts[i][0].errors %}
+						{{ formParts[i][0] (class="form-control form-control-lg is-invalid")}}
+						<div class="invalid-feedback">
+							{% for error in formParts[i][0].errors %}
+								<span>{{ error }}</span>
+							{% endfor %}
+						</div>
+						{% else %}
+							{{ formParts[i][0] (class="form-control form-control-lg")}}
+						{% endif %}
+			</div>
+				<button class="btn btn-sm btn-info" onchange="submit()">Save</button>
+			</div>
 
-        <div class="content-section">
-            <legend class="border-bottom mb-4">Questions</legend> 
-        
-        {% for j in range (1,3) %}
 
-        <button id="button1{{j}}" type="button" class="btn btn-success" style="" value="{{ S3_LOCATION + dataDict[i][QNA[j]]}}" onclick="qaPlay(j)">{{ dataDict[i]['Q1']}}</button>
-        <div class="form-group"> 
-                        {{ formParts[i][j].label (class="form-control-label")}}
-                        {% if formParts[i][j].errors %}
-                        {{ formParts[i][j] (class="form-control form-control-lg is-invalid")}} 
-                        <div class="invalid-feedback">
-                            {% for error in formParts[i][j].errors %}
-                                <span>{{ error }}</span>
-                            {% endfor %}
-                        </div>                          
-                        {% else %}
-                            {{ formParts[i][j] (class="form-control form-control-lg")}}
-                        {% endif %}                                           
-        </div>
-        <br>
-        <br>
-        {% endfor %}
-                                            
-        </div>
-        <button class="btn btn-sm btn-info" onchange="submit()">Save</button>
-        </div>         
+
+		<div class="content-section">
+			<legend class="border-bottom mb-4">Questions</legend>
+
+		{% for j in range (1,3) %}
+
+		<button id="button1{{j}}" type="button" class="btn btn-success" style="" value="{{ S3_LOCATION + dataDict[i][QNA[j]]}}" onclick="qaPlay(j)">{{ dataDict[i]['Q1']}}</button>
+		<div class="form-group">
+						{{ formParts[i][j].label (class="form-control-label")}}
+						{% if formParts[i][j].errors %}
+						{{ formParts[i][j] (class="form-control form-control-lg is-invalid")}}
+						<div class="invalid-feedback">
+							{% for error in formParts[i][j].errors %}
+								<span>{{ error }}</span>
+							{% endfor %}
+						</div>
+						{% else %}
+							{{ formParts[i][j] (class="form-control form-control-lg")}}
+						{% endif %}
+		</div>
+		<br>
+		<br>
+		{% endfor %}
+
+		</div>
+			<button class="btn btn-sm btn-info" onchange="submit()">Save</button>
+		</div>
 
 </div class="end collapse">
 
-{% endfor %} 
-        
+{% endfor %}
 
-           
-        </fieldset>
-        <div class="content-section" style="display:none"> 
-        <div class="form-group">
-            {{ form.Submit(class="btn btn-outline-info", id="submit")}}
-        </div>
-        </div>
+
+
+		</fieldset>
+		<div class="content-section" style="display:none">
+		<div class="form-group">
+			{{ form.Submit(class="btn btn-outline-info", id="submit")}}
+		</div>
+		</div>
 
 {% endblock %}
 
@@ -163,36 +164,39 @@
 
 <script>
 
-function playPart(task){ 
+function playPart(task){
+	let modAudio = document.getElementById('modelAudio')
+/*
+*/ 
 }
 
-function qaPlay(task){ 
+function qaPlay(task){
 }
 
 var first_click = true;
-function modelPlay(task){    
-    let modAudio = document.getElementById('modelAudio') 
-    if (first_click){
-      modAudio.src = document.getElementById('button' + task).value
-      first_click = false   
-    } else {
-      modAudio.src = ""
-      first_click = true
-    }     
+function modelPlay(task){
+	let modAudio = document.getElementById('modelAudio')
+	if (first_click){
+	  modAudio.src = document.getElementById('button' + task).value
+	  first_click = false
+	} else {
+	  modAudio.src = ""
+	  first_click = true
+	}
 
 }
 
-    if (navigator.userAgent.includes('Line')){
-        alert('WARNING: It looks like you are using Line App to view this website. Please switch to Chrome or Safari browser to Upload Files')
-    }
-    if (navigator.userAgent.includes('FB')){
-        alert('WARNING: It looks like you are using Facebook Chat App to view this website. Please switch to Chrome or Safari browser to Upload Files')
-    }
-    
+	if (navigator.userAgent.includes('Line')){
+		alert('WARNING: It looks like you are using Line App to view this website. Please switch to Chrome or Safari browser to Upload Files')
+	}
+	if (navigator.userAgent.includes('FB')){
+		alert('WARNING: It looks like you are using Facebook Chat App to view this website. Please switch to Chrome or Safari browser to Upload Files')
+	}
+
 
 function submit(){
-    alert('File Uploaded - Please wait for reload')
-    $("#submit").click();    
+	alert('File Uploaded - Please wait for reload')
+	$("#submit").click();
 }
 
 </script>

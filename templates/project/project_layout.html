@@ -31,6 +31,7 @@
             <br>
         
             <div class="form-group", id="fileUpload", onchange="submit()">
+            <h5>Find a picture that matches your topic</h5>
                 {{ form.Pic.label (class="btn btn-outline-secondary btn-sm")}}                
                 {{ form.Pic(class="form-control-file") }}                
                 {% if form.Pic.errors %}
@@ -44,9 +45,11 @@
 
         <div class="content-section">
             <div class="media">
-                <audio controls src="{{ audio_file }}">   
+                <audio controls src="{{ audio_file }}"> 
             </div>
-
+            <h5>Record your speaking in quiet place, make it clear</h5> 
+            <h5 style="color:hotpink">You are a tour guide, please sound positive and interested :)</h5>   
+            
             <br>
         
             <div class="form-group", onchange="submit()">
@@ -86,7 +89,9 @@
                 <audio controls src="{{ q1_file }}">   
             </div>
             <br>
-
+            <h5>Student A : tourist question.....</h5> 
+            <h5 style="color:hotpink">Student B : tour guide answer.....</h5> 
+            
             <div class="form-group", onchange="submit()">
                 {{ form.QA1rec.label (class="btn btn-outline-secondary btn-sm")}}                
                 {{ form.QA1rec(class="form-control-file") }}                
@@ -138,7 +143,9 @@
                 <audio controls src="{{ q2_file }}">   
             </div>
             <br>
-
+            <h5>Student A : tourist question.....</h5> 
+            <h5 style="color:hotpink">Student B : tour guide answer.....</h5> 
+            
             <div class="form-group", onchange="submit()">
                 {{ form.QA2rec.label (class="btn btn-outline-secondary btn-sm")}}                
                 {{ form.QA2rec(class="form-control-file") }}                

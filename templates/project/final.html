@@ -1,61 +1,64 @@
 {% extends "layout.html" %}
 
 {% block content %}
-    
+		
 <div class="content-section">    
-        <h1 > Final Dashboard</h1>   
+				<h1 > Final Dashboard</h1>   
 <br>
 
 <legend class="border-bottom mb-4">Notes</legend>
 
-     <div class="content-section">  
-        <div class="embed-responsive embed-responsive-4by3">
-            <iframe src="https://docs.google.com/presentation/d/e/2PACX-1vR36-xQFETDvxKFZoSw5d79Okd06KtapYYFlJifcDvWOQjSReagsIPd8F16S4_FtMG6FpFOQPVFN3dd/embed?start=false&loop=false&delayms=3000"></iframe>
-        </div> 
-     </div>
+		 <div class="content-section">  
+				<div class="embed-responsive embed-responsive-4by3">
+						<iframe src="https://docs.google.com/presentation/d/e/2PACX-1vR36-xQFETDvxKFZoSw5d79Okd06KtapYYFlJifcDvWOQjSReagsIPd8F16S4_FtMG6FpFOQPVFN3dd/embed?start=false&loop=false&delayms=3000"></iframe>
+				</div> 
+		 </div>
 
 <legend class="border-bottom mb-4">Your Projects</legend>
 
 <div style="overflow-x:auto;">
-    <table class="table table-sm">
-      <thead>
-          <tr>
-            <th scope="col" style="">No.</th>                       
-            <th scope="col" style="">Title</th>
-            <th scope="col" style="">Team</th>            
-            <th scope="col" style="">Intro</th>
-            <th scope="col" style="">P1</th>      
-            <th scope="col" style="">P2</th>
-            <th scope="col" style="">P3</th>  
-            <th scope="col" style="">End</th>                                     
-          </tr>
-      </thead>
-     
-          
-      {% for i in projDict %}      
-      <tbody id="">
-          <tr style="height:50px;">            
-            <td> {{projDict[i][0]}}</td>
-            <td style="font-size:14px"> {{projDict[i][1]}}</td>
-            <td style="font-size:12px"> {{projDict[i][2]}}</td>
-            <td> <a href="{{href +  projDict[i][0] + '/' + projDict[i][3] + '/0'}}", target="_blank" id="status0{{projDict[i][0]}}{{projDict[i][4][0]}}"></a></td>
-            <td> <a href="{{href +  projDict[i][0] + '/' + projDict[i][3] + '/1'}}", target="_blank" id="status1{{projDict[i][0]}}{{projDict[i][4][1]}}"></a></td>
-            <td> <a href="{{href +  projDict[i][0] + '/' + projDict[i][3] + '/2'}}", target="_blank" id="status2{{projDict[i][0]}}{{projDict[i][4][2]}}"></a></td>
-            <td> <a href="{{href +  projDict[i][0] + '/' + projDict[i][3] + '/3'}}", target="_blank" id="status3{{projDict[i][0]}}{{projDict[i][4][3]}}"></a></td>
-            <td> <a href="{{href +  projDict[i][0] + '/' + projDict[i][3] + '/4'}}", target="_blank" id="status4{{projDict[i][0]}}{{projDict[i][4][4]}}"></a></td>            
-          </tr>       
-      </tbody>      
-      
-      {% endfor %}
-      
-      </table>
-      </div>
+		<table class="table table-sm">
+			<thead>
+					<tr>
+						<th scope="col" style="">No.</th>                       
+						<th scope="col" style="">Title</th>
+						<th scope="col" style="">Team</th>            
+						<th scope="col" style="">Intro</th>
+						<th scope="col" style="">P1</th>      
+						<th scope="col" style="">P2</th>
+						<th scope="col" style="">P3</th>  
+						<th scope="col" style="">End</th>                                     
+					</tr>
+			</thead>
+		 
+					
+			{% for i in projDict %}      
+			<tbody id="">
+					<tr style="height:50px;">            
+						<td> {{projDict[i][0]}}</td>
+						<td style="font-size:14px"> {{projDict[i][1]}}</td>
+						<td style="font-size:12px"> {{projDict[i][2]}}</td>
+						<td> <a href="{{href +  projDict[i][0] + '/' + projDict[i][3] + '/0'}}", target="_blank" id="status0{{projDict[i][0]}}{{projDict[i][4][0]}}"></a></td>
+						<td> <a href="{{href +  projDict[i][0] + '/' + projDict[i][3] + '/1'}}", target="_blank" id="status1{{projDict[i][0]}}{{projDict[i][4][1]}}"></a></td>
+						<td> <a href="{{href +  projDict[i][0] + '/' + projDict[i][3] + '/2'}}", target="_blank" id="status2{{projDict[i][0]}}{{projDict[i][4][2]}}"></a></td>
+						<td> <a href="{{href +  projDict[i][0] + '/' + projDict[i][3] + '/3'}}", target="_blank" id="status3{{projDict[i][0]}}{{projDict[i][4][3]}}"></a></td>
+						<td> <a href="{{href +  projDict[i][0] + '/' + projDict[i][3] + '/4'}}", target="_blank" id="status4{{projDict[i][0]}}{{projDict[i][4][4]}}"></a></td>            
+					</tr>       
+			</tbody>      
+			
+			{% endfor %}
+			
+			</table>
+			
+			
+			
+			</div>
 
 
 </div>
-        
+				
 
-             
+						 
 {% endblock  %}
 
 
@@ -66,19 +69,19 @@
 // for 5 parts
 // for 4 projects
 for (i = 0; i < 5; i++){
-  for (j = 1; j < 5; j++) {
+	for (j = 1; j < 5; j++) {
 
-  var string1 = 'status' + i + j +'1'
-  var string0 = 'status' + i + j +'0'
-  if (document.getElementById(string1)){
-    document.getElementById(string1).innerHTML = 'Done';
-    document.getElementById(string1).style = 'background:lightgreen;';
-  } else if (document.getElementById(string0)) {
-    document.getElementById(string0).innerHTML = 'Edit';
-    document.getElementById(string0).style = 'background:pink;'
-  }
+	var string1 = 'status' + i + j +'1'
+	var string0 = 'status' + i + j +'0'
+	if (document.getElementById(string1)){
+		document.getElementById(string1).innerHTML = 'Done';
+		document.getElementById(string1).style = 'background:lightgreen;';
+	} else if (document.getElementById(string0)) {
+		document.getElementById(string0).innerHTML = 'Edit';
+		document.getElementById(string0).style = 'background:pink;'
+	}
 
-  }
+	}
 }
 
 
@@ -88,7 +91,7 @@ for (i = 0; i < 5; i++){
 
 {% endblock %}
  
-      
-    
-  
+			
+		
+	
  

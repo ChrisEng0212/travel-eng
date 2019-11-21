@@ -204,7 +204,9 @@ def project_build(pro_num, team_num, part_num):
     if current_user.id == 1:
         pass
     elif current_user.username not in names:
-        return None # dashboard
+        flash('Your name is not in this team', 'danger')
+        return redirect(url_for('final'))
+        
     
 
     #get the mod field
@@ -375,7 +377,8 @@ def project_test(pro_num, team_num):
     if current_user.id == 1:
         pass
     elif current_user.username not in names:
-        return None # dashboard
+        flash('Your name is not in this team', 'danger')
+        return redirect(url_for('final'))
     
 
     #get the mod field
