@@ -53,19 +53,20 @@ def final():
         ]
 
     
-    projDict = {}    
+    projDict = {
+        1: ['0', titles[1], 'No Team Yet', '0', None, 0],
+        2: ['0', titles[2], 'No Team Yet', '0', None, 0]       
+    }    
     for queryInt in queryList:
         stopCounter = 0 
         for row in queryList[queryInt]:                        
             if current_user.username in ast.literal_eval(row.teamNames):
                 status = ast.literal_eval(row.Status)
                 projDict[queryInt] = [str(queryInt), titles[queryInt], ast.literal_eval(row.teamNames), str(row.teamNumber), status, sum(status)]        
-            else:
-                if stopCounter == 0: 
-                    projDict[queryInt] = [str(queryInt), titles[queryInt], 'No Team Yet', '0', 0] 
-                    stopCounter = 1
-                else:
-                    pass       
+                
+            
+                
+                          
             
                 
     
