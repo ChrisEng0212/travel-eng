@@ -6,11 +6,7 @@
 <h3> Project: {{title}} </h3>
 </div>
 
-{% if status|sum() > 4 %}
-<div class="content-section" style="background:lightgreen">
-<h3> TEST COMPLETE </h3>
-</div>
-{% endif %}
+
 
 <div class="content-section">
 <legend class="border-bottom mb-4">Team {{team}} </legend>
@@ -38,7 +34,7 @@
 
 		<div class="content-section" align="center">
 			<div class="media">
-				<audio id="modelAudio" autoplay>
+				<audio id="modelAudio" autoplay controls>
 			</div>
 		
 
@@ -53,13 +49,13 @@
 
 		
 
-		{% if status[0] == 1 %}
+		
 		<div class="content-section">
 		<h5 style="color:green">  {{ dataDict[0]['Tex']  }}	</h5>
 		<h5 style="color:purple"> Your answer: {{ansDict[0]}}</h5>
 		<br> 		
 
-		{% else %}
+		
 		<div class="content-section">
 			<div class="form-group">
 						{{ form.Part0.label (class="form-control-label")}}
@@ -76,12 +72,12 @@
 			</div>
 				<button class="btn btn-sm btn-info" id="save0" onchange="submit()" style="background:white; border:white">Save</button>
 		
-		{% endif %}
+		
 
 		</div>
 
 
-		{% if status[0] == 1 %}
+		{% if True %}
 
 		<div class="content-section">
 		<h3> Features: </h3>
@@ -165,13 +161,12 @@
 
 		{% for j in range (1,3) %}
 
-			{% if status[i] == 1 %}
+			
 				<h5 style="color:green">  {{ dataDict[i][aList[j]] }}</h5>
 				<h5 style="color:purple"> Your answer:{{ansDict[i][j]}}</h5>
 				<br>
 
-			{% else %}
-				<h5 style="display:none" id="data{{i}}{{j}}">  {{ dataDict[i][aList[j]] }}</h5>
+			
 				<button id="qna{{i}}{{j}}" type="button" class="btn btn-success" name="questions" style="background:white; border:white" disabled value="{{ S3_LOCATION + dataDict[i][QNA[j]]}}" onclick="qaPlay({{i}}, {{j}})">{{ dataDict[i][qList[j]]}}</button>
 				<br>
 						<div class="form-group", id="">
@@ -188,7 +183,7 @@
 								{% endif %}
 						</div>
 				<br>			
-			{% endif %}	
+			
 		{% endfor %}
 		</div>
 
@@ -206,7 +201,7 @@
 
 
 
-{% if status|sum() > 4 %}
+{% if True %}
 
 		
 		<div class="content-section" align="center">	
@@ -221,7 +216,7 @@
 		<br>
 		</div>
 
-		{% if status[4] == 1 %}
+		{% if False %}
 		<div class="content-section">	
 
 		<h5 style="color:green">  {{ dataDict[4]['Tex']  }}	</h5>
@@ -276,12 +271,12 @@ function playPart(task){
 	let modAudio = document.getElementById('modelAudio')	
 	modAudio.src = document.getElementById('img' + task).value
 	console.log(document.getElementById('img' + task).value)	
-	modAudio.onended = function() {
+	modAudio.onplay = function() {
 		document.getElementById('qna' + task + '1').removeAttribute('disabled');
 		document.getElementById('qna' + task + '2').removeAttribute('disabled');
 		document.getElementById('qna' + task + '1').style.background = 'green';
 		document.getElementById('qna' + task + '2').style.background = 'green';		
-		modAudio.src = '';		
+				
 	};
 
 };
@@ -299,10 +294,9 @@ function modelPlay(task){
 	modAudio.src = btn.value;
 	btn.setAttribute('disabled', '');
 	btn.style.background = 'red';
-	modAudio.onended = function() {
+	modAudio.onplay = function() {
 		btn.removeAttribute('disabled');
-		btn.style.background = '';
-		modAudio.src = '';
+		btn.style.background = '';		
 		save.style.background = 'blue';  
 		save.removeAttribute('disabled');  
 	};
@@ -351,6 +345,7 @@ function submitFinal(){
 
 
 function submit(){
+	alert('File Uploaded - Please wait for reload')
 	$("#submit").click();
 }
 

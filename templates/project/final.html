@@ -34,9 +34,13 @@
 					
 			{% for i in projDict %}      
 			<tbody id="">
-					<tr style="height:50px;">            
+					<tr style="height:50px;">  
 						<td> {{projDict[i][0]}}</td>
+						{% if projDict[i][5] == 5 %}  
+						<td style="background:lightgreen;font-size:14px"> <a href="{{href2 + projDict[i][0] + '/' + projDict[i][3]}}"> TEST: {{projDict[i][1]}} </a></td>
+						{% else %}        
 						<td style="font-size:14px"> {{projDict[i][1]}}</td>
+						{% endif %}						
 						<td style="font-size:12px"> {{projDict[i][2]}}</td>
 						<td> <a href="{{href +  projDict[i][0] + '/' + projDict[i][3] + '/0'}}", target="_blank" id="status0{{projDict[i][0]}}{{projDict[i][4][0]}}"></a></td>
 						<td> <a href="{{href +  projDict[i][0] + '/' + projDict[i][3] + '/1'}}", target="_blank" id="status1{{projDict[i][0]}}{{projDict[i][4][1]}}"></a></td>

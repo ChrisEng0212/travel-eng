@@ -63,22 +63,20 @@ def final():
             if current_user.username in ast.literal_eval(row.teamNames):
                 status = ast.literal_eval(row.Status)
                 projDict[queryInt] = [str(queryInt), titles[queryInt], ast.literal_eval(row.teamNames), str(row.teamNumber), status, sum(status)]        
-                
-            
-                
-                          
-            
-                
+               
     
     if test: 
         href = 'http://127.0.0.1:5000/project/'
+        href2 = 'http://127.0.0.1:5000/projtest/'
+
     else: 
         href = 'https://travel-eng.herokuapp.com/project/'
+        href2 = 'https://travel-eng.herokuapp.com/projtest/'
     
     print (projDict)
 
 
-    return render_template('project/final.html', projDict=projDict, href=href)
+    return render_template('project/final.html', projDict=projDict, href=href, href2=href2)
  
 
 def create_folder(unit, teamnumber, nameRange): 
@@ -352,6 +350,7 @@ def project_test(pro_num, team_num):
 
     formList = [
         None, 
+        P_Ans(),
         P_Ans()
     ]
 
@@ -375,6 +374,7 @@ def project_test(pro_num, team_num):
         users[name] = [name, S3_LOCATION + image]
     
 
+    #restrict access to teammembers only
     if current_user.id == 1:
         pass
     elif current_user.username not in names:
@@ -427,6 +427,62 @@ def project_test(pro_num, team_num):
         except: 
             pass
 
+    examMods =[None, P1_EX, P2_EX]
+    model = examMods[pro_num]
+
+    
+    exam = model.query.filter_by(studentName=current_user.username).filter_by(projTeam=team_num).first()    
+
+    if exam == None: 
+        examStart = model(studentName=current_user.username, projTeam=team_num, status=str([0,0,0,0,0]))
+        db.session.add(examStart)
+        db.session.commit()  
+        return redirect(request.url)
+
+    status = ast.literal_eval(exam.status)  
+    ansDict = { 
+        0 : exam.Part0, 
+        1 : [exam.Part1, exam.Part11, exam.Part12] , 
+        2 : [exam.Part2, exam.Part21, exam.Part22] ,        
+        3 : [exam.Part3, exam.Part31, exam.Part32] ,         
+        4 : exam.Part4,
+    } 
+
+    print (ansDict) 
+
+    if form.validate_on_submit():  
+        if current_user.id == 1:    
+            model.query.filter_by(id=exam.id).delete()
+            db.session.commit()
+            return redirect(url_for('project_dash'))
+        if form.Part0.data:
+            exam.Part0 = form.Part0.data
+            status[0] = 1
+        if form.Part1.data and form.Part11.data and form.Part12:
+            status[1] = 1
+            exam.Part1 = form.Part1.data
+            exam.Part11 = form.Part11.data
+            exam.Part12 = form.Part12.data
+        if form.Part2.data and form.Part21.data and form.Part22:
+            status[2] = 1
+            exam.Part2 = form.Part2.data
+            exam.Part21 = form.Part21.data
+            exam.Part22 = form.Part22.data
+        if form.Part3.data and form.Part31.data and form.Part32:
+            status[3] = 1
+            exam.Part3 = form.Part3.data
+            exam.Part31 = form.Part31.data
+            exam.Part32 = form.Part32.data
+        if form.Part4.data:
+            status[4] = 1
+            exam.Part4 = form.Part4.data
+        exam.status = str(status)
+        db.session.commit() 
+        flash('Your test has been updated', 'success')
+        return redirect(request.url)
+    elif request.method == 'GET':
+        pass
+        
    
     
     context = {    
@@ -434,12 +490,18 @@ def project_test(pro_num, team_num):
         'title' : titles[pro_num],        
         'S3_LOCATION' : S3_LOCATION,
         'dataDict' : dataDict, 
+        'ansDict' : ansDict,
         'team' : team_num, 
         'users' : users, 
         'formParts' : formParts,
-        'QNA'  :  [None, 'QA1rec', 'QA2rec']
+        'QNA'  :  [None, 'QA1rec', 'QA2rec'], 
+        'status' : status
     }
 
-    return render_template('project/project_test.html', **context)
+    if current_user.id == 1:
+        return render_template('project/project_int.html', **context)
+    else:
+        return render_template('project/project_test.html', **context)
+
 
 
