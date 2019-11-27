@@ -38,6 +38,7 @@ titles = [
         'Around Taipei'
         ]
 
+
 @app.route ("/final")
 def final():
 
@@ -52,18 +53,34 @@ def final():
         'Around Taipei'
         ]
 
+    testModels = [None, P1_EX, P2_EX]
+
+    studentTest = {
+        1: 0,
+        2: 0     
+    } 
+
+    for key in studentTest:         
+        complete = testModels[key].query.filter_by(studentName=current_user.username).first()
+        if complete:
+            score = sum(ast.literal_eval(complete.status))
+        else:
+            score = 0
+        studentTest[key] = score
     
+    print ('scores:', studentTest)
+      
     projDict = {
         1: ['0', titles[1], 'No Team Yet', '0', None, 0],
         2: ['0', titles[2], 'No Team Yet', '0', None, 0]       
-    }    
+    } 
+
     for queryInt in queryList:
         stopCounter = 0 
         for row in queryList[queryInt]:                        
             if current_user.username in ast.literal_eval(row.teamNames):
                 status = ast.literal_eval(row.Status)
-                projDict[queryInt] = [str(queryInt), titles[queryInt], ast.literal_eval(row.teamNames), str(row.teamNumber), status, sum(status)]        
-               
+                projDict[queryInt] = [str(queryInt), titles[queryInt], ast.literal_eval(row.teamNames), str(row.teamNumber), status, sum(status)]               
     
     if test: 
         href = 'http://127.0.0.1:5000/project/'
@@ -76,7 +93,7 @@ def final():
     print (projDict)
 
 
-    return render_template('project/final.html', projDict=projDict, href=href, href2=href2)
+    return render_template('project/final.html', projDict=projDict, href=href, href2=href2, studentTest=studentTest)
  
 
 def create_folder(unit, teamnumber, nameRange): 
@@ -126,12 +143,11 @@ def project_teams(unit):
             teamsDict[att.teamnumber] = [att.username]    
     
     manualAdd = {
-        15 : ['Peggy', 'Wei', 'Coral'],
-        16: ['Felisia', 'Michelle', 'Jasmine']
+        19 : ['Jimmy', 'Victor'],        
     }
 
     #add the extra teams -->  dictionary = teamsDict --> manualAdd
-    dictionary = teamsDict
+    dictionary = manualAdd
 
     returnStr = str(dictionary)
     for team in dictionary:
@@ -183,7 +199,35 @@ def project_dash():
             }
             count += 1
 
-    return render_template('project/final_dash.html', dashDict=dashDict)
+    users = User.query.all()
+    
+    nameList = {
+        1 : ['Tommy', 'Lulu', 'Test2', 'Rae', 'Sarah', 'Lin', 'Test', 'Jay'], 
+        2 : ['Tommy', 'Lulu', 'Test2', 'Rae', 'Sarah', 'Lin', 'Test', 'Jay'], 
+        3 : ['Tommy', 'Lulu', 'Test2', 'Rae', 'Sarah', 'Lin', 'Test', 'Jay'], 
+        4 : ['Tommy', 'Lulu', 'Test2', 'Rae', 'Sarah', 'Lin', 'Test', 'Jay']
+    }
+    for key in dashDict:
+        for entry in dashDict[key]:            
+            for name in dashDict[key][entry]['names']:
+                nameList[key].append(name)
+     
+    missList = {
+        1 : [], 
+        2 : [], 
+        3 : [], 
+        4 : []
+    }
+
+    for key in nameList:
+        for user in users:
+            if user.username not in nameList[key]:
+                missList[key].append(user.username)
+
+    print (missList[1])
+    print (missList[2])
+
+    return render_template('project/final_dash.html', dashDict=dashDict, missList=missList)
             
                
         

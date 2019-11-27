@@ -37,7 +37,11 @@
 					<tr style="height:50px;">  
 						<td> {{projDict[i][0]}}</td>
 						{% if projDict[i][5] == 5 %}  
-						<td style="background:lightgreen;font-size:14px"> <a href="{{href2 + projDict[i][0] + '/' + projDict[i][3]}}"> TEST: {{projDict[i][1]}} </a></td>
+							{% if studentTest[i] < 5 %}  
+							<td style="background:lavender;font-size:14px"> <a href="{{href2 + projDict[i][0] + '/' + projDict[i][3]}}"> TEST: {{projDict[i][1]}} ({{studentTest[i]}}/5)</a></td>
+							{% else %} 
+							<td style="background:lightgreen;font-size:14px"> <a href="{{href2 + projDict[i][0] + '/' + projDict[i][3]}}"> TEST: {{projDict[i][1]}} ({{studentTest[i]}}/5)</a></td>
+							{% endif %}
 						{% else %}        
 						<td style="font-size:14px"> {{projDict[i][1]}}</td>
 						{% endif %}						
