@@ -18,33 +18,28 @@
 </div>
 {% endif %}
 
-<div class="content-section" style="display:none">
-<legend class="border-bottom mb-4">Midterm Grading</legend>
+
+
+<div class="content-section" style="">
+<legend class="border-bottom mb-4">Final Grading</legend>
 <br>
 
 <table class="table table-sm">
         <thead>
             <tr>
-              <th scope="col" style="width: 3px;">Class <br>Participation</th>
-              <th scope="col" style="width: 3px;">Midterm Video Sharing</th>  
+              <th scope="col" style="width: 3px;">Midterm <br>Grade</th>
+              <th scope="col" style="width: 3px;">Project <br>Work (50%)</th>  
             </tr>
         </thead>
         <tbody>
             <tr>            
-              <td> <h2> {{cpg}}/50 </h2></td>   
-              <td>  <h2> Project ({{proj}}) / Videos ({{vids}})</h2></td>              
-            </tr>  
-            <tr>            
-              <td> {{grades.cpg_comments}}</td>   
-              <td> Deadline Nov 1</td>              
-            </tr>      
+              <td> <h2> {{midterm}}/50% </h2></td>   
+              <td>  {% for i in range (1,3)%} <h4> P{{i}}: {{projList[i]}}/5 {% endfor %}</h4></td>              
+            </tr>               
         </tbody>
 </table> 
 
-
-
 </div>
-
 <div class="content-section">
     <legend class="border-bottom mb-4">Attendance History</legend>    
     <table class="table table-sm">

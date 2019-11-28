@@ -324,8 +324,14 @@ def MTGrades():
             vids = count*3
         total = cpg + mvg*3 + vids
         mtDict[item.studentID] = [total, item.username, cpg, mvg, count]
-         
-                
+
+    #users = User.query.all()    
+    #for student in users:
+        #try: 
+            #student.midterm = mtDict[student.studentID][0]  
+            #db.session.commit()     
+        #except:
+            #pass
                 
     return render_template('instructor/midGrades.html', title='MTGrades', midGrades=midGrades, mtDict=mtDict)
 

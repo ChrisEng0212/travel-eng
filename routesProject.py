@@ -179,6 +179,12 @@ def upload_data(data, unit, team, mark):
 @login_required
 def project_dash():
     
+    users = User.query.all()
+
+    studStats = {}
+
+    for user in users:
+        studStats[user.username] = [None, 0, 0, 0, 0]
     
     dashDict = {
         1 : {}, 
@@ -191,15 +197,25 @@ def project_dash():
     for queryInt in queryList:
         for row in queryList[queryInt]: 
             status = ast.literal_eval(row.Status)
+            names = ast.literal_eval(row.teamNames)
             dashDict[queryInt][count] = {
                 'team' : str(row.teamNumber), 
-                'names' : ast.literal_eval(row.teamNames), 
+                'names' : names, 
                 'status' : status, 
                 'score' : sum(status)  
             }
+            for name in names:
+                studStats[name][queryInt] = sum(status) 
+
             count += 1
 
-    users = User.query.all()
+    for user in users:
+        if user.course != str(studStats[user.username]):        
+            user.course = str(studStats[user.username])
+            db.session.commit()
+
+
+    # learn which students are missing    
     
     nameList = {
         1 : ['Tommy', 'Lulu', 'Test2', 'Rae', 'Sarah', 'Lin', 'Test', 'Jay'], 
