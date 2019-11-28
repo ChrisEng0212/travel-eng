@@ -84,7 +84,7 @@ def home():
         attDict[log] = [log.date_posted +
                         timedelta(hours=8), log.attend, log.attScore, log.extraStr]
 
-    midterm = current_user.midterm
+    midterm = current_user.midterm / 2 
 
     projList = ast.literal_eval(current_user.course)
 
