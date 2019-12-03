@@ -308,6 +308,11 @@ class P1_NM(BaseProjects):
 class P2_TA(BaseProjects):
     id = db.Column(db.Integer, primary_key=True)
 
+class P3_TD(BaseProjects):
+    id = db.Column(db.Integer, primary_key=True)
+
+class P4_HT(BaseProjects):
+    id = db.Column(db.Integer, primary_key=True)
 
 class BaseExams(db.Model):
     __abstract__ = True
@@ -337,6 +342,12 @@ class P1_EX(BaseExams):
 class P2_EX(BaseExams):
     id = db.Column(db.Integer, primary_key=True)
 
+class P3_EX(BaseExams):
+    id = db.Column(db.Integer, primary_key=True)
+
+class P4_EX(BaseExams):
+    id = db.Column(db.Integer, primary_key=True)
+
 
 class Info ():
     modListUnits = modListUnits
@@ -364,6 +375,7 @@ admin.add_view(MyModelView(MidAnswers, db.session))
 admin.add_view(MyModelView(MidGrades, db.session))
 admin.add_view(MyModelView(P1_NM, db.session))
 admin.add_view(MyModelView(P2_TA, db.session))
+admin.add_view(MyModelView(P3_TD, db.session))
 admin.add_view(MyModelView(P1_EX, db.session))
 admin.add_view(MyModelView(P2_EX, db.session))
 #admin.add_view(MyModelView(AgentCust, db.session))

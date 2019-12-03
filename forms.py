@@ -793,6 +793,18 @@ class P_Part(FlaskForm):
     QA2rec = FileField (label='Q&A 2 Rec', validators=[FileAllowed(['mp3', 'm4a', 'mp4'], message="Please upload mp3/m4a/mp4")]) 
     Submit = SubmitField('Submit')    
 
+class P_Part_TD(FlaskForm):
+    Tex  = TextAreaField (label='Text')        
+    Pic  = FileField (label='Picture Upload', validators=[FileAllowed(['jpg', 'png'], message="Please upload jpeg/png image")])
+    Rec  = FileField (label='Record Upload', validators=[FileAllowed(['mp3', 'm4a', 'mp4'], message="Please upload mp3/m4a/mp4")])
+    Q1  = TextAreaField (label='Activity 1')
+    A1  = FileField (label='Picture Upload', validators=[FileAllowed(['jpg', 'png'], message="Please upload jpeg/png image")])
+    QA1rec  = FileField (label='Activity 1 Rec', validators=[FileAllowed(['mp3', 'm4a', 'mp4'], message="Please upload mp3/m4a/mp4")]) 
+    Q2  = TextAreaField (label='Activity 2')
+    A2  = FileField (label='Picture Upload', validators=[FileAllowed(['jpg', 'png'], message="Please upload jpeg/png image")])
+    QA2rec = FileField (label='Activity 2 Rec', validators=[FileAllowed(['mp3', 'm4a', 'mp4'], message="Please upload mp3/m4a/mp4")]) 
+    Submit = SubmitField('Submit')   
+
 
 class P_Ans(FlaskForm):
     Part0 = StringField (label='Describe one detail mentioned about nightmarkets')   

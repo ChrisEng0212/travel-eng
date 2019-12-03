@@ -24,40 +24,34 @@ except:
 modList = [
         None,
         P1_NM, 
-        P2_TA
+        P2_TA, 
+        P3_TD
         ]
 
 queryList = {
        1 : P1_NM.query.all(), 
-       2 : P2_TA.query.all()
+       2 : P2_TA.query.all(), 
+       3 : P3_TD.query.all()
+
     }   
 
 titles = [
         None, 
         'At the Night Market', 
-        'Around Taipei'
+        'Around Taipei', 
+        'Taiwan Destinations'
         ]
 
 
 @app.route ("/final")
-def final():
+def final():    
 
-    queryList = {
-       1 : P1_NM.query.all(), 
-       2 : P2_TA.query.all()
-    }   
-
-    titles = [
-        None, 
-        'At the Night Market', 
-        'Around Taipei'
-        ]
-
-    testModels = [None, P1_EX, P2_EX]
+    testModels = [None, P1_EX, P2_EX, P3_EX]
 
     studentTest = {
         1: 0,
-        2: 0     
+        2: 0, 
+        3: 0    
     } 
 
     for key in studentTest:         
@@ -72,13 +66,15 @@ def final():
       
     projDict = {
         1: ['0', titles[1], 'No Team Yet', '0', None, 0],
-        2: ['0', titles[2], 'No Team Yet', '0', None, 0]       
+        2: ['0', titles[2], 'No Team Yet', '0', None, 0], 
+        3: ['0', titles[3], 'No Team Yet', '0', None, 0]        
     } 
 
     for queryInt in queryList:
         stopCounter = 0 
-        for row in queryList[queryInt]:                        
+        for row in queryList[queryInt]:                                   
             if current_user.username in ast.literal_eval(row.teamNames):
+                #print (ast.literal_eval(row.teamNames))
                 status = ast.literal_eval(row.Status)
                 projDict[queryInt] = [str(queryInt), titles[queryInt], ast.literal_eval(row.teamNames), str(row.teamNumber), status, sum(status)]               
     
@@ -124,7 +120,8 @@ def project_teams(unit):
     modList = [
         None,
         P1_NM, 
-        P2_TA
+        P2_TA, 
+        P3_TD
         ]
 
     project = modList[int(unit)]
@@ -143,11 +140,11 @@ def project_teams(unit):
             teamsDict[att.teamnumber] = [att.username]    
     
     manualAdd = {
-        19 : ['Jimmy', 'Victor'],        
+        20: ['Chris'],        
     }
 
     #add the extra teams -->  dictionary = teamsDict --> manualAdd
-    dictionary = manualAdd
+    dictionary = teamsDict
 
     returnStr = str(dictionary)
     for team in dictionary:
@@ -277,7 +274,9 @@ def project_build(pro_num, team_num, part_num):
         teamMod.PartTwo, 
         teamMod.PartThr,  
         teamMod.Outro 
-    ]     
+    ] 
+
+    forms = [None, P_Part(), P_Part(), P_Part_TD()]    
    
     if part_num == 0 or part_num == 4:
         form = P_InOut()
@@ -294,7 +293,7 @@ def project_build(pro_num, team_num, part_num):
         q2_file = None
         q1_file = None     
     else:
-        form = P_Part()
+        form = forms[pro_num]
         try: 
             dicMod = ast.literal_eval(modFields[part_num])
         except:     
@@ -313,6 +312,11 @@ def project_build(pro_num, team_num, part_num):
         audio_file = S3_LOCATION + dicMod['Rec']
         q1_file = S3_LOCATION + dicMod['QA1rec']
         q2_file = S3_LOCATION + dicMod['QA2rec']
+
+        image_file1 = S3_LOCATION + dicMod['A1']
+        image_file2 = S3_LOCATION + dicMod['A2']
+        
+
     
     try: 
         statList = ast.literal_eval(teamMod.Status)
@@ -338,7 +342,12 @@ def project_build(pro_num, team_num, part_num):
             if form.Q1.data:
                 dicMod['Q1'] = form.Q1.data
             if form.A1.data:
-                dicMod['A1'] = form.A1.data                
+                try:
+                    mark = str(part_num) + 'Pic2'
+                    data_filename = upload_data(form.A1.data, pro_num, team_num, mark) 
+                    dicMod['A1'] = data_filename
+                except: 
+                    dicMod['A1'] = form.A1.data                
             if form.QA1rec.data:
                 mark = str(part_num) + 'QA1Rec'
                 data_filename = upload_data(form.QA1rec.data, pro_num, team_num, mark) 
@@ -347,7 +356,12 @@ def project_build(pro_num, team_num, part_num):
             if form.Q2.data:
                 dicMod['Q2'] = form.Q2.data
             if form.A2.data:
-                dicMod['A2'] = form.A2.data                
+                try:
+                    mark = str(part_num) + 'Pic3'
+                    data_filename = upload_data(form.A2.data, pro_num, team_num, mark) 
+                    dicMod['A2'] = data_filename
+                except: 
+                    dicMod['A2'] = form.A2.data                 
             if form.QA2rec.data:
                 mark = str(part_num) + 'QA2Rec'
                 data_filename = upload_data(form.QA2rec.data, pro_num, team_num, mark) 
@@ -388,7 +402,9 @@ def project_build(pro_num, team_num, part_num):
 
     context = {
         'form' : form,
-        'image_file' : image_file, 
+        'image_file' : image_file,
+        'image_file1' : image_file1,
+        'image_file2' : image_file2, 
         'audio_file' : audio_file,  
         'title' : titles[pro_num],  
         'part' : parts[part_num],
@@ -399,7 +415,10 @@ def project_build(pro_num, team_num, part_num):
 
     }
 
-    return render_template('project/project_layout.html', **context)
+    if pro_num == 3: 
+        return render_template('project/project_destinations.html', **context)
+    else: 
+        return render_template('project/project_layout.html', **context)
 
 
 

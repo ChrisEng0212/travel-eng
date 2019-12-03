@@ -1,0 +1,239 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div class="content-section">
+<h3> Project: {{title}} </h3>
+</div>
+
+
+<div class="content-section">
+<legend class="border-bottom mb-4">{{part}}</legend> 
+
+{% if complete == 0 %}
+<h3 style="color:white; background:red"> Incomplete </h3> 
+{% else %}
+<h3 style="color:white; background:green"> Complete </h3> 
+{% endif %}
+
+
+</div>
+
+<form method="POST" action="" enctype="multipart/form-data">        
+        {{ form.hidden_tag () }}
+        <!-- adding a csfr token, protection-->
+        <fieldset class="form-group">  
+
+        <div class="content-section">
+            <div class="media">
+                <img class="img-fluid" alt="No file yet" src="{{ image_file }}">   
+            </div>
+            <br>
+        
+            <div class="form-group", id="fileUpload", onchange="submit()">
+            <h5>Find a picture that matches your topic</h5>
+                {{ form.Pic.label (class="btn btn-outline-secondary btn-sm")}}                
+                {{ form.Pic(class="form-control-file") }}                
+                {% if form.Pic.errors %}
+                    {% for error in form.Pic.errors %}
+                    <span class="text-danger">{{ error }}</span> </br>
+                    <!-- file field does not have invalid-feedback class option-->
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>        
+
+        <div class="content-section">
+            <div class="media">
+                <audio controls src="{{ audio_file }}"> 
+            </div>
+            <h5>Record your speaking in quiet place, make it clear</h5> 
+            <h5 style="color:hotpink">You are a tour guide, please sound positive and interested :)</h5>   
+            
+            <br>
+        
+            <div class="form-group", onchange="submit()">
+                {{ form.Rec.label (class="btn btn-outline-secondary btn-sm")}}                
+                {{ form.Rec(class="form-control-file") }}                
+                {% if form.Rec.errors %}
+                    {% for error in form.Rec.errors %}
+                    <span class="text-danger">{{ error }}</span> </br>
+                    <!-- file field does not have invalid-feedback class option-->
+                    {% endfor %}
+                {% endif %}
+            </div>
+        
+            <div class="form-group">
+                {{ form.Tex.label (class="form-control-label")}}
+                {% if form.Tex.errors %}
+                {{ form.Tex (class="form-control form-control-lg is-invalid")}}
+                <!-- is invalid is the class-->
+                <div class="invalid-feedback">
+                    {% for error in form.Tex.errors %}
+                    <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+                {% else %}
+                {{ form.Tex(class="form-control form-control-lg")}}
+                {% endif %}
+            </div>
+            <button class="btn btn-sm btn-info" onchange="submit()">Save</button>
+        </div> 
+
+
+        {% if 4 > part_num > 0 %}
+
+        <!-- QNA1 ____________________________________________________-->
+        <div class="content-section">
+            <div class="media">
+                <audio controls src="{{ q1_file }}">   
+            </div>
+            <br>            
+            
+            <div class="form-group", onchange="submit()">
+                {{ form.QA1rec.label (class="btn btn-outline-secondary btn-sm")}}                
+                {{ form.QA1rec(class="form-control-file") }}                
+                {% if form.QA1rec.errors %}
+                    {% for error in form.QA1rec.errors %}
+                    <span class="text-danger">{{ error }}</span> </br>
+                    
+                    {% endfor %}
+                {% endif %}
+            </div>
+
+            
+
+            <div class="form-group" onchange="submit()">
+                {{ form.A1.label (class="btn btn-outline-secondary btn-sm")}}
+                {% if form.A1.errors %}
+                {{ form.A1 (class="form-control form-control-lg is-invalid")}}
+                <!-- is invalid is the class-->
+                <div class="invalid-feedback">
+                    {% for error in form.A1.errors %}
+                    <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+                {% else %}
+                {{ form.A1(class="form-control form-control-lg")}}
+                {% endif %}
+            </div>
+            <div class="media">
+                <img class="img-fluid" alt="No file yet" src="{{ image_file1 }}">   
+            </div>
+
+            <div class="form-group">
+                {{ form.Q1.label (class="form-control-label")}}
+                {% if form.Q1.errors %}
+                {{ form.Q1 (class="form-control form-control-lg is-invalid")}}
+                <!-- is invalid is the class-->
+                <div class="invalid-feedback">
+                    {% for error in form.Q1.errors %}
+                    <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+                {% else %}
+                {{ form.Q1(class="form-control form-control-lg")}}
+                {% endif %}
+            </div>
+
+            <button class="btn btn-sm btn-info" onchange="submit()">Save</button>
+        </div>
+
+        <!-- QNA2 ____________________________________________________-->
+            
+        <div class="content-section">
+            <div class="media">
+                <audio controls src="{{ q2_file }}">   
+            </div>
+            <br>            
+            
+            <div class="form-group", onchange="submit()">
+                {{ form.QA2rec.label (class="btn btn-outline-secondary btn-sm")}}                
+                {{ form.QA2rec(class="form-control-file") }}                
+                {% if form.QA2rec.errors %}
+                    {% for error in form.QA2rec.errors %}
+                    <span class="text-danger">{{ error }}</span> </br>                    
+                    {% endfor %}
+                {% endif %}
+            </div>
+
+            
+
+            <div class="form-group" onchange="submit()">
+                {{ form.A2.label (class="btn btn-outline-secondary btn-sm")}}
+                {% if form.A2.errors %}
+                {{ form.A2 (class="form-control form-control-lg is-invalid")}}
+                <!-- is invalid is the class-->
+                <div class="invalid-feedback">
+                    {% for error in form.A2.errors %}
+                    <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+                {% else %}
+                {{ form.A2(class="form-control form-control-lg")}}
+                {% endif %}
+            </div>
+            <div class="media">
+                <img class="img-fluid" alt="No file yet" src="{{ image_file2 }}">   
+            </div>
+            <div class="form-group">
+                {{ form.Q1.label (class="form-control-label")}}
+                {% if form.Q2.errors %}
+                {{ form.Q2 (class="form-control form-control-lg is-invalid")}}
+                <!-- is invalid is the class-->
+                <div class="invalid-feedback">
+                    {% for error in form.Q2.errors %}
+                    <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+                {% else %}
+                {{ form.Q2(class="form-control form-control-lg")}}
+                {% endif %}
+            </div>
+            <button class="btn btn-sm btn-info" onchange="submit()">Save</button>
+        </div>
+
+        {% endif %}      
+        
+
+           
+        </fieldset>
+        <div class="content-section" style="display:none"> 
+        <div class="form-group">
+            {{ form.Submit(class="btn btn-outline-info", id="submit")}}
+        </div>
+        </div>
+
+
+
+
+
+
+
+
+
+{% endblock %}
+
+
+
+
+{% block script %}
+
+<script>
+
+    if (navigator.userAgent.includes('Line')){
+        alert('WARNING: It looks like you are using Line App to view this website. Please switch to Chrome or Safari browser to Upload Files')
+    }
+    if (navigator.userAgent.includes('FB')){
+        alert('WARNING: It looks like you are using Facebook Chat App to view this website. Please switch to Chrome or Safari browser to Upload Files')
+    }
+    
+
+function submit(){
+    alert('File Uploaded - Please wait for reload')
+    $("#submit").click();    
+}
+
+</script>
+
+{% endblock %}
