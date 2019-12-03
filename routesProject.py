@@ -290,6 +290,8 @@ def project_build(pro_num, team_num, part_num):
             }  
         image_file = S3_LOCATION + dicMod['Pic']
         audio_file = S3_LOCATION + dicMod['Rec']  
+        image_file1 = None
+        image_file2 = None
         q2_file = None
         q1_file = None     
     else:
