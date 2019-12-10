@@ -807,20 +807,32 @@ class P_Part_TD(FlaskForm):
 
 
 class P_Ans(FlaskForm):
-    Part0 = StringField (label='Describe one detail mentioned about nightmarkets')   
-    Part1 = StringField (label='Describe one detail mentioned about this feature.')       
+    Part0 = StringField (label='Describe one detail mentioned in the introduction')   
+    Part1 = StringField (label='Describe one detail mentioned about this part.')       
     Part11 = StringField (label='Answer')  
     Part12 = StringField (label='Answer') 
-    Part2 = StringField (label='Describe one detail mentioned about this feature.')       
+    Part2 = StringField (label='Describe one detail mentioned about this part.')       
     Part21 = StringField (label='Answer')  
     Part22 = StringField (label='Answer') 
-    Part3 = StringField (label='Describe one detail mentioned about this feature.')       
+    Part3 = StringField (label='Describe one detail mentioned about this part.')       
     Part31 = StringField (label='Answer')  
     Part32 = StringField (label='Answer')
     Part4 = StringField (label='Describe one detail mentioned.')
     Submit = SubmitField('Submit')    
 
-
+class P_Ans3(FlaskForm):
+    Part0 = StringField (label='Describe one detail mentioned in the introduction')   
+    Part1 = StringField (label='Describe something about the destination')       
+    Part11 = StringField (label='Describe something about the activity')  
+    Part12 = StringField (label='Describe something about the activity') 
+    Part2 = StringField (label='Describe something about the destination')       
+    Part21 = StringField (label='Describe something about the activity')  
+    Part22 = StringField (label='Describe something about the activity') 
+    Part3 = StringField (label='Describe something about the destination')       
+    Part31 = StringField (label='Describe something about the activity')  
+    Part32 = StringField (label='Describe something about the activity')
+    Part4 = StringField (label='Describe one detail from the closing.')
+    Submit = SubmitField('Submit')  
 
     
     

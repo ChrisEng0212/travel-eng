@@ -88,7 +88,20 @@ def home():
 
     projList = ast.literal_eval(current_user.course)
 
-    return render_template('instructor/home.html', title='home', attLog=attLog, attDict=attDict, midterm=midterm, projList=projList)
+    examMod = [P1_EX, P2_EX, P3_EX, P4_EX]
+    testList = ['-', '-', '-', '-', '-']
+
+    counter = 1 
+    for em in examMod:         
+        status = em.query.filter_by(studentName=current_user.username).first()
+        if not status:
+            pass
+        elif sum(ast.literal_eval(status.status)) == 5:
+            testList[counter] = 'Done'
+        counter += 1
+
+
+    return render_template('instructor/home.html', title='home', attLog=attLog, attDict=attDict, midterm=midterm, projList=projList, testList=testList)
 
 
 # Attendance //////////////////////////////////////////////

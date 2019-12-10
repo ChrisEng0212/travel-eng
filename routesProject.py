@@ -439,6 +439,8 @@ def project_test(pro_num, team_num):
     formList = [
         None, 
         P_Ans(),
+        P_Ans(), 
+        P_Ans3(), 
         P_Ans()
     ]
 
@@ -515,7 +517,7 @@ def project_test(pro_num, team_num):
         except: 
             pass
 
-    examMods =[None, P1_EX, P2_EX]
+    examMods =[None, P1_EX, P2_EX, P3_EX, P4_EX]
     model = examMods[pro_num]
 
     
@@ -539,7 +541,9 @@ def project_test(pro_num, team_num):
     print (ansDict) 
 
     if form.validate_on_submit():  
-        if current_user.id == 1:    
+        if current_user.id == 1: 
+            pass 
+            # set to delete checks  
             model.query.filter_by(id=exam.id).delete()
             db.session.commit()
             return redirect(url_for('project_dash'))
@@ -587,7 +591,7 @@ def project_test(pro_num, team_num):
     }
 
     if current_user.id == 1:        
-        return render_template('project/project_int.html', **context)
+        return render_template('project/project_ins.html', **context)
     elif pro_num == 3:
         return render_template('project/project_dest.html', **context)
     else:

@@ -1,0 +1,392 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div class="content-section">
+<h3> Project: {{title}} </h3>
+</div>
+
+{% if status|sum() > 4 %}
+<div class="content-section" style="background:lightgreen">
+<h3> TEST COMPLETE </h3>
+</div>
+{% endif %}
+
+<div class="content-section">
+<legend class="border-bottom mb-4">Team {{team}} </legend>
+		<table>
+		{% for user in users %}
+					<th scope="col" style="">
+					<div align="center">
+						<img class="rounded-circle chat-img" src="{{users[user][1]}}">
+						<br>
+						 {{users[user][0]}}
+						</div>
+					</th>
+		{% endfor %}
+		</table>
+
+
+</div>
+
+
+
+<form method="POST" action="" enctype="multipart/form-data">
+		{{ form.hidden_tag () }}
+		<!-- adding a csfr token, protection-->
+		<fieldset class="form-group">
+
+		<div class="content-section" align="center">
+			<div class="media">
+				<audio id="modelAudio" autoplay>
+			</div>
+		
+
+		<img class="rounded img-fluid" alt="No file yet" style="max-width:60%"  src="{{ S3_LOCATION + dataDict[0]['Pic'] }}">
+
+		<br>
+		<br>
+			<button id="button0"  align="center" type="button" class="btn btn-warning" style="" value="{{ S3_LOCATION + dataDict[0]['Rec']}}" onclick="modelPlay(0)">Introduction</button>
+		<br>
+		<br>
+		</div>
+
+		
+
+		{% if status[0] == 1 %}
+		<div class="content-section">
+		<h5 style="color:green">  {{ dataDict[0]['Tex']  }}	</h5>
+		<h5 style="color:purple"> Your answer: {{ansDict[0]}}</h5>
+		<br> 		
+
+		{% else %}
+		<div class="content-section">
+			<div class="form-group">
+						{{ form.Part0.label (class="form-control-label")}}
+						{% if form.Part0.errors %}
+						{{ form.Part0 (class="form-control form-control-lg is-invalid")}}
+						<div class="invalid-feedback">
+							{% for error in form.Part0.errors %}
+								<span>{{ error }}</span>
+							{% endfor %}
+						</div>
+						{% else %}
+							{{ form.Part0 (class="form-control form-control-lg")}}
+						{% endif %}
+			</div>
+				<button class="btn btn-sm btn-info" id="save0" onchange="submit()" style="background:white; border:white">Save</button>
+		
+		{% endif %}
+
+		</div>
+
+
+	{% if status[0] == 1 %}
+
+		<div class="content-section">
+		<h3> Destinations: </h3>
+		 <table class="table table-sm">
+				<tr>
+					{% for i in range(1,4)%}
+						{% if status[i] == 0 %}
+							<th scope="col" style="background:lightcoral">
+						{% else %}
+							<th scope="col" style="background:lightgreen">
+						{% endif %}
+					<div align="center">
+						<img class="rounded-circle proj-img" src="{{ S3_LOCATION + dataDict[i]['Pic']}}">
+						<br>
+						<button class="btn btn-sm btn-secondary" type="button" data-toggle="collapse" data-target="#part{{i}}" aria-expanded="false" aria-controls="part{{i}}">
+						{% if status[i] == 0 %}
+							Open
+						{% else %}
+							Check
+						{% endif %}						
+						</button>
+					</div>
+					</th>
+					{% endfor %}
+				</tr>
+		</table>
+		</div>
+		
+		{% endif %}		
+
+<!-- ################################################################################-->
+		{% set zeroList = [None, 'qZero1', 'qZero2', 'qZero3'] %}
+		{% set qList = [None, 'Q1', 'Q2'] %}
+		{% set aList = [None, 'A1', 'A2'] %}
+		{% set jsDict = {1 : [None, 'qOne1', 'qTwo1'], 2 : [None, 'qOne2', 'qTwo2'], 3 : [None, 'qOne3', 'qTwo3']  }  %}
+
+
+		{% for i in range(1,4)%}
+		<div class="collapse" id="part{{i}}">
+
+		<div class="content-section" align="center">
+			<legend class="border-bottom mb-4">Destination {{i}}</legend>				
+			<img class="rounded img-fluid" alt="No file yet" style="max-width:60%" src="{{ S3_LOCATION + dataDict[i]['Pic'] }}">
+			<br>
+			<br>
+			<button id="img{{i}}" type="button" class="btn btn-warning" style="" value="{{S3_LOCATION + dataDict[i]['Rec']}}" onclick="playPart({{i}})">
+			Listen
+			</button>
+
+			<br>
+		
+			
+			{% if status[i] == 1 %}
+				<h5 style="color:green">  {{ dataDict[i]['Tex'] }}</h5>
+				<h5 style="color:purple"> Your answer: {{ansDict[i][0]}}</h5>
+				<br> 	
+			</div> 
+			{% else %}					
+				<h5 style="display:none" id="data{{i}}">  {{ dataDict[i]['Tex'] }}</h5>			
+
+				<div class="form-group">
+						{{ formParts[i][0].label (class="form-control-label")}}
+						{% if formParts[i][0].errors %}
+						{{ formParts[i][0] (class="form-control form-control-lg is-invalid")}}
+						<div class="invalid-feedback">
+							{% for error in formParts[i][0].errors %}
+								<span>{{ error }}</span>
+							{% endfor %}
+						</div>
+						{% else %}
+							{{ formParts[i][0] (class="form-control form-control-lg", id=zeroList[i]  )   }}
+						{% endif %}
+				</div> 
+			
+			{% endif %}
+		</div>	
+
+		<div class="content-section" align="center">
+			<legend class="border-bottom mb-4">Activity 1 </legend>				
+			<img class="rounded img-fluid" alt="No file yet" style="max-width:60%" src="{{ S3_LOCATION + dataDict[i]['A1'] }}">
+			<br>
+			<br>
+			<button id="img{{i}}" type="button" class="btn btn-warning" style="" value="{{S3_LOCATION + dataDict[i]['QA1rec']}}" onclick="playPart({{i}})">
+			Listen
+			</button>
+			
+			<br>
+		
+			
+			{% if status[i] == 1 %}
+				<h5 style="color:green">  {{ dataDict[i]['Q1'] }}</h5>
+				<h5 style="color:purple"> Your answer: {{ansDict[i][1]}}</h5>
+				<br> 	
+			</div> 
+			{% else %}					
+				<h5 style="display:none" id="data{{i}}">  {{ dataDict[i]['Tex'] }}</h5>			
+
+				<div class="form-group">
+						{{ formParts[i][1].label (class="form-control-label")}}
+						{% if formParts[i][1].errors %}
+						{{ formParts[i][1] (class="form-control form-control-lg is-invalid")}}
+						<div class="invalid-feedback">
+							{% for error in formParts[i][1].errors %}
+								<span>{{ error }}</span>
+							{% endfor %}
+						</div>
+						{% else %}
+							{{ formParts[i][1] (class="form-control form-control-lg", id=zeroList[i]  )   }}
+						{% endif %}
+				</div> 
+			
+			{% endif %}
+		</div>	
+		
+		<div class="content-section" align="center">
+			<legend class="border-bottom mb-4">Activity 2 </legend>				
+			<img class="rounded img-fluid" alt="No file yet" style="max-width:60%" src="{{ S3_LOCATION + dataDict[i]['A2'] }}">
+			<br>
+			<br>
+			<button id="img{{i}}" type="button" class="btn btn-warning" style="" value="{{S3_LOCATION + dataDict[i]['QA2rec']}}" onclick="playPart({{i}})">
+			Listen
+			</button>
+			
+			<br>
+		
+			
+			{% if status[i] == 1 %}
+				<h5 style="color:green">  {{ dataDict[i]['Q1'] }}</h5>
+				<h5 style="color:purple"> Your answer: {{ansDict[i][2]}}</h5>
+				<br> 	
+			</div> 
+			{% else %}					
+				<h5 style="display:none" id="data{{i}}">  {{ dataDict[i]['Tex'] }}</h5>			
+
+				<div class="form-group">
+						{{ formParts[i][2].label (class="form-control-label")}}
+						{% if formParts[i][2].errors %}
+						{{ formParts[i][2] (class="form-control form-control-lg is-invalid")}}
+						<div class="invalid-feedback">
+							{% for error in formParts[i][2].errors %}
+								<span>{{ error }}</span>
+							{% endfor %}
+						</div>
+						{% else %}
+							{{ formParts[i][2] (class="form-control form-control-lg", id=zeroList[i]  )   }}
+						{% endif %}
+				</div> 
+			
+			{% endif %}
+		</div>	
+
+		{% endfor %}
+
+
+
+
+
+{% if status|sum() >= 4 %}
+
+		
+		<div class="content-section" align="center">	
+		 <legend class="border-bottom mb-4">Closing</legend>	
+
+		<img class="rounded img-fluid" alt="No file yet" style="max-width:60%" src="{{ S3_LOCATION + dataDict[4]['Pic'] }}">
+
+		<br>
+		<br>
+			<button id="button4"  align="center" type="button" class="btn btn-warning" style="" value="{{ S3_LOCATION + dataDict[4]['Rec']}}" onclick="modelPlay(4)">Closing</button>
+		<br>
+		<br>
+		</div>
+
+		{% if status[4] == 1 %}
+		<div class="content-section">	
+
+		<h5 style="color:green">  {{ dataDict[4]['Tex']  }}	</h5>
+		<h5 style="color:purple"> Your answer: {{ansDict[4]}}</h5>
+		<br> 
+		{% else %}
+		<div class="content-section">	
+		<h3 id="data" style="display:none"> {{ dataDict[4]['Tex'] }}  </h3> 
+				<div class="form-group">
+							{{ form.Part4.label (class="form-control-label")}}
+							{% if form.Part4.errors %}
+							{{ form.Part4 (class="form-control form-control-lg is-invalid")}}
+							<div class="invalid-feedback">
+								{% for error in form.Part4.errors %}
+									<span>{{ error }}</span>
+								{% endfor %}
+							</div>
+							{% else %}
+								{{ form.Part4 (class="form-control form-control-lg", id="closing")}}
+							{% endif %}
+				</div>
+
+				<div>
+					<button class="btn btn-sm btn-info" id="save4" type="button" onclick="submitFinal()" style="background:white; border:white">Save</button>
+				</div>
+		
+		{% endif %}
+		</div>
+
+{% endif %}
+
+
+
+		</fieldset>
+		<div class="content-section" style="display:none">
+		<div class="form-group">
+			{{ form.Submit(class="btn btn-outline-info", id="submit")}}
+		</div>
+		</div>
+
+{% endblock %}
+
+
+
+
+{% block script %}
+
+<script>
+
+function playPart(task){
+	console.log('test')	
+	let modAudio = document.getElementById('modelAudio')	
+	modAudio.src = document.getElementById('img' + task).value
+	console.log(document.getElementById('img' + task).value)	
+	modAudio.onended = function() {
+		document.getElementById('qna' + task + '1').removeAttribute('disabled');
+		document.getElementById('qna' + task + '2').removeAttribute('disabled');
+		document.getElementById('qna' + task + '1').style.background = 'green';
+		document.getElementById('qna' + task + '2').style.background = 'green';		
+		modAudio.src = '';		
+	};
+
+};
+
+function qaPlay(part, task){
+	let modAudio = document.getElementById('modelAudio')
+	modAudio.src = document.getElementById('qna' + part + task).value
+	let save = document.getElementById('save' + task)
+};
+
+function modelPlay(task){
+	let btn = document.getElementById('button' + task)
+	let modAudio = document.getElementById('modelAudio')
+	let save = document.getElementById('save' + task)
+	modAudio.src = btn.value;
+	btn.setAttribute('disabled', '');
+	btn.style.background = 'red';
+	modAudio.onended = function() {
+		btn.removeAttribute('disabled');
+		btn.style.background = '';
+		modAudio.src = '';
+		save.style.background = 'blue';  
+		save.removeAttribute('disabled');  
+	};
+};
+
+	if (navigator.userAgent.includes('Line')){
+		alert('WARNING: It looks like you are using Line App to view this website. Please switch to Chrome or Safari browser for a better experience')
+	}
+	if (navigator.userAgent.includes('FB')){
+		alert('WARNING: It looks like you are using Facebook Chat App to view this website. Please switch to Chrome or Safari browser for a better experience')
+	}
+
+function submitPart(part){	
+	let inpt0 = document.getElementById('qZero' + part)
+	let inpt1 = document.getElementById('qOne' + part)
+	let inpt2 = document.getElementById('qTwo' + part) 
+	let data1 = document.getElementById('data' + part + '1').innerHTML;
+	let data2 = document.getElementById('data' + part + '2').innerHTML;
+	let data0 = document.getElementById('data' + part).innerHTML;
+	
+	//let inName = document.getElementsByName("Part12")
+	if (inpt0.value && inpt1.value && inpt2.value){
+		alert('The answers were: \n Details:' + data0 + '\n Q1:' + data1 + '\n Q2:' + data2)
+		$("#submit").click();
+	}
+	else {
+		alert('Some answers are incomplete')
+	}
+};
+
+
+function submitFinal(){	
+	
+	let input = document.getElementById('closing')
+	if (input.value){		
+		let data = document.getElementById('data').innerHTML;
+		alert('The closing details were: \n' + data + '\n\n EXCELLENT - You have completed one exam!')
+		$("#submit").click();
+	}
+	else {
+		alert('Please write you closing detail')
+	}
+	
+}
+
+
+
+function submit(){
+	$("#submit").click();
+}
+
+</script>
+
+{% endblock %}
