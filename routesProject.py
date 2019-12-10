@@ -25,13 +25,15 @@ modList = [
         None,
         P1_NM, 
         P2_TA, 
-        P3_TD
+        P3_TD,
+        P4_HT
         ]
 
 queryList = {
        1 : P1_NM.query.all(), 
        2 : P2_TA.query.all(), 
-       3 : P3_TD.query.all()
+       3 : P3_TD.query.all(), 
+       4 : P4_HT.query.all()
 
     }   
 
@@ -39,19 +41,21 @@ titles = [
         None, 
         'At the Night Market', 
         'Around Taipei', 
-        'Taiwan Destinations'
+        'Taiwan Destinations', 
+        'Survival Guide'
         ]
 
 
 @app.route ("/final")
 def final():    
 
-    testModels = [None, P1_EX, P2_EX, P3_EX]
+    testModels = [None, P1_EX, P2_EX, P3_EX, P4_EX]
 
     studentTest = {
         1: 0,
         2: 0, 
-        3: 0    
+        3: 0,
+        4: 0    
     } 
 
     for key in studentTest:         
@@ -67,7 +71,8 @@ def final():
     projDict = {
         1: ['0', titles[1], 'No Team Yet', '0', None, 0],
         2: ['0', titles[2], 'No Team Yet', '0', None, 0], 
-        3: ['0', titles[3], 'No Team Yet', '0', None, 0]        
+        3: ['0', titles[3], 'No Team Yet', '0', None, 0],
+        4: ['0', titles[4], 'No Team Yet', '0', None, 0]          
     } 
 
     for queryInt in queryList:
@@ -121,7 +126,8 @@ def project_teams(unit):
         None,
         P1_NM, 
         P2_TA, 
-        P3_TD
+        P3_TD, 
+        P4_HT
         ]
 
     project = modList[int(unit)]
@@ -215,10 +221,10 @@ def project_dash():
     # learn which students are missing    
     
     nameList = {
-        1 : ['Tommy', 'Lulu', 'Test2', 'Rae', 'Sarah', 'Lin', 'Test', 'Jay'], 
-        2 : ['Tommy', 'Lulu', 'Test2', 'Rae', 'Sarah', 'Lin', 'Test', 'Jay'], 
-        3 : ['Tommy', 'Lulu', 'Test2', 'Rae', 'Sarah', 'Lin', 'Test', 'Jay'], 
-        4 : ['Tommy', 'Lulu', 'Test2', 'Rae', 'Sarah', 'Lin', 'Test', 'Jay']
+        1 : ['Tommy', 'Lulu', 'Test2', 'Rae', 'Sarah', 'Lin', 'Test', 'Jay', 'Alice'], 
+        2 : ['Tommy', 'Lulu', 'Test2', 'Rae', 'Sarah', 'Lin', 'Test', 'Jay', 'Alice'], 
+        3 : ['Tommy', 'Lulu', 'Test2', 'Rae', 'Sarah', 'Lin', 'Test', 'Jay', 'Alice'], 
+        4 : ['Tommy', 'Lulu', 'Test2', 'Rae', 'Sarah', 'Lin', 'Test', 'Jay', 'Alice']
     }
     for key in dashDict:
         for entry in dashDict[key]:            
@@ -239,7 +245,8 @@ def project_dash():
 
     print (missList[1])
     print (missList[2])
-
+    print (missList[3])
+    print (missList[4])
     return render_template('project/final_dash.html', dashDict=dashDict, missList=missList)
             
                
@@ -579,8 +586,10 @@ def project_test(pro_num, team_num):
         'status' : status
     }
 
-    if current_user.id == 1:
+    if current_user.id == 1:        
         return render_template('project/project_int.html', **context)
+    elif pro_num == 3:
+        return render_template('project/project_dest.html', **context)
     else:
         return render_template('project/project_test.html', **context)
 
