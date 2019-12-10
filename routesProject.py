@@ -283,7 +283,7 @@ def project_build(pro_num, team_num, part_num):
         teamMod.Outro 
     ] 
 
-    forms = [None, P_Part(), P_Part(), P_Part_TD()]    
+    forms = [None, P_Part(), P_Part(), P_Part_TD(), P_Part()]    
    
     if part_num == 0 or part_num == 4:
         form = P_InOut()
