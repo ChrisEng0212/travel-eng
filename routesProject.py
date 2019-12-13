@@ -591,7 +591,7 @@ def project_test(pro_num, team_num):
     }
 
     if current_user.id == 1:        
-        return render_template('project/project_ins.html', **context)
+        return render_template('project/project_inst.html', **context)
     elif pro_num == 3:
         return render_template('project/project_dest.html', **context)
     else:
