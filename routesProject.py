@@ -146,11 +146,11 @@ def project_teams(unit):
             teamsDict[att.teamnumber] = [att.username]    
     
     manualAdd = {
-        20: ['Chris'],        
+        20: ['Felisia', 'Angus', 'Victor', 'Winnie'],        
     }
 
     #add the extra teams -->  dictionary = teamsDict --> manualAdd
-    dictionary = teamsDict
+    dictionary = manualAdd
 
     returnStr = str(dictionary)
     for team in dictionary:
