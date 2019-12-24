@@ -102,7 +102,7 @@ def final():
     }
 
     # 3 -4 to exam Dict and make range 1,5
-    for i in range(1,3):
+    for i in range(1,5):
         completed = testModels[i].query.filter_by(studentName=current_user.username).all()
         print(completed)
         if completed: 
@@ -110,10 +110,13 @@ def final():
                 # find if it was a test or not             
                 if row.projTeam == int(projDict[i][3]):
                     studentTest[i] = sum(ast.literal_eval(row.status))                
-                else:                    
-                    examDict[i]['exams'].append(row.projTeam)
-                    if sum(ast.literal_eval(row.status)) == 5:
-                        examDict[i]['points'] += 1
+                else:   
+                    if i > 2:
+                        pass
+                    else:                 
+                        examDict[i]['exams'].append(row.projTeam)
+                        if sum(ast.literal_eval(row.status)) == 5:
+                            examDict[i]['points'] += 1
 
 
 
