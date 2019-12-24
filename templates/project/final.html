@@ -85,7 +85,13 @@
 			<tbody id="">
 					<tr style="height:50px;">  
 						<td> {{[i]}} </td>	
+						{% if examDict[i]['exams'] | length > 1 %}
+						<td> <button class="btn btn-sm btn-outline-warning" disabled>  Points = {{examDict[i]['points']}}/2  </button> </td>	
+						
+						{% else %}
 						<td> <button class="btn btn-sm btn-outline-info"> <a href="{{href2 + i|string + '/' + '0'}}"> Points = {{examDict[i]['points']}}/2 </a> </button> </td>	
+						
+						{% endif %}
 						<td> <a href="{{href2 + i|string + '/' + examDict[i]['exams'][0]|string}}", target="_blank"> Open project {{examDict[i]['exams'][0]}} </a></td>
 						<td> <a href="{{href2 + i|string + '/' + examDict[i]['exams'][1]|string}}", target="_blank"> Open project {{examDict[i]['exams'][1]}} </a></td>
 						   
