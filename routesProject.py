@@ -47,26 +47,8 @@ titles = [
 
 
 @app.route ("/final")
-def final():    
-
-    testModels = [None, P1_EX, P2_EX, P3_EX, P4_EX]
-
-    studentTest = {
-        1: 0,
-        2: 0, 
-        3: 0,
-        4: 0    
-    } 
-
-    for key in studentTest:         
-        complete = testModels[key].query.filter_by(studentName=current_user.username).first()
-        if complete:
-            score = sum(ast.literal_eval(complete.status))
-        else:
-            score = 0
-        studentTest[key] = score
+def final():     
     
-    print ('scores:', studentTest)
       
     projDict = {
         1: ['0', titles[1], 'No Team Yet', '0', None, 0],
@@ -75,12 +57,14 @@ def final():
         4: ['0', titles[4], 'No Team Yet', '0', None, 0]          
     } 
 
+    # check each model
     for queryInt in queryList:
         stopCounter = 0 
         for row in queryList[queryInt]:                                   
             if current_user.username in ast.literal_eval(row.teamNames):
                 #print (ast.literal_eval(row.teamNames))
                 status = ast.literal_eval(row.Status)
+                print (row.Status)
                 projDict[queryInt] = [str(queryInt), titles[queryInt], ast.literal_eval(row.teamNames), str(row.teamNumber), status, sum(status)]               
     
     if test: 
@@ -91,10 +75,49 @@ def final():
         href = 'https://travel-eng.herokuapp.com/project/'
         href2 = 'https://travel-eng.herokuapp.com/projtest/'
     
+
     print (projDict)
 
+    testModels = [None, P1_EX, P2_EX, P3_EX, P4_EX]
 
-    return render_template('project/final.html', projDict=projDict, href=href, href2=href2, studentTest=studentTest)
+    studentTest = {
+        1: 0,
+        2: 0, 
+        3: 0,
+        4: 0    
+    } 
+
+    examDict = {
+        1 : { 
+            'points' : 0, 
+            'exams' : []        
+        },
+        2 : { 
+            'points' : 0, 
+            'exams' : []        
+        }       
+    }
+
+    # 3 -4 to exam Dict and make range 1,5
+    for i in range(1,3):
+        completed = testModels[i].query.filter_by(studentName=current_user.username).all()
+        print(completed)
+        if completed: 
+            for row in completed:   
+                # find if it was a test or not             
+                if row.projTeam == int(projDict[i][3]):
+                    studentTest[i] = sum(ast.literal_eval(row.status))                
+                else:
+                    examDict[i]['exams'].append(row.projTeam)
+                    if sum(ast.literal_eval(row.status)) == 5:
+                        examDict[i]['points'] += 1
+
+
+
+    print ('scores:', studentTest) 
+    print ('exam: ', examDict)  
+
+    return render_template('project/final.html', projDict=projDict, href=href, href2=href2, studentTest=studentTest, examDict=examDict)
  
 
 def create_folder(unit, teamnumber, nameRange): 
@@ -267,7 +290,7 @@ def project_build(pro_num, team_num, part_num):
     if current_user.id == 1:
         pass
     elif current_user.username not in names:
-        flash('Your name is not in this team', 'danger')
+        flash('The exam has not started yet', 'danger')
         return redirect(url_for('final'))
         
     
@@ -436,6 +459,19 @@ def project_build(pro_num, team_num, part_num):
 @login_required
 def project_test(pro_num, team_num):
 
+
+    # exam mods will also be used later on
+    examMods =[None, P1_EX, P2_EX, P3_EX, P4_EX]
+
+    # query list found at the top
+    if team_num == 0:     
+        available = []    
+        for row in queryList[pro_num]:
+            if row.ProInt != 0:
+                available.append(row.teamNumber)
+        team_num = random.choice(available)        
+
+
     formList = [
         None, 
         P_Ans(),
@@ -463,9 +499,11 @@ def project_test(pro_num, team_num):
         image = User.query.filter_by(username=name).first().image_file        
         users[name] = [name, S3_LOCATION + image]
     
-
+    start = User.query.filter_by(id=1).first().projects
     #restrict access to teammembers only
     if current_user.id == 1:
+        pass
+    elif start == 1:
         pass
     elif current_user.username not in names:
         flash('Your name is not in this team', 'danger')
@@ -517,7 +555,7 @@ def project_test(pro_num, team_num):
         except: 
             pass
 
-    examMods =[None, P1_EX, P2_EX, P3_EX, P4_EX]
+    
     model = examMods[pro_num]
 
     
@@ -527,7 +565,7 @@ def project_test(pro_num, team_num):
         examStart = model(studentName=current_user.username, projTeam=team_num, status=str([0,0,0,0,0]))
         db.session.add(examStart)
         db.session.commit()  
-        return redirect(request.url)
+        return redirect(url_for('project_test', pro_num=pro_num, team_num=team_num))
 
     status = ast.literal_eval(exam.status)  
     ansDict = { 

@@ -153,6 +153,14 @@ class MidGrades(db.Model):
     extraStr = db.Column(db.String)
 
 
+class FinGrades(db.Model):
+    id = db.Column(db.Integer, primary_key=True)    
+    username = db.Column(db.String, unique=True)
+    studentID = db.Column(db.String(9), unique=True)
+    midterm = db.Column(db.Integer)
+    projects = db.Column(db.String)
+    extra = db.Column(db.String)
+
 ### IMMIG ####################
 
 class ImmigTrav(db.Model):
@@ -373,6 +381,7 @@ admin.add_view(MyModelView(Sources, db.session))
 admin.add_view(MyModelView(MidTerm, db.session))
 admin.add_view(MyModelView(MidAnswers, db.session))
 admin.add_view(MyModelView(MidGrades, db.session))
+admin.add_view(MyModelView(FinGrades, db.session))
 admin.add_view(MyModelView(P1_NM, db.session))
 admin.add_view(MyModelView(P2_TA, db.session))
 admin.add_view(MyModelView(P3_TD, db.session))

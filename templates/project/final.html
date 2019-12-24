@@ -61,6 +61,43 @@
 			
 			
 			</div>
+<br>
+
+<legend class="border-bottom mb-4">Your Exams</legend>
+
+<h4 style="color:hotpink"> Note: Some audio will be very quiet and some will be very loud. Protect your ears! </h4>
+
+
+<div style="overflow-x:auto;">
+		<table class="table table-sm">
+			<thead>
+					<tr>
+						<th scope="col" style="">No.</th>                       
+						<th scope="col" style="">Exams Points</th>
+						<th scope="col" style="">One</th>            
+						<th scope="col" style="">Two</th>						                                     
+					</tr>
+			</thead>
+		 
+					
+			{% for i in examDict %}      
+			<tbody id="">
+					<tr style="height:50px;">  
+						<td> {{[i]}} </td>	
+						<td> <button class="btn btn-sm btn-outline-info"> <a href="{{href2 + i|string + '/' + '0'}}"> Points = {{examDict[i]['points']}}/2 </a> </button> </td>	
+						<td> <a href="{{href2 + i|string + '/' + examDict[i]['exams'][0]|string}}", target="_blank"> {{examDict[i]['exams'][0]}} </a></td>
+						<td> <a href="{{href2 + i|string + '/' + examDict[i]['exams'][1]|string}}", target="_blank"> {{examDict[i]['exams'][1]}} </a></td>
+						   
+					</tr>       
+			</tbody>      
+			
+			{% endfor %}
+			
+			</table>
+			
+			
+			
+			</div>
 
 
 </div>

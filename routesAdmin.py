@@ -1,4 +1,4 @@
-import sys, boto3, random, os
+import sys, boto3, random, os,ast
 import datetime
 from sqlalchemy import asc, desc 
 from datetime import datetime, timedelta
@@ -301,6 +301,116 @@ def teams():
                 attDict[user.username] = [user.studentID, 0]
 
     return render_template('instructor/teams.html', attDict=attDict, teamcount=teamcount)  
+
+
+@app.route("/FNGrades", methods = ['GET', 'POST'])
+@login_required
+def FNGrades():
+    finGrades = FinGrades.query.order_by(asc(FinGrades.studentID)).all()
+    midInfo = User.query.all()
+    
+
+    pDict = {}
+    for student in midInfo:
+        pDict[student.username] = [ast.literal_eval(student.course), [], [], [], []]
+    #    final = FinGrades(username=student.username, studentID=student.studentID, midterm=int(student.midterm)/2)
+    #    db.session.add(final)
+    #    db.session.commit()
+
+
+    project1 = P1_NM.query.all()
+    project2 = P2_TA.query.all()
+    project3 = P3_TD.query.all()
+    project4 = P4_HT.query.all()
+
+    for row in project1:
+        for name in ast.literal_eval(row.teamNames):
+            if sum(ast.literal_eval(row.Status)) == 5:
+                pDict[name][1].append(row.teamNumber)
+
+    for row in project2:
+        for name in ast.literal_eval(row.teamNames):
+            if sum(ast.literal_eval(row.Status)) == 5:
+                pDict[name][2].append(row.teamNumber)
+    
+    for row in project3:
+        for name in ast.literal_eval(row.teamNames):
+            if sum(ast.literal_eval(row.Status)) == 5:
+                pDict[name][3].append(row.teamNumber)
+    
+    for row in project4:
+        for name in ast.literal_eval(row.teamNames):
+            if sum(ast.literal_eval(row.Status)) == 5:
+                pDict[name][4].append(row.teamNumber)
+
+      
+    exam1 = P1_EX.query.all()
+    exam2 = P2_EX.query.all()
+    exam3 = P3_EX.query.all()
+    exam4 = P4_EX.query.all()
+
+    for row in exam1: 
+        pDict[row.studentName][1].append(row.projTeam)
+    
+    for row in exam2: 
+        pDict[row.studentName][2].append(row.projTeam)
+    
+    for row in exam3: 
+        pDict[row.studentName][3].append(row.projTeam)
+    
+    for row in exam4: 
+        pDict[row.studentName][4].append(row.projTeam)
+
+
+    pDict['Chris'] = [[0,0,0,0,0],[],[],[],[]]
+
+    
+    fnDict = {}
+    for item in finGrades: 
+        examRec = []
+        for i in range (1,5):   
+            # determine if test was completed [set vs list]
+            examSet = set(pDict[item.username][i])
+            if len(pDict[item.username][i]) > len(examSet):
+                test = 1
+            else:
+                test = 0
+            
+            # calculate the number of exams done (minus the project number) - and make sure the value is greater than zero
+            if (len(examSet) - 1)*3 + test > 0:
+                examRec.append((len(examSet) - 1)*3 + test)
+            else:
+                examRec.append(0)
+                       
+
+            if pDict[item.username][0][i] == 5:
+                examRec.append(6)
+            else:      
+                examRec.append(pDict[item.username][0][i])
+
+        print (examRec)
+        final = sum(examRec)
+        total = final + item.midterm
+        
+        fnDict[item.studentID] = [
+            total,
+            item.username,             
+            final, 
+            item.midterm, 
+            pDict[item.username][0][1], 
+            pDict[item.username][1], 
+            pDict[item.username][0][2],
+            pDict[item.username][2],  
+            pDict[item.username][0][3],
+            pDict[item.username][3], 
+            pDict[item.username][0][4],
+            pDict[item.username][4]
+            ]
+   
+                
+    return render_template('instructor/finGrades.html', title='FNGrades', finGrades=finGrades, fnDict=fnDict)
+
+
 
 @app.route("/MTGrades", methods = ['GET', 'POST'])
 @login_required

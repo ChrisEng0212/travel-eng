@@ -1,0 +1,109 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div class="content-section">    
+    <h1> Final Grades </h1>   
+</div> 
+
+
+<div class="content-section">      
+
+    <table class="table table-sm" width="100">
+        <thead>
+            <tr>
+              <th scope="col">No</th>             
+              <th scope="col">ID</th>
+              <th scope="col">Total</th> 
+              <th scope="col">Name</th> 
+              <th scope="col">FN</th> 
+              <th scope="col">MT</th>               
+              <th scope="col">P1</th>               
+              <th scope="col">E1</th>
+              <th scope="col">P2</th>               
+              <th scope="col">E2</th>
+              <th scope="col">P3</th>              
+              <th scope="col">E3</th>
+              <th scope="col">P4</th>              
+              <th scope="col">E4</th>                                                                       
+            </tr>
+        </thead>
+         
+        <!-- Team Table______________________________________________-->
+
+        <tbody> 
+        {% set count = [1] %} 
+            {% for studentID in fnDict %}               
+            <tr>
+            <td>{{count|length}}</td> 
+
+                {% set col = [1] %} 
+                           
+                    <td>{{studentID}}</td>
+                    {% for item in fnDict[studentID] %}
+                    <td name="{{col|length}}" >{{item}}</td>
+
+                {% set __ = col.append(1) %}  
+
+                    {% endfor %}  
+
+            <tr> 
+            {% set __ = count.append(1) %}    
+            {% endfor %}
+        </tbody>
+
+    </table>  
+       
+</div>
+
+
+{% endblock %}   
+
+{% block script %}
+<script>
+
+var rows1 = document.getElementsByName("5");
+rows1.forEach(row => {        
+    if (row.innerHTML < 5){
+        row.style = "background:lavenderblush";
+    }
+})
+
+var rows2 = document.getElementsByName("7");
+rows2.forEach(row => {        
+    if (row.innerHTML < 5){
+        row.style = "background:lavenderblush";
+    }
+})
+
+var rows3 = document.getElementsByName("9");
+rows3.forEach(row => {        
+    if (row.innerHTML < 5){
+        row.style = "background:lavenderblush";
+    }
+})
+
+var rows4 = document.getElementsByName("11");
+rows4.forEach(row => {        
+    if (row.innerHTML < 5){
+        row.style = "background:lavenderblush";
+    }
+})
+
+var rowsM = document.getElementsByName("4");
+rowsM.forEach(row => {        
+    if (row.innerHTML < 30){
+        row.style = "background:lavenderblush";
+    }
+})
+
+var rowsF = document.getElementsByName("3");
+rowsF.forEach(row => {        
+    if (row.innerHTML < 30){
+        row.style = "background:lavenderblush";
+    }
+})
+
+
+</script>
+{% endblock %}

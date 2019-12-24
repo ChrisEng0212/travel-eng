@@ -8,7 +8,7 @@
 
 {% if status|sum() > 4 %}
 <div class="content-section" style="background:lightgreen">
-<h3> TEST COMPLETE </h3>
+<h3> TEST COMPLETE  <a href="{{url_for('final')}}"> Go back to projects --> </a> </h3>
 </div>
 {% endif %}
 
@@ -38,7 +38,7 @@
 
 		<div class="content-section" align="center">
 			<div class="media">
-				<audio id="modelAudio" autoplay>
+				<audio id="modelAudio" autoplay="autoplay">
 			</div>
 		
 
