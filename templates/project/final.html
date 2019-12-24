@@ -86,8 +86,8 @@
 					<tr style="height:50px;">  
 						<td> {{[i]}} </td>	
 						<td> <button class="btn btn-sm btn-outline-info"> <a href="{{href2 + i|string + '/' + '0'}}"> Points = {{examDict[i]['points']}}/2 </a> </button> </td>	
-						<td> <a href="{{href2 + i|string + '/' + examDict[i]['exams'][0]|string}}", target="_blank"> {{examDict[i]['exams'][0]}} </a></td>
-						<td> <a href="{{href2 + i|string + '/' + examDict[i]['exams'][1]|string}}", target="_blank"> {{examDict[i]['exams'][1]}} </a></td>
+						<td> <a href="{{href2 + i|string + '/' + examDict[i]['exams'][0]|string}}", target="_blank"> Open project {{examDict[i]['exams'][0]}} </a></td>
+						<td> <a href="{{href2 + i|string + '/' + examDict[i]['exams'][1]|string}}", target="_blank"> Open project {{examDict[i]['exams'][1]}} </a></td>
 						   
 					</tr>       
 			</tbody>      

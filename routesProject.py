@@ -47,7 +47,10 @@ titles = [
 
 
 @app.route ("/final")
-def final():     
+def final():   
+
+    ##### dont let projects open after two have been started - so maximum two #####
+    # don't   
     
       
     projDict = {
@@ -107,7 +110,7 @@ def final():
                 # find if it was a test or not             
                 if row.projTeam == int(projDict[i][3]):
                     studentTest[i] = sum(ast.literal_eval(row.status))                
-                else:
+                else:                    
                     examDict[i]['exams'].append(row.projTeam)
                     if sum(ast.literal_eval(row.status)) == 5:
                         examDict[i]['points'] += 1
