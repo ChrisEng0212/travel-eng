@@ -506,7 +506,7 @@ def project_test(pro_num, team_num):
     elif start == 1:
         pass
     elif current_user.username not in names:
-        flash('Your name is not in this team', 'danger')
+        flash('The exam has not started yet', 'danger')
         return redirect(url_for('final'))
     
 
