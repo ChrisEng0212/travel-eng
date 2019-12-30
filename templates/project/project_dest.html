@@ -59,7 +59,7 @@
 		<h5 style="color:purple"> Your answer: {{ansDict[0]}}</h5>
 		<br> 		
 
-		{% else %}
+		{% else %}		
 		<div class="content-section">
 			<div class="form-group">
 						{{ form.Part0.label (class="form-control-label")}}
@@ -83,7 +83,7 @@
 
 	{% if status[0] == 1 %}
 
-		<div class="content-section">
+	<div class="content-section">
 		<h3> Destinations: </h3>
 		 <table class="table table-sm">
 				<tr>
@@ -108,37 +108,38 @@
 					{% endfor %}
 				</tr>
 		</table>
-		</div>
+	</div>
 		
-		{% endif %}		
+	{% endif %}		
 
 <!-- ################################################################################-->
 		{% set zeroList = [None, 'qZero1', 'qZero2', 'qZero3'] %}
+		{% set oneList = [None, 'qOne1', 'qOne2', 'qOne3'] %}
+		{% set twoList = [None, 'qTwo1', 'qTwo2', 'qTwo3'] %}
 		{% set qList = [None, 'Q1', 'Q2'] %}
 		{% set aList = [None, 'A1', 'A2'] %}
 		{% set jsDict = {1 : [None, 'qOne1', 'qTwo1'], 2 : [None, 'qOne2', 'qTwo2'], 3 : [None, 'qOne3', 'qTwo3']  }  %}
 
 
-		{% for i in range(1,4)%}
-		<div class="collapse" id="part{{i}}">
+{% for i in range(1,4)%}
+	<div class="collapse" id="part{{i}}">
 
 		<div class="content-section" align="center">
 			<legend class="border-bottom mb-4">Destination {{i}}</legend>				
 			<img class="rounded img-fluid" alt="No file yet" style="max-width:60%" src="{{ S3_LOCATION + dataDict[i]['Pic'] }}">
 			<br>
 			<br>
-			<button id="img{{i}}" type="button" class="btn btn-warning" style="" value="{{S3_LOCATION + dataDict[i]['Rec']}}" onclick="playPart({{i}})">
+			<button id="img1{{i}}" type="button" class="btn btn-warning" style="" value="{{S3_LOCATION + dataDict[i]['Rec']}}" onclick="playPart(1{{i}})">
 			Listen
 			</button>
 
-			<br>
-		
+			<br>		
 			
 			{% if status[i] == 1 %}
 				<h5 style="color:green">  {{ dataDict[i]['Tex'] }}</h5>
 				<h5 style="color:purple"> Your answer: {{ansDict[i][0]}}</h5>
 				<br> 	
-			</div> 
+		
 			{% else %}					
 				<h5 style="display:none" id="data{{i}}">  {{ dataDict[i]['Tex'] }}</h5>			
 
@@ -152,32 +153,32 @@
 							{% endfor %}
 						</div>
 						{% else %}
-							{{ formParts[i][0] (class="form-control form-control-lg", id=zeroList[i]  )   }}
+							{{ formParts[i][0] (class="form-control form-control-lg", id=oneList[i]  )   }}
 						{% endif %}
 				</div> 
 			
 			{% endif %}
-		</div>	
+		</div> <!-- first part close -->
+		
 
 		<div class="content-section" align="center">
 			<legend class="border-bottom mb-4">Activity 1 </legend>				
 			<img class="rounded img-fluid" alt="No file yet" style="max-width:60%" src="{{ S3_LOCATION + dataDict[i]['A1'] }}">
 			<br>
 			<br>
-			<button id="img{{i}}" type="button" class="btn btn-warning" style="" value="{{S3_LOCATION + dataDict[i]['QA1rec']}}" onclick="playPart({{i}})">
+			<button id="img2{{i}}" type="button" class="btn btn-warning" style="" value="{{S3_LOCATION + dataDict[i]['QA1rec']}}" onclick="playPart(2{{i}})">
 			Listen
 			</button>
 			
-			<br>
-		
+			<br>		
 			
 			{% if status[i] == 1 %}
 				<h5 style="color:green">  {{ dataDict[i]['Q1'] }}</h5>
 				<h5 style="color:purple"> Your answer: {{ansDict[i][1]}}</h5>
 				<br> 	
-			</div> 
+			
 			{% else %}					
-				<h5 style="display:none" id="data{{i}}">  {{ dataDict[i]['Tex'] }}</h5>			
+				<h5 style="display:none" id="data{{i}}1">  {{ dataDict[i]['Q1'] }}</h5>			
 
 				<div class="form-group">
 						{{ formParts[i][1].label (class="form-control-label")}}
@@ -194,14 +195,14 @@
 				</div> 
 			
 			{% endif %}
-		</div>	
+		</div> <!-- second part close -->	
 		
 		<div class="content-section" align="center">
 			<legend class="border-bottom mb-4">Activity 2 </legend>				
 			<img class="rounded img-fluid" alt="No file yet" style="max-width:60%" src="{{ S3_LOCATION + dataDict[i]['A2'] }}">
 			<br>
 			<br>
-			<button id="img{{i}}" type="button" class="btn btn-warning" style="" value="{{S3_LOCATION + dataDict[i]['QA2rec']}}" onclick="playPart({{i}})">
+			<button id="img3{{i}}" type="button" class="btn btn-warning" style="" value="{{S3_LOCATION + dataDict[i]['QA2rec']}}" onclick="playPart(3{{i}})">
 			Listen
 			</button>
 			
@@ -209,12 +210,12 @@
 		
 			
 			{% if status[i] == 1 %}
-				<h5 style="color:green">  {{ dataDict[i]['Q1'] }}</h5>
+				<h5 style="color:green">  {{ dataDict[i]['Q2'] }}</h5>
 				<h5 style="color:purple"> Your answer: {{ansDict[i][2]}}</h5>
 				<br> 	
-			</div> 
+			
 			{% else %}					
-				<h5 style="display:none" id="data{{i}}">  {{ dataDict[i]['Tex'] }}</h5>			
+				<h5 style="display:none" id="data{{i}}2">  {{ dataDict[i]['Q2'] }}</h5>			
 
 				<div class="form-group">
 						{{ formParts[i][2].label (class="form-control-label")}}
@@ -226,15 +227,21 @@
 							{% endfor %}
 						</div>
 						{% else %}
-							{{ formParts[i][2] (class="form-control form-control-lg", id=zeroList[i]  )   }}
+							{{ formParts[i][2] (class="form-control form-control-lg", id=twoList[i]  )   }}
 						{% endif %}
 				</div> 
 			
 			{% endif %}
-		</div>	
-
-		{% endfor %}
-
+		</div> <!-- third part close -->	
+		
+		<div class="content-section" style="align:center">
+				
+			<button class="btn btn-info" type="button" onclick="submitPart({{i}})">Save</button>
+			
+		</div>
+		
+</div> <!-- close collpase div -->
+{% endfor %}
 
 
 
