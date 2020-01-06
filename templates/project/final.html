@@ -65,8 +65,8 @@
 
 <legend class="border-bottom mb-4">Your Exams</legend>
 
-<h4 style="color:hotpink"> Note1: Some audio will be very quiet and some will be very loud. Protect your ears! </h4>
-<h4 style="color:blue"> Note2: you do not need to write whole sentences just details, or key points that you can hear is fine </h4>
+<h4 > Note1: Some audio will be very quiet and some will be <span style="color:red"> VERY LOUD </span>. Protect your ears! </h4>
+<h4 > Note2: you <span style="color:red"> DO NOT NEED </span> to write whole sentences just details, or key points that you can hear is fine </h4>
 
 
 <div style="overflow-x:auto;">
@@ -85,15 +85,17 @@
 			<tbody id="">
 					<tr style="height:50px;">  
 						<td> {{[i]}} </td>	
-						{% if examDict[i]['exams'] | length > 1 %}
-						<td> <button class="btn btn-sm btn-outline-warning" disabled>  Points = {{examDict[i]['points']}}/2  </button> </td>	
-						
+						{% if examDict[i]['exams'] | length == 2 %}
+						<td> <button class="btn btn-outline-success" disabled>  Points = {{examDict[i]['points']}}/2  </button> </td>						
+						{% elif examDict[i]['exams'] | length == 1 %}
+						<td> <button class="btn  btn-outline-info"> <a style="color:blue" href="{{href2 + i|string + '/' + '0'}}"> Open new project ({{examDict[i]['points']}}/2) </a> </button> </td>							
+						{% elif  examDict[i]['exams'] | length == 0 %}
+						<td> <button class="btn btn-outline-danger"> <a style="color:red" href="{{href2 + i|string + '/' + '0'}}"> Open new project ({{examDict[i]['points']}}/2) </a> </button> </td>	
 						{% else %}
-						<td> <button class="btn btn-sm btn-outline-info"> <a href="{{href2 + i|string + '/' + '0'}}"> Points = {{examDict[i]['points']}}/2 </a> </button> </td>	
-						
+						<td> <button class="btn btn-outline-secondary" disabled>  Points = {{examDict[i]['points']}}/2  </button> </td>
 						{% endif %}
-						<td> <a href="{{href2 + i|string + '/' + examDict[i]['exams'][0]|string}}", target="_blank"> Open project {{examDict[i]['exams'][0]}} </a></td>
-						<td> <a href="{{href2 + i|string + '/' + examDict[i]['exams'][1]|string}}", target="_blank"> Open project {{examDict[i]['exams'][1]}} </a></td>
+						<td> <a href="{{href2 + i|string + '/' + examDict[i]['exams'][0]|string}}", target="_blank"> Check project {{examDict[i]['exams'][0]}} </a></td>
+						<td> <a href="{{href2 + i|string + '/' + examDict[i]['exams'][1]|string}}", target="_blank"> Check project {{examDict[i]['exams'][1]}} </a></td>
 						   
 					</tr>       
 			</tbody>      

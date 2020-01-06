@@ -47,11 +47,7 @@ titles = [
 
 
 @app.route ("/final")
-def final():   
-
-    ##### dont let projects open after two have been started - so maximum two #####
-    # don't   
-    
+def final():  
       
     projDict = {
         1: ['0', titles[1], 'No Team Yet', '0', None, 0],
@@ -98,20 +94,29 @@ def final():
         2 : { 
             'points' : 0, 
             'exams' : []        
-        }       
+        }, 
+        3 : { 
+            'points' : 0, 
+            'exams' : []        
+        }, 
+        4 : { 
+            'points' : 0, 
+            'exams' : []        
+        }      
     }
 
     # 3 -4 to exam Dict and make range 1,5
     for i in range(1,5):
         completed = testModels[i].query.filter_by(studentName=current_user.username).all()
-        print(completed)
+        print('Completed', completed)
         if completed: 
             for row in completed:   
                 # find if it was a test or not             
                 if row.projTeam == int(projDict[i][3]):
                     studentTest[i] = sum(ast.literal_eval(row.status))                
                 else:   
-                    if i > 2:
+                    if i > 5:
+                        #so no pass to display all four projects
                         pass
                     else:                 
                         examDict[i]['exams'].append(row.projTeam)
