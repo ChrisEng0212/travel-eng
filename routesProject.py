@@ -510,7 +510,13 @@ def project_test(pro_num, team_num):
         image = User.query.filter_by(username=name).first().image_file        
         users[name] = [name, S3_LOCATION + image]
     
-    start = User.query.filter_by(id=1).first().projects
+    start = 0
+    if User.query.filter_by(id=1).first().projects == 1:
+        start = 1
+    elif User.query.filter_by(id=current_user.id).first().projects == 1:
+        start = 1
+
+
     #restrict access to teammembers only
     if current_user.id == 1:
         pass
